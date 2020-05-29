@@ -2,10 +2,9 @@ import React from 'react';
 import {createStackNavigator} from 'react-navigation-stack';
 import {
   createAppContainer,
-  createSwitchNavigator
 } from 'react-navigation';
 
-import SearchScreen from './src/screens/SearchScreen';
+import SearchScreen from './src/screens/SearchScreen/SearchScreen';
 
 const switchNavigator = createStackNavigator({
     Search: SearchScreen,  
