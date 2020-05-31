@@ -72,7 +72,7 @@ class SearchScreen extends Component {
                             <View>
                                 {/* {isDatePickerVisible ? <MyDatePicker/> : null} */}
                                 {selectedIndex === 1 ? <Text style={styles.textStyle} >Dönüş Tarihi</Text> : null } 
-                                {selectedIndex === 1 ? <MyDatePicker date = {new Date().getDate()+1}/> : null}
+                                {selectedIndex === 1 ? <MyDatePicker date = {new Date().getDate()}/> : null}
                             </View>
                             
                         </View>
