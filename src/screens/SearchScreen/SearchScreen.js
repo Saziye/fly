@@ -143,7 +143,7 @@ class SearchScreen extends Component {
                         />
                     </Spacer>
 
-                    <TextItem/>
+                    <TextItem title= {"Kalkış"} text = {"IST"} subtext={"Sabiha Gökçen"}/>
                 </View>
             </SafeAreaView>
 
