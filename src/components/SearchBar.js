@@ -10,8 +10,6 @@ const SearchBar = ({icon, onClick,w,pholder,edit,term, onTermChange}) => {
         <View style = {[styles.backgroundStyle, {width: w}]}>
             <TextInput 
                 style = {styles.inputStyle}
-                //value
-                //onChangeText 
                 //onEndEditing
                 editable={edit}
                 onFocus= {onClick}

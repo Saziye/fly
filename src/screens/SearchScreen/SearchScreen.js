@@ -14,6 +14,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { setAirport } from '../../actions/airportAction'
 import { connect } from "react-redux";
+import TextItem from '../../components/TextItem';
 
 class SearchScreen extends Component {
     constructor(props) {
@@ -47,6 +48,13 @@ class SearchScreen extends Component {
         navigation.navigate("OriginList");
         console.log("origin");
     }
+
+    // openDestinationList = () => {
+    //     const {navigation} = this.props;
+    //     navigation.navigate("OriginList", {
+    //         title
+    //     })
+    // }
 
 
     render() {
@@ -89,6 +97,8 @@ class SearchScreen extends Component {
                                         //onClick = {this.openOriginList}
                                         w={190}
                                         edit = {false}
+                                        term={this.props.departure}
+
                                     />
                                 </TouchableOpacity>
                             </View>
@@ -132,6 +142,8 @@ class SearchScreen extends Component {
                             // }}
                         />
                     </Spacer>
+
+                    <TextItem/>
                 </View>
             </SafeAreaView>
 
