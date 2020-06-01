@@ -77,6 +77,7 @@ class SearchScreen extends Component {
                                         //onClick = {this.openOriginList}
                                         w = {190}
                                         edit = {false}
+                                        term={this.props.departure}
                                     />
                                 </TouchableOpacity>
                             </View>

@@ -5,6 +5,10 @@ import SearchBar from '../../components/SearchBar';
 import Spacer from '../../components/Spacer';
 import instance from '../../api';
 
+import { connect } from "react-redux";
+import { setAirport } from '../../actions/airportAction'
+
+
 class OriginListScreen extends Component {
 
     constructor(props) {
@@ -28,7 +32,11 @@ class OriginListScreen extends Component {
 
 
     airportItem = ({ item }) => (
-        <TouchableOpacity  style={styles.airportItem}>
+        <TouchableOpacity onPress={() => {
+            this.props.setAirport(item.name);
+            this.props.navigation.navigate('Search')
+            console.log(item)
+        }}  style={styles.airportItem}>
             <Text> {item.name} </Text>
         </TouchableOpacity>
     );
@@ -131,4 +139,18 @@ const styles = StyleSheet.create({
     }
 });
 
-export default OriginListScreen;
+
+const mapStateToProps = (state) => {
+    return {
+        departure: state.airport.departureAirport
+    };
+  };
+  
+  const mapDispatchToProps = () => {
+    return {
+        setAirport
+    };
+  };
+  
+  export default connect(mapStateToProps,mapDispatchToProps())(OriginListScreen);
+  
