@@ -12,6 +12,8 @@ import { Octicons } from '@expo/vector-icons';
 import PassModal from './components/PassModal';
 import { FontAwesome } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { setAirport } from '../../actions/airportAction'
+import { connect } from "react-redux";
 
 class SearchScreen extends Component {
     constructor(props) {
@@ -203,4 +205,18 @@ const styles = StyleSheet.create({
     }
 });
 
-export default SearchScreen;
+
+const mapStateToProps = (state) => {
+    return {
+        departure: state.airport.departureAirport
+    };
+  };
+  
+  const mapDispatchToProps = () => {
+    return {
+        setAirport
+    };
+  };
+  
+  export default connect(mapStateToProps,mapDispatchToProps())(SearchScreen);
+  
