@@ -5,7 +5,7 @@ import {
     StyleSheet
 } from 'react-native';
 
-const SearchBar = ({icon, onClick,w,pholder}) => {
+const SearchBar = ({icon, onClick,w,pholder,edit,term, onTermChange}) => {
     return (
         <View style = {[styles.backgroundStyle, {width: w}]}>
             <TextInput 
@@ -13,9 +13,11 @@ const SearchBar = ({icon, onClick,w,pholder}) => {
                 //value
                 //onChangeText 
                 //onEndEditing
-                editable={false}
+                editable={edit}
                 onFocus= {onClick}
                 placeholder= {pholder}
+                value = {term}
+                onChangeText = {onTermChange}
             />
             <>{icon}</>
 

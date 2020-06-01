@@ -10,15 +10,19 @@ class OriginListScreen extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            airports: []
+            airports: [],
+            term: '',
+            arrayholder: []
         };
     }
+    
 
     componentDidMount() {
         instance.get('/v1/reference-data/locations?subType=AIRPORT,CITY&keyword=r&page[limit]=100').then((data) => {
             console.log('=========================DATA => ')
             console.log(data.data.data);
-            this.setState({ airports: data.data.data })
+            this.setState({ airports: data.data.data });
+            this.setState({ arrayholder: data.data.data });
         })
     }
 
@@ -29,10 +33,36 @@ class OriginListScreen extends Component {
         </TouchableOpacity>
     );
     
+    keyExtractor = (item, index) => index.toString();
+
+    handleTextChange = (inputText) =>{
+        this.setState({
+            ...this.state,
+            term: inputText,
+        });
+    }
+
+    searchFilterFunction = (inputText) => {
+        //passing the inserted text in textinput
+        const newData = this.state.airports.filter(function(item) {
+          //applying filter for the inserted text in search bar
+          const itemData = item.name ? item.name.toUpperCase() : ''.toUpperCase();
+          const textData = inputText.toUpperCase();
+          return itemData.indexOf(textData) > -1;
+        });
+        this.setState({
+            ...this.state,
+          //setting the filtered newData on datasource
+          //After setting the data it will automatically re-render the view
+          arrayholder: newData,
+          term: inputText,
+        });        
+    }
+    
 
     render() {
 
-        const { airports } = this.state;
+        const { airports, term, arrayholder } = this.state;
 
         return (
 
@@ -43,6 +73,10 @@ class OriginListScreen extends Component {
                     <View style={{ flex: 1 }}>
                         <SearchBar
                             pholder="Şehir veya Havalimanı"
+                            term = {term} 
+                            edit = {true}
+                            // onTermChange = {this.handleTextChange} 
+                            onTermChange = {this.searchFilterFunction} 
                         />
                     </View>
                 </View>
@@ -55,14 +89,14 @@ class OriginListScreen extends Component {
                         contentContainerStyle={styles.addressList}
                     /> */}
                     <FlatList
-                        
                         // showsHorizontalScrollIndicator={false}
-                        data={airports}
+                        data={arrayholder}
                         keyExtractor={this.keyExtractor}
                         renderItem={this.airportItem}
                     />
-                    {/* <Text>{airports.length}</Text> */}
                 </View>
+                {/* {console.log(term)} */}
+
             </View>
 
         );

@@ -34,6 +34,12 @@ class SearchScreen extends Component {
         this.setState({ modalVisible: visible });
     }
 
+    navigateFunction = (screen) => {
+        const {navigation} = this.props;
+        navigation.navigate(screen);
+        console.log("navigate");
+    }
+
     openOriginList = () => {
         const { navigation } = this.props;
         navigation.navigate("OriginList");
@@ -63,23 +69,25 @@ class SearchScreen extends Component {
                         <View style={styles.container}>
                             <View>
                                 <Text style={styles.textStyle} >Nereden</Text>
-                                <TouchableOpacity onPress={() => {this.openOriginList()}}>
-                                <SearchBar 
-                                    icon={<Ionicons name="md-locate" size={30} color="#FEDBA6" style={styles.iconStyle} />}
-                                    // onClick = {this.openOriginList}
-                                    w = {190}
-                                />
-
+                                <TouchableOpacity onPress={() => {this.navigateFunction("OriginList")}}>
+                                    <SearchBar 
+                                        icon={<Ionicons name="md-locate" size={30} color="#FEDBA6" style={styles.iconStyle} />}
+                                        //onClick = {this.openOriginList}
+                                        w = {190}
+                                        edit = {false}
+                                    />
                                 </TouchableOpacity>
                             </View>
                             <View>
                                 <Text style={styles.textStyle} >Nereye</Text>
-                                
-                                <SearchBar 
-                                    icon={<Entypo name="location-pin" size={30} color="#FEDBA6" style={styles.iconStyle} />}
-                                    onClick = {this.openOriginList}
-                                    w={190}
-                                />
+                                <TouchableOpacity onPress={() => {this.navigateFunction("OriginList")}}>
+                                    <SearchBar 
+                                        icon={<Entypo name="location-pin" size={30} color="#FEDBA6" style={styles.iconStyle} />}
+                                        //onClick = {this.openOriginList}
+                                        w={190}
+                                        edit = {false}
+                                    />
+                                </TouchableOpacity>
                             </View>
                         </View>
                     </Spacer>

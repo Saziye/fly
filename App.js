@@ -10,7 +10,7 @@ import OriginListScreen from './src/screens/OriginListScreen/OriginListScreen';
 
 const switchNavigator = createStackNavigator({
     Search: SearchScreen,
-    OriginList: OriginListScreen,  
+    OriginList: OriginListScreen  
 },
 {
   initialRouteName: 'Search',
