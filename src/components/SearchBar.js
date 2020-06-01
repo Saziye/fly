@@ -5,14 +5,17 @@ import {
     StyleSheet
 } from 'react-native';
 
-const SearchBar = ({icon}) => {
+const SearchBar = ({icon, onClick,w,pholder}) => {
     return (
-        <View style = {styles.backgroundStyle} >
+        <View style = {[styles.backgroundStyle, {width: w}]}>
             <TextInput 
                 style = {styles.inputStyle}
                 //value
                 //onChangeText 
                 //onEndEditing
+                editable={false}
+                onFocus= {onClick}
+                placeholder= {pholder}
             />
             <>{icon}</>
 
@@ -30,11 +33,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row', //iconu ve textinputu yatay olarak(aynı satırda) sıralar
         borderColor: '#FEDBA6',
         borderWidth:3,
-        width:190,
+        
     },
     inputStyle: {
         flex:1, //yatay yönde mümkün oladuğunca yer kapla demek
-        fontSize:18
+        fontSize:18,
+        
     }
 });
 

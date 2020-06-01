@@ -5,9 +5,12 @@ import {
 } from 'react-navigation';
 
 import SearchScreen from './src/screens/SearchScreen/SearchScreen';
+import OriginListScreen from './src/screens/OriginListScreen/OriginListScreen';
+
 
 const switchNavigator = createStackNavigator({
-    Search: SearchScreen,  
+    Search: SearchScreen,
+    OriginList: OriginListScreen,  
 },
 {
   initialRouteName: 'Search',

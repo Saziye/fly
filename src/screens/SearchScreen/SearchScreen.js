@@ -4,13 +4,14 @@ import { SafeAreaView } from 'react-navigation';
 import SegmentedControlTab from 'react-native-segmented-control-tab'
 import Spacer from '../../components/Spacer';
 import MyDatePicker from '../../components/MyDatePicker';
-import SearchBar from './components/SearchBar';
+import SearchBar from '../../components/SearchBar';
 import { Entypo } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons'; 
 import {Button} from 'react-native-elements';
 import { Octicons } from '@expo/vector-icons';
 import PassModal from './components/PassModal';
 import { FontAwesome } from '@expo/vector-icons';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 class SearchScreen extends Component {
     constructor(props) {
@@ -31,7 +32,14 @@ class SearchScreen extends Component {
 
     setModalVisible = (visible) => {
         this.setState({ modalVisible: visible });
-      }
+    }
+
+    openOriginList = () => {
+        const { navigation } = this.props;
+        navigation.navigate("OriginList");
+        console.log("origin");
+    }
+
 
     render() {
 
@@ -55,11 +63,23 @@ class SearchScreen extends Component {
                         <View style={styles.container}>
                             <View>
                                 <Text style={styles.textStyle} >Nereden</Text>
-                                <SearchBar icon={<Ionicons name="md-locate" size={30} color="#FEDBA6" style={styles.iconStyle} />}/>
+                                <TouchableOpacity onPress={() => {this.openOriginList()}}>
+                                <SearchBar 
+                                    icon={<Ionicons name="md-locate" size={30} color="#FEDBA6" style={styles.iconStyle} />}
+                                    // onClick = {this.openOriginList}
+                                    w = {190}
+                                />
+
+                                </TouchableOpacity>
                             </View>
                             <View>
                                 <Text style={styles.textStyle} >Nereye</Text>
-                                <SearchBar icon={<Entypo name="location-pin" size={30} color="#FEDBA6" style={styles.iconStyle} />}/>
+                                
+                                <SearchBar 
+                                    icon={<Entypo name="location-pin" size={30} color="#FEDBA6" style={styles.iconStyle} />}
+                                    onClick = {this.openOriginList}
+                                    w={190}
+                                />
                             </View>
                         </View>
                     </Spacer>
@@ -128,8 +148,7 @@ const styles = StyleSheet.create({
         marginHorizontal:3, //kenar boşluğu
         fontSize: 18,
         fontWeight: 'bold',
-        color: '#908f8f',
-        
+        color: '#908f8f', 
     },
     container: {
         flexDirection: 'row',
