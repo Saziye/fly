@@ -28,10 +28,12 @@ const TextItem = ({title,text,subtext}) => {
 
 const styles = StyleSheet.create({
     menuItem: {
-        width: '40%', //her satıra 2 element
-        height: '40%',
+        width: '50%',
+        height: '100%',
         padding:5,
-        borderColor: 'red',
+        // alignSelf: 'center',
+
+        borderColor: 'blue',
         borderWidth:2
     },
     titleStyle: {

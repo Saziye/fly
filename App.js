@@ -5,6 +5,7 @@ import {
 } from 'react-navigation';
 
 import SearchScreen from './src/screens/SearchScreen/SearchScreen';
+import SearchScreen2 from './src/screens/SearchScreen/SearchScreen2';
 import OriginListScreen from './src/screens/OriginListScreen/OriginListScreen';
 import thunkMiddleware from "redux-thunk";
 import {
@@ -29,10 +30,11 @@ const store = createStore(
 console.log(store.getState());
 const switchNavigator = createStackNavigator({
     Search: SearchScreen,
+    Search2: SearchScreen2,
     OriginList: OriginListScreen,  
 },
 {
-  initialRouteName: 'Search',
+  initialRouteName: 'Search2',
 }
 );
 
