@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
 import airport from './airport';
+import date from './date';
 
 
 
 const appReducer = combineReducers({
     airport,
+    date
 
 });
 const rootReducer = (state, action) => {   

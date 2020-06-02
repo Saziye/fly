@@ -7,11 +7,11 @@ import {
 } from 'react-native';
 //import {withNavigation } from 'react-navigation'; //navigation için
 
-const TextItem = ({title,text,subtext}) => {
+const TextItem = ({title,text,subtext, click}) => {
 
     return (
         <View style={styles.menuItem}>
-            <TouchableOpacity >
+            <TouchableOpacity onPress={click} >
                 <View style={styles.titleStyle}>
                     <Text style={styles.textTitle}>{title}</Text>
                 </View>
@@ -21,18 +21,18 @@ const TextItem = ({title,text,subtext}) => {
                 <View style= {styles.subtextStyle}>
                     <Text style={styles.textSub}>{subtext}</Text>
                 </View>
+                {/* /<Text>{}</Text> */}
             </TouchableOpacity>
-        </View>      
+        </View>  
     );    
 };
 
 const styles = StyleSheet.create({
     menuItem: {
-        width: '50%',
+        width: '40%',
         height: '100%',
         padding:5,
         // alignSelf: 'center',
-
         borderColor: 'blue',
         borderWidth:2
     },
@@ -42,17 +42,25 @@ const styles = StyleSheet.create({
         borderWidth:2
     },
     textStyle: {
-
+        borderColor: 'red',
+        borderWidth:2,
+        //width: '50%',
+        alignSelf: 'center',
+        
     },
     subtextStyle: {
+        margin: 4,
+        borderColor: 'red',
+        borderWidth:2,
         
     },
     textTitle: {
-        fontSize: 18,
+        fontSize: 15,
         textAlign: 'center',
-        color: 'blue',
+        color: '#3ca0cd',
         justifyContent:'center',
-        fontFamily:'Roboto'
+        fontFamily:'Roboto',
+        fontWeight: 'bold'
     },
     text: {
         fontSize: 40,
