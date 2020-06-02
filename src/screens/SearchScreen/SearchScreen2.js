@@ -56,7 +56,7 @@ class SearchScreen2 extends Component {
         //console.log(this.state.departureDate);
         return (
             <SafeAreaView forceInset={{ top: "always" }} >
-                <ImageBackground style={styles.image} source={require('../../../assets/images/m.jpg')}>
+                <ImageBackground style={styles.image} source={require('../../../assets/images/k.jpg')}>
                     <View style={styles.overlay}>
                         <View>
                             <SegmentedControlTab tabsContainerStyle={styles.segment}
