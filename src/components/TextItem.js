@@ -33,25 +33,25 @@ const styles = StyleSheet.create({
         height: '100%',
         padding:5,
         // alignSelf: 'center',
-        borderColor: 'blue',
-        borderWidth:2
+        // borderColor: 'blue',
+        // borderWidth:2
     },
     titleStyle: {
         margin: 3,
-        borderColor: 'red',
-        borderWidth:2
+        // borderColor: 'red',
+        // borderWidth:2
     },
     textStyle: {
-        borderColor: 'red',
-        borderWidth:2,
+        // borderColor: 'red',
+        // borderWidth:2,
         //width: '50%',
         alignSelf: 'center',
         
     },
     subtextStyle: {
         margin: 4,
-        borderColor: 'red',
-        borderWidth:2,
+        // borderColor: 'red',
+        // borderWidth:2,
         
     },
     textTitle: {
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 40,
         textAlign: 'center',
-        color: 'pink',
+        color: '#ee7621',
         fontWeight: 'bold',
     },
     textSub: {

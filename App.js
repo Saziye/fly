@@ -7,6 +7,7 @@ import {
 import SearchScreen from './src/screens/SearchScreen/SearchScreen';
 import SearchScreen2 from './src/screens/SearchScreen/SearchScreen2';
 import OriginListScreen from './src/screens/OriginListScreen/OriginListScreen';
+import AirportsListScreen from './src/screens/AirportsListScreen/AirportsListScreen';
 import thunkMiddleware from "redux-thunk";
 import {
   Provider
@@ -31,7 +32,8 @@ console.log(store.getState());
 const switchNavigator = createStackNavigator({
     Search: SearchScreen,
     Search2: SearchScreen2,
-    OriginList: OriginListScreen,  
+    OriginList: OriginListScreen, 
+    AirportsList: AirportsListScreen 
 },
 {
   initialRouteName: 'Search2',
