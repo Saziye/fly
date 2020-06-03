@@ -1,15 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
-//import SearchableFlatlist from 'searchable-flatlist';
+import {getAirports} from '../../services/airportService'
 
-const data = [
-    { id: 1, name: "Francesco Raoux" },
-    { id: 2, name: "Tasha Bonanno" },
-    { id: 3, name: "Merle Braunstein" },
-    { id: 4, name: "Aleda Bouzan" },
-    { id: 5, name: "Issiah Elnaugh" }
-  ];
 
 class AirportsListScreen extends Component {
 
@@ -17,29 +10,49 @@ class AirportsListScreen extends Component {
         super(props)
         this.state = {
            searchTerm: '',
+           type:'',
+           airports: []
         };
     }
+    componentDidMount() {
+        const {navigation} = this.props;
+        this.setState({type: navigation.state.params.type})
+        getAirports().then((airportRes) => {
+            console.log('=======================RES')
+            console.log(airportRes);
+            this.setState({airports: airportRes.data})
+        });
+        
+    }
+
+    keyExtractor = (item, index) => index.toString();
+
+    airportItem = ({ item }) => (
+        <TouchableOpacity >
+            <Text> {item.CityName} </Text>
+        </TouchableOpacity>
+    );
+
 
     render() {
-        const {  } = this.state;
+        const { type, airports } = this.state;
 
         return (
             <SafeAreaView forceInset= {{top: "always"}} >
-                <View style={sContainer}>
+                <Text>{type== 0? 'Gidiş Havalimanını Seçiniz': 'Dönüş Havalimanını Seçiniz'}</Text>
+                <View style={styles.sContainer}>
                     <TextInput
                     placeholder={"Search"}
-                    style={sSearchBar}
+                    style={styles.sSearchBar}
                     onChangeText={searchTerm => this.setState({ searchTerm })}
                     />
-                    {/* <SearchableFlatlist
-                    searchProperty={"name"}
-                    searchTerm={this.state.searchTerm}
-                    data={data}
-                    containerStyle={{ flex: 1 }}
-                    renderItem={({ item }) => <Text style={sTextItem}>{item.name}</Text>}
-                    keyExtractor={item => item.id}
-                    /> */}
                 </View>
+                <FlatList
+                        // showsHorizontalScrollIndicator={false}
+                        data={airports}
+                        keyExtractor={this.keyExtractor}
+                        renderItem={this.airportItem}
+                    />
             </SafeAreaView>
         );
     }
@@ -47,7 +60,8 @@ class AirportsListScreen extends Component {
 
 AirportsListScreen.navigationOptions = () => {
     return {
-        headerShown: false
+        // headerShown: false
+        title: 'Havalimanı'
     };
 };
 

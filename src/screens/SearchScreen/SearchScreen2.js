@@ -59,9 +59,9 @@ class SearchScreen2 extends Component {
     });
   };
 
-  navigateFunction = (screen) => {
+  navigateFunction = (screen,type) => {
     const { navigation } = this.props;
-    navigation.navigate(screen);
+    navigation.navigate(screen,{type: type});
     console.log("navigate");
   };
 
@@ -119,7 +119,7 @@ class SearchScreen2 extends Component {
                 title={"Kalkış"}
                 text={"IST"}
                 subtext={"Sabiha Gökçen"}
-                click={() => this.navigateFunction("AirportsList")}
+                click={() => this.navigateFunction("AirportsList", 0)}
               />
               <TouchableOpacity style={styles.iconContainer}>
                 <FontAwesome5 name="exchange-alt" size={24} color="#3ca0cd" />
@@ -128,6 +128,8 @@ class SearchScreen2 extends Component {
                 title={"Varış"}
                 text={"IST"}
                 subtext={"Sabiha Gökçen"}
+                click={() => this.navigateFunction("AirportsList", 1)}
+
               />
             </View>
             <View
