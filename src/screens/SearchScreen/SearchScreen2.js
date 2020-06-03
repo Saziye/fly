@@ -38,7 +38,18 @@ class SearchScreen2 extends Component {
         "Kasım",
         "Aralık",
       ],
+      today: '',
+      minReturnDate: ''
     };
+  }
+  componentDidMount() {
+        const date = new Date();
+        const today = ( ((date.getDate() > 9) ? date.getDate() : ('0' + date.getDate()))+ '/' +((date.getMonth() > 8) ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1))) + '/' + date.getFullYear());
+        this.setState({today: today});
+        this.setState({minReturnDate: today});
+        this.props.setDepartureDate(today);
+        //this.props.setReturnDate(today);
+        
   }
 
   handleIndexChange = (index) => {
@@ -58,9 +69,10 @@ class SearchScreen2 extends Component {
     const { dateType } = this.state;
     if (dateType === 1) {
       this.props.setDepartureDate(date);
+      this.setState({minReturnDate: date})
     } else {
       this.props.setReturnDate(date);
-    this.setState({selectedIndex: 1})
+        this.setState({selectedIndex: 1})
     }
   };
 
@@ -73,7 +85,9 @@ class SearchScreen2 extends Component {
 
   chooseDate(type) {
     this.setState({ dateType: type });
-    this._date.onPressDate();
+    setTimeout(() => {
+        this._date.onPressDate();
+    }, 100);
     
   }
 
@@ -195,8 +209,10 @@ class SearchScreen2 extends Component {
             </View>
 
             <DatePicker
-              date={this.props.departureDate}
+              date={ this.state.dateType === 1 ? this.props.departureDate: this.props.returnDate }
               mode="date"
+              
+              minDate={ this.state.dateType === 1 ? this.state.today :  this.state.minReturnDate }
               //format= {moment().format('D')}
               format="DD/MM/YYYY"
               showIcon={false}
