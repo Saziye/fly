@@ -12,7 +12,8 @@ import DatePicker from 'react-native-datepicker'
 //for redux
 import { connect } from "react-redux";
 import { setDepartureDate, setReturnDate } from '../../actions/dateAction'
-
+import moment from 'moment';
+import instance from '../../api';
 
 class SearchScreen2 extends Component {
     constructor(props) {
@@ -22,6 +23,8 @@ class SearchScreen2 extends Component {
             //departureDate: new Date().getDate(),
             //returnDate: '',
             gidis: false,
+            dateType: 1,
+            months: ['Ocak', 'Şubat']
         };
     }
 
@@ -38,18 +41,29 @@ class SearchScreen2 extends Component {
         console.log("navigate");
     }
 
-    // datePicker = (d) => {
-    //     if(this.state.selectedIndex ===0) { //tek yön
-    //         console.log("çalıştı");
-    //         this.props.setDepartureDate(d);
-    //         console.log("fonksiyon");
-    //         console.log(this.props.depDate);
-    //     } else if(selectedIndex === 1) { //gidiş dönüş
-    //         this.props.setDepartureDate(d);
-            
-    //     }
-        
-    // }
+    onDatePressFunction = (date) => {
+        const {dateType} = this.state;
+        if(dateType === 1) {
+            this.props.setDepartureDate(date);
+        } else {
+            this.props.setReturnDate(date)
+        }
+    }
+
+    onDatePressFunction2 = (date) => {
+        console.log("DÖNÜŞ");
+        this.setState({ selectedIndex: 1 });
+        this.props.setReturnDate(date);
+        console.log(this.props.returnDate);  
+    }
+
+    chooseDate (type) {
+
+        this.setState({dateType: type});
+
+        this._date.onPressDate()
+
+    }
 
     render() {
         const { selectedIndex } = this.state;
@@ -58,7 +72,7 @@ class SearchScreen2 extends Component {
             <SafeAreaView forceInset={{ top: "always" }} >
                 <ImageBackground style={styles.image} source={require('../../../assets/images/k.jpg')}>
                     <View style={styles.overlay}>
-                        <View>
+                        <View style={{marginTop: 40}}>
                             <SegmentedControlTab tabsContainerStyle={styles.segment}
                                 values={['TEK GİDİŞ', 'GİDİŞ DÖNÜŞ']}
                                 selectedIndex={this.state.selectedIndex}
@@ -82,13 +96,13 @@ class SearchScreen2 extends Component {
                             <View style={styles.line}></View>
                         </View>
                         <View style={styles.container_two}>
-                            <TextItem title={"Kalkış"} text={"IST"} subtext={"Sabiha Gökçen"} click={()=>this._date.onPressDate()}/>
+                            <TextItem title={"Kalkış"} text={this.props.departureDate.substring(0,2)} subtext={this.state.months[parseInt(this.props.departureDate.substring(3,5))]} click={() => this.chooseDate(1)}/>
                             <View style= {styles.dateIcon}>
                                 <FontAwesome5 name="calendar-alt" size={26} color="#3ca0cd" />
                             </View>
                             {selectedIndex === 1
-                                ? <TextItem title={"Kalkış"} text={"19"} subtext={"Haziran"} click={()=>this._date.onPressDate()}/>
-                                : <TextItem title={"Kalkış"} text={<Feather name="plus" size={50} color="#ee7621" />} subtext={"Dönüş Ekle"} click={()=>this._date.onPressDate()} />
+                                ? <TextItem title={"Kalkış"} text={this.props.returnDate} subtext={this.state.months[1]} click={() => this.chooseDate(2)}/>
+                                : <TextItem title={"Kalkış"} text={<Feather name="plus" size={50} color="#ee7621" />} subtext={"Dönüş Ekle"} click={() => this.chooseDate(2)} />
                             }
 
                             {/* <TextItem title= {"Kalkış"} text = {"IST"} subtext={"Sabiha Gökçen"}/> */}
@@ -108,15 +122,36 @@ class SearchScreen2 extends Component {
                                 icon={<Fontisto name="search" size={24} color="white" style={styles.buttonIcon} />}
                                 title="UÇUŞ ARA"
                                 titleStyle={styles.btnTitleStyle}
-                            //    onPress={() => {
-                            //        this.setModalVisible(true);
-                            //    }}
+                               onPress={() => {
+                                //    this.setModalVisible(true);
+                                    console.log('========>')
+                                    console.log(this.props.departureDate);
+                                    console.log(this.props.returnDate);
+                                    
+                               }}
                             />
                         </View>
 
                         <DatePicker
-                            ref={(date) => this._date = date}
-                            date={this.state.date}
+                            date={this.props.departureDate}
+                            mode="date" 
+                            //format= {moment().format('D')} 
+                            format= "DD/MM/YYYY"
+                            showIcon={false}
+                            customStyles={{
+                            dateTouchBody:{
+                                display:'none',
+                            }
+                            }}
+                            onDateChange={(date) => {
+                                //   this.setState({ date: date });
+                                this.onDatePressFunction(date);
+                            }}
+                            ref={(d) => this._date = d}
+                        />
+
+                        {/* <DatePicker
+                            date={this.props.returnDate}
                             mode="date" 
                             format="DD/MM/YYYY"
                             showIcon={false}
@@ -127,10 +162,10 @@ class SearchScreen2 extends Component {
                             }}
                             onDateChange={(date) => {
                             console.log(date)
-                                //   this.setState({ date: date });
-                                this.datePicker(date);
+                                this.onDatePressFunction2(date);
                             }}
-                        />
+                            ref={(date) => this._date = date}
+                        /> */}
                     </View>
                 </ImageBackground>
             </SafeAreaView>
@@ -150,8 +185,8 @@ const styles = StyleSheet.create({
     },
     overlay: {
         // backgroundColor:'rgba(47,163,218, .4)',
-        //backgroundColor: 'rgba(0,0,0,.6)',
-        backgroundColor: 'rgba(255,255,255, .4)',
+        // backgroundColor: 'rgba(0,0,0,.6)',
+        backgroundColor: 'rgba(255,255,255, .2)',
         height: '100%',
         width: '100%',
         // borderColor: 'purple',
@@ -184,7 +219,7 @@ const styles = StyleSheet.create({
     container_one: {
         justifyContent: 'flex-start',
         flexDirection: 'row',
-        marginTop: 5,
+        marginTop: 10,
         marginHorizontal: 10,
         //borderColor: 'red',
         //borderWidth: 2
@@ -218,7 +253,7 @@ const styles = StyleSheet.create({
     container_two: {
         justifyContent: 'flex-start',
         flexDirection: 'row',
-        marginTop: 5,
+        marginTop: 10,
         marginHorizontal: 10,
         //borderColor: 'yellow',
         //borderWidth: 2
@@ -271,13 +306,15 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
     return {
-        depDate: state.date.departureDate
+        departureDate: state.date.departureDate,
+        returnDate: state.date.returnDate
     };
 };
   
   const mapDispatchToProps = () => {
     return {
-        setDepartureDate
+        setDepartureDate,
+        setReturnDate
     };
 };
   
