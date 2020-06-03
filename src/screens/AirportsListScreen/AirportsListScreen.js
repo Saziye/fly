@@ -53,7 +53,7 @@ class AirportsListScreen extends Component {
           AirportName: "Antalya",
           CityName: "Antalya",
           CountryName: "Türkiye",
-          IsCity: false,
+          IsCity: true,
         },
       ],
     };
