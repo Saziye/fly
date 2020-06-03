@@ -9,8 +9,9 @@ import {
   TextInput,
 } from "react-native";
 import SearchInput, { createFilter } from "react-native-search-filter";
-import { SafeAreaView } from "react-navigation";
 import { getAirports } from "../../services/airportService";
+import { connect } from "react-redux";
+import { setOriginAirport, setDestinationAirport } from "../../actions/passengerAction";
 
 const KEYS_TO_FILTERS = [
   "AirportCode",
@@ -84,7 +85,11 @@ class AirportsListScreen extends Component {
   keyExtractor = (item, index) => index.toString();
 
   airportItem = ({ item }) => (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={()=> {
+      this.props.setOriginAirport(item.AirportName);
+      this.props.navigation.navigate('Search2')
+      //console.log(this.props.origin);
+    }}>
       <View style={styles.listItem}>
         <View style={styles.airportCode}>
           <Text style={styles.textAirportCode}>{item.AirportCode}</Text>
@@ -110,6 +115,7 @@ class AirportsListScreen extends Component {
     </TouchableOpacity>
   );
 
+  
   render() {
     const { type, airports, searchTerm, popularair } = this.state;
 
@@ -140,13 +146,6 @@ class AirportsListScreen extends Component {
     );
   }
 }
-
-// AirportsListScreen.navigationOptions = () => {
-//   return {
-//     // headerShown: false
-//     // title: "Havalimanı",
-//   };
-// };
 
 const styles = StyleSheet.create({
   container: {
@@ -217,4 +216,18 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AirportsListScreen;
+const mapStateToProps = (state) => {
+  return {
+      origin: state.passenger.originAirport,
+      destination: state.passenger.destinationAirport
+  };
+};
+
+const mapDispatchToProps = () => {
+  return {
+    setOriginAirport,
+    setDestinationAirport
+  };
+};
+
+export default connect(mapStateToProps,mapDispatchToProps())(AirportsListScreen);

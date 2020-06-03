@@ -1,6 +1,6 @@
 const initialState = {
-    departureAirport: '',
-    arrivalAirport: '',
+    originAirport: '',
+    destinationAirport: '',
     departureDate: '',
     returnDate: '',
     numberOfPassenger: '',
@@ -19,13 +19,13 @@ export default (state = initialState, action = {}) => {
             return Object.assign({}, state, {
                 returnDate: action.payload,
             });
-        case 'DEPARTURE_AIRPORT':
+        case 'ORIGIN_AIRPORT':
             return Object.assign({}, state, {
-                departureAirport: action.payload,
+                originAirport: action.payload,
             });
-        case 'ARRIVAL_AIRPORT':
+        case 'DESTINATION_AIRPORT':
             return Object.assign({}, state, {
-                arrivalAirport: action.payload,
+                destinationAirport: action.payload,
             });
         default:
             return state;

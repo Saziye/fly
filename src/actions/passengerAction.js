@@ -11,21 +11,21 @@ function setReturnDate(date) {
         payload: date
     };
 }
-function setDepartureAirport(airportName) {
+function setOriginAirport(airportName) {
     return {
-        type: 'DEPARTURE_AIRPORT',
+        type: 'ORIGIN_AIRPORT',
         payload: airportName
     };
 }
-function setArrivalAirport(airportName) {
+function setDestinationAirport(airportName) {
     return {
-        type: 'ARRIVAL_AIRPORT',
+        type: 'DESTINATION_AIRPORT',
         payload: airportName
     };
 }
 export {
     setDepartureDate,
     setReturnDate,
-    setDepartureAirport,
-    setArrivalAirport
+    setOriginAirport,
+    setDestinationAirport
 }

@@ -118,7 +118,7 @@ class SearchScreen2 extends Component {
               <TextItem
                 title={"Kalkış"}
                 text={"IST"}
-                subtext={"Sabiha Gökçen"}
+                subtext={this.props.origin}
                 click={() => this.navigateFunction("AirportsList", 0)}
               />
               <TouchableOpacity style={styles.iconContainer}>
@@ -229,23 +229,6 @@ class SearchScreen2 extends Component {
               }}
               ref={(d) => (this._date = d)}
             />
-
-            {/* <DatePicker
-                            date={this.props.returnDate}
-                            mode="date" 
-                            format="DD/MM/YYYY"
-                            showIcon={false}
-                            customStyles={{
-                            dateTouchBody:{
-                                display:'none',
-                            }
-                            }}
-                            onDateChange={(date) => {
-                            console.log(date)
-                                this.onDatePressFunction2(date);
-                            }}
-                            ref={(date) => this._date = date}
-                        /> */}
           </View>
         </ImageBackground>
       </SafeAreaView>
@@ -386,6 +369,8 @@ const mapStateToProps = (state) => {
   return {
     departureDate: state.passenger.departureDate,
     returnDate: state.passenger.returnDate,
+    origin: state.passenger.originAirport,
+    destination: state.passenger.destinationAirport
   };
 };
 
