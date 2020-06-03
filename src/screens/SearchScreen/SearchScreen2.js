@@ -127,7 +127,7 @@ class SearchScreen2 extends Component {
               <TextItem
                 title={"Varış"}
                 text={"IST"}
-                subtext={"Sabiha Gökçen"}
+                subtext={this.props.destination}
                 click={() => this.navigateFunction("AirportsList", 1)}
 
               />

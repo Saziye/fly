@@ -86,8 +86,14 @@ class AirportsListScreen extends Component {
 
   airportItem = ({ item }) => (
     <TouchableOpacity onPress={()=> {
-      this.props.setOriginAirport(item.AirportName);
-      this.props.navigation.navigate('Search2')
+      if(this.state.type === 0) {
+        this.props.setOriginAirport(item.AirportName);
+        this.props.navigation.navigate('Search2')
+      } else {
+        this.props.setDestinationAirport(item.AirportName);
+        this.props.navigation.navigate('Search2');
+      }
+      
       //console.log(this.props.origin);
     }}>
       <View style={styles.listItem}>
