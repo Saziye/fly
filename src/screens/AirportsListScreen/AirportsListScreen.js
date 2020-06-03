@@ -47,14 +47,7 @@ class AirportsListScreen extends Component {
           CityName: "Izmir",
           CountryName: "Türkiye",
           IsCity: false,
-        },
-        {
-          AirportCode: "AYT",
-          AirportName: "Antalya",
-          CityName: "Antalya",
-          CountryName: "Türkiye",
-          IsCity: false,
-        },
+        }
       ],
     };
   }
