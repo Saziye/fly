@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, StyleSheet, FlatList,ScrollView, TouchableOpacity, TextInput } from 'react-native';
+import SearchInput, { createFilter } from 'react-native-search-filter';
 import { SafeAreaView } from 'react-navigation';
 import {getAirports} from '../../services/airportService'
 
+const KEYS_TO_FILTERS = ['AirportCode', 'AirportName', 'CityName', 'CountryName'];
 
 class AirportsListScreen extends Component {
 
@@ -11,7 +13,37 @@ class AirportsListScreen extends Component {
         this.state = {
            searchTerm: '',
            type:'',
-           airports: []
+           airports: [],
+           popularair: [
+            {
+                "AirportCode": "IST",
+                "AirportName": "İstanbul Havalimanı",
+                "CityName": "Istanbul",
+                "CountryName": "Türkiye",
+                "IsCity": false
+              },
+              {
+                "AirportCode": "ESB",
+                "AirportName": "Esenboga",
+                "CityName": "Ankara",
+                "CountryName": "Türkiye",
+                "IsCity": false
+              },
+              {
+                "AirportCode": "ADB",
+                "AirportName": "Adnan Menderes",
+                "CityName": "Izmir",
+                "CountryName": "Türkiye",
+                "IsCity": false
+              },
+              {
+                "AirportCode": "AYT",
+                "AirportName": "Antalya",
+                "CityName": "Antalya",
+                "CountryName": "Türkiye",
+                "IsCity": false
+              },
+           ],
         };
     }
     componentDidMount() {
@@ -24,36 +56,55 @@ class AirportsListScreen extends Component {
         });
         
     }
+    searchUpdated(term) {
+        this.setState({ searchTerm: term })
+    }
 
     keyExtractor = (item, index) => index.toString();
 
     airportItem = ({ item }) => (
-        <TouchableOpacity >
-            <Text> {item.CityName} </Text>
+        <TouchableOpacity>
+            <View  style={styles.listItem} >
+                <View style={styles.airportCode}>
+                    <Text style={styles.textAirportCode}>{item.AirportCode}</Text>
+                </View>
+                <View style= {styles.containerText}>
+                    <View style= {styles.cityName}>
+                        <Text style={styles.textCityName}>{item.CityName}</Text>
+                    </View>
+                    <View style={{width: "3%",borderBottomColor: "black",borderBottomWidth: 2, alignSelf: 'center', marginHorizontal: '2%'}}></View>
+                    <View style= {styles.airportName}>
+                        <Text style={styles.textAirportName}>{item.AirportName}</Text>
+                    </View>
+                </View>
+            </View>
         </TouchableOpacity>
     );
 
 
     render() {
-        const { type, airports } = this.state;
+        const { type, airports, searchTerm, popularair } = this.state;
+
+        const filteredAirports = airports.filter(createFilter(searchTerm, KEYS_TO_FILTERS));
 
         return (
-            <SafeAreaView forceInset= {{top: "always"}} >
-                <Text>{type== 0? 'Gidiş Havalimanını Seçiniz': 'Dönüş Havalimanını Seçiniz'}</Text>
-                <View style={styles.sContainer}>
-                    <TextInput
-                    placeholder={"Search"}
-                    style={styles.sSearchBar}
-                    onChangeText={searchTerm => this.setState({ searchTerm })}
-                    />
-                </View>
-                <FlatList
+            <View style={styles.container}>
+                <SearchInput 
+                    onChangeText={(term) => { this.searchUpdated(term) }} 
+                    style={styles.searchInput}
+                    placeholder="Şehir, havalimanı adı veya kodu"
+                    clearIcon
+                />
+                <ScrollView>
+                    <FlatList
                         // showsHorizontalScrollIndicator={false}
-                        data={airports}
+                        
+                        data={searchTerm=== '' ?popularair:filteredAirports}
                         keyExtractor={this.keyExtractor}
                         renderItem={this.airportItem}
                     />
-            </SafeAreaView>
+                </ScrollView>
+            </View>
         );
     }
 }
@@ -66,25 +117,74 @@ AirportsListScreen.navigationOptions = () => {
 };
 
 const styles = StyleSheet.create({
-    sContainer: {
+    container: {
         flex: 1,
-        backgroundColor: "#F5FCFF"
-      },
-      sTextItem: {
-        height: 50,
-        width: "100%",
-        textAlign: "center",
-        textAlignVertical: "center",
-        fontSize: 18
-      },
-      sSearchBar: {
-        paddingHorizontal: 10,
-        margin: 10,
-        height: 50,
-        borderColor: "gray",
+        backgroundColor: '#fff',
+        justifyContent: 'flex-start',
+        borderColor: 'red',
+        borderWidth:1,
+    },
+    searchInput:{
+        padding: 10,
+        borderColor: 'blue',
         borderWidth: 1,
-        fontSize: 18
-      }
+        margin:10
+    },
+    listItem: {
+        // color: 'black',
+        flexDirection: 'row',
+        borderColor: 'pink',
+        borderWidth:1,
+    },
+    airportCode: {
+        borderColor: 'red',
+        borderWidth:2,
+        width:50,
+        height:50,
+        //width: '50%',
+        alignSelf: 'center',
+        justifyContent: 'center',
+    },
+    containerText: {
+        flex:1,
+        flexDirection: 'row',
+        //justifyContent: 'center',
+        alignSelf: 'center',
+        //marginLeft: '10%',
+        paddingLeft: '8%',
+        borderColor: 'yellow',
+        borderWidth:2
+    },
+    textAirportCode: {
+        fontSize: 20,
+        textAlign: 'center',
+        color: '#ee7621',
+        fontWeight: 'bold',
+    },
+    cityName: {
+        //margin: 3,
+        borderColor: 'green',
+        borderWidth:2,
+    },
+    textCityName: {
+        justifyContent:'center',
+        fontFamily:'Roboto',
+        fontWeight: 'bold'
+    },
+    airportName: {
+        borderColor: 'red',
+        borderWidth: 1,
+        
+    },
+    textAirportName: {
+        fontSize: 15,
+        textAlign: 'center',
+        color: 'black',
+        justifyContent:'center',
+        fontFamily:'Roboto',
+        fontWeight: 'bold'
+    }
+      
 });
 
 export default AirportsListScreen;
