@@ -16,6 +16,9 @@ import Modal from "react-native-modal";
 
 import instance from "../../api";
 
+
+const green = '#2dc44d';
+
 class SearchScreen2 extends Component {
   constructor(props) {
     super(props);
@@ -229,7 +232,27 @@ class SearchScreen2 extends Component {
                   borderTopLeftRadius: 10,
                   borderTopRightRadius: 10,
                 }}
-              ></View>
+              >
+                <View style={styles.modalHeader}>
+                  <SegmentedControlTab
+                    tabsContainerStyle={styles.segment}
+                    values={["Yolcu Sayısı", "Kabin Sınıfı"]}
+                    selectedIndex={this.state.selectedIndex}
+                    onTabPress={this.handleIndexChange}
+                    // borderRadius={5}
+                    activeTabStyle={{backgroundColor: '#fff'}}
+                    activeTabTextStyle={{color: green, fontSize:16}}
+                    tabTextStyle={styles.tabTextStyle}
+                    tabStyle={styles.tabStyle}
+                  />
+                  <Text>yetişkin</Text>
+                  <Text>yetişkin</Text>
+                  <Text>yetişkin</Text>
+                  <Text>yetişkin</Text>
+                  <Text>yetişkin</Text>
+                  <Button title='Tamam' buttonStyle={styles.buttonModal}/>
+                </View>
+              </View>
             </Modal>
             {/* <View style={styles.line2}></View> */}
             <View style={styles.container_four}>
@@ -317,6 +340,7 @@ const styles = StyleSheet.create({
   tabStyle: {
     borderWidth: 1,
     borderColor: "#3ca0cd",
+    width: 50
   },
   activeTabStyle: {
     //color: '#3ca0cd',
@@ -406,6 +430,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#ee7621",
     height: 35,
   },
+  buttonModal: {
+    backgroundColor: green,
+    height: 35,
+  },
   buttonIcon: {
     margin: 8,
     alignSelf: "center",
@@ -418,6 +446,12 @@ const styles = StyleSheet.create({
   modalView: {
     justifyContent: "flex-end",
     margin: 0,
+  },
+  modalHeader: {
+    justifyContent: "flex-start",
+    height: '15%',
+    borderBottomWidth: 2,
+    borderBottomColor: green
   },
 });
 
