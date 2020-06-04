@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Text, ImageBackground } from "react-native";
+import { StyleSheet, View, Text, ImageBackground, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import SegmentedControlTab from "react-native-segmented-control-tab";
 import TextItem from "../../components/TextItem";
-import { TouchableOpacity } from "react-native-gesture-handler";
+// import { TouchableOpacity } from "react-native-gesture-handler";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Button } from "react-native-elements";
 import { Fontisto } from "@expo/vector-icons";
@@ -16,8 +16,7 @@ import Modal from "react-native-modal";
 
 import instance from "../../api";
 
-
-const green = '#2dc44d';
+const green = "#2dc44d";
 
 class SearchScreen2 extends Component {
   constructor(props) {
@@ -58,6 +57,7 @@ class SearchScreen2 extends Component {
         CountryName: "Türkiye",
         IsCity: false,
       },
+      headerModalTab: 0,
     };
   }
   componentDidMount() {
@@ -228,30 +228,54 @@ class SearchScreen2 extends Component {
                 style={{
                   backgroundColor: "#fff",
                   height: "70%",
-                  width: "100%",
+                  // width: "100%",
                   borderTopLeftRadius: 10,
                   borderTopRightRadius: 10,
                 }}
               >
                 <View style={styles.modalHeader}>
-                  <SegmentedControlTab
-                    tabsContainerStyle={styles.segment}
-                    values={["Yolcu Sayısı", "Kabin Sınıfı"]}
-                    selectedIndex={this.state.selectedIndex}
-                    onTabPress={this.handleIndexChange}
-                    // borderRadius={5}
-                    activeTabStyle={{backgroundColor: '#fff'}}
-                    activeTabTextStyle={{color: green, fontSize:16}}
-                    tabTextStyle={styles.tabTextStyle}
-                    tabStyle={styles.tabStyle}
-                  />
-                  <Text>yetişkin</Text>
-                  <Text>yetişkin</Text>
-                  <Text>yetişkin</Text>
-                  <Text>yetişkin</Text>
-                  <Text>yetişkin</Text>
-                  <Button title='Tamam' buttonStyle={styles.buttonModal}/>
+                  <View
+                    style={[
+                      styles.modalHeaderButton,
+                      this.state.headerModalTab == 0
+                        ? { borderBottomWidth: 2, borderBottomColor: green }
+                        : { borderBottomWidth: 0, borderBottomColor: "white" },
+                    ]}
+                  >
+                    <TouchableOpacity
+                      onPress={() => {
+                        this.setState({ headerModalTab: 0 });
+                      }}
+                    >
+                      <Text>Tolcu Sayısı</Text>
+                    </TouchableOpacity>
+                  </View>
+                  <View
+                    style={[
+                      styles.modalHeaderButton,
+                      this.state.headerModalTab == 1
+                        ? { borderBottomWidth: 2, borderBottomColor: green }
+                        : { borderBottomWidth: 0, borderBottomColor: "white" },
+                    ]}
+                  >
+                    <TouchableOpacity
+                      onPress={() => {
+                        this.setState({ headerModalTab: 1 });
+                        console.log('DENEEM')
+                      }}
+                    >
+                      <Text>Kabin Sınıfı</Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
+                <Text>yetişkin</Text>
+                <Text>yetişkin</Text>
+                <Text>yetişkin</Text>
+                <Text>yetişkin</Text>
+                <Text>yetişkin</Text>
+                <Button title="Tamam" onPress={() => {
+                  console.log(this.state.headerModalTab)
+                }} buttonStyle={styles.buttonModal} />
               </View>
             </Modal>
             {/* <View style={styles.line2}></View> */}
@@ -340,7 +364,7 @@ const styles = StyleSheet.create({
   tabStyle: {
     borderWidth: 1,
     borderColor: "#3ca0cd",
-    width: 50
+    width: 50,
   },
   activeTabStyle: {
     //color: '#3ca0cd',
@@ -446,12 +470,21 @@ const styles = StyleSheet.create({
   modalView: {
     justifyContent: "flex-end",
     margin: 0,
+    // width: '100'
   },
   modalHeader: {
-    justifyContent: "flex-start",
-    height: '15%',
-    borderBottomWidth: 2,
-    borderBottomColor: green
+    // justifyContent: "flex-start",
+    height: "15%",
+    // borderBottomWidth: 2,
+    // borderBottomColor: green,
+    flexDirection: "row",
+    // alignContent:'stretch'
+  },
+  modalHeaderButton: {
+    width: "50%",
+    justifyContent: "center",
+    alignContent: "center",
+    alignItems: "center",
   },
 });
 
