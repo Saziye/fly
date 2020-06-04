@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import SegmentedControlTab from "react-native-segmented-control-tab";
-
+import PassengerTypeRow from "../../components/passengerTypeModal/PassengerTypeRow";
 import { AntDesign } from "@expo/vector-icons";
 
 import TextItem from "../../components/TextItem";
@@ -22,91 +22,10 @@ import DatePicker from "react-native-datepicker";
 import { connect } from "react-redux";
 import { setDepartureDate, setReturnDate } from "../../actions/passengerAction";
 import Modal from "react-native-modal";
-
+import PassengerTypeModal from "../../components/passengerTypeModal/PassengerTypeModal";
 import instance from "../../api";
 
 const green = "#2dc44d";
-
-const UserTypeRow = ({
-  userType,
-  userTypeDescription,
-  userTypeAmount,
-  increase,
-  reduce,
-}) => (
-  <View
-    style={{
-      flexDirection: "row",
-      justifyContent: "space-between",
-      marginHorizontal: 16,
-      height: 60,
-      alignItems: "center",
-    }}
-  >
-    <View
-      style={{
-        flexDirection: "row",
-        justifyContent: "space-between",
-        marginHorizontal: 16,
-        height: 60,
-        alignItems: "center",
-      }}
-    >
-      <Text
-        style={{
-          fontSize: 20,
-          opacity: 0.7,
-        }}
-      >
-        {userType}
-      </Text>
-      <Text
-        style={{
-          fontSize: 16,
-          opacity: 0.3,
-          marginLeft: 10
-        }}
-      >
-        {userTypeDescription}
-      </Text>
-    </View>
-    <View
-      style={{
-        flexDirection: "row",
-        alignItems: "flex-end",
-      }}
-    >
-      <Text
-        style={{
-          fontSize: 20,
-          opacity: 0.3,
-          marginHorizontal: 10,
-          marginTop: 2,
-        }}
-      >
-        <AntDesign name="minuscircle" size={24} color={green} />
-      </Text>
-      <Text
-        style={{
-          fontSize: 20,
-          opacity: 0.7,
-        }}
-      >
-        0
-      </Text>
-      <Text
-        style={{
-          fontSize: 20,
-          opacity: 0.9,
-          marginHorizontal: 10,
-          marginTop: 2,
-        }}
-      >
-        <AntDesign name="pluscircle" size={24} color={green} />
-      </Text>
-    </View>
-  </View>
-);
 
 class SearchScreen2 extends Component {
   constructor(props) {
@@ -309,100 +228,18 @@ class SearchScreen2 extends Component {
             </TouchableOpacity>
             <Modal
               testID={"modal"}
-              isVisible={true}
+              isVisible={false}
               onSwipeComplete={this.close}
-              swipeDirection={["up", "left", "right", "down"]}
+              swipeDirection={["up", "down"]}
               style={styles.modalView}
             >
-              <View
-                style={{
-                  backgroundColor: "#fff",
-                  height: "70%",
-                  // width: "100%",
-                  borderTopLeftRadius: 10,
-                  borderTopRightRadius: 10,
-                }}
-              >
-                <View style={styles.modalHeader}>
-                  <View
-                    style={[
-                      styles.modalHeaderButton,
-                      this.state.headerModalTab == 0
-                        ? { borderBottomWidth: 2, borderBottomColor: green }
-                        : { borderBottomWidth: 0, borderBottomColor: "white" },
-                    ]}
-                  >
-                    <TouchableOpacity
-                      onPress={() => {
-                        this.setState({ headerModalTab: 0 });
-                      }}
-                    >
-                      <Text>Tolcu Sayısı</Text>
-                    </TouchableOpacity>
-                  </View>
-                  <View
-                    style={[
-                      styles.modalHeaderButton,
-                      this.state.headerModalTab == 1
-                        ? { borderBottomWidth: 2, borderBottomColor: green }
-                        : { borderBottomWidth: 0, borderBottomColor: "white" },
-                    ]}
-                  >
-                    <TouchableOpacity
-                      onPress={() => {
-                        this.setState({ headerModalTab: 1 });
-                        console.log("DENEEM");
-                      }}
-                    >
-                      <Text
-                        style={{
-                          fontSize: 16,
-                          fontWeight: "500",
-                          opacity: 0.5,
-                        }}
-                      >
-                        Kabin Sınıfı
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-                <View>
-                  <UserTypeRow userType={"Yetişkin"}></UserTypeRow>
-                  <UserTypeRow
-                    userType={"Çocuk"}
-                    userTypeDescription={"(2 - 12 Yaş Arası)"}
-                  ></UserTypeRow>
-                  <UserTypeRow
-                    userType={"Bebek"}
-                    userTypeDescription={"(0 - 2 Yaş Arası)"}
-                  ></UserTypeRow>
-                  <UserTypeRow userType={"65 yaş üstü"}></UserTypeRow>
-                  <UserTypeRow
-                    userType={"Öğrenci"}
-                    userTypeDescription={"(12 - 24 Yaş Arası)"}
-                  ></UserTypeRow>
-                </View>
-                <View>
-                  <View
-                    style={{
-                      // position: "absolute",
-                      width: "95%",
-                      justifyContent: "center",
-                      alignContent: "center",
-                      alignSelf: "center",
-                    }}
-                  >
-                    <Button
-                      title="Tamam"
-                      onPress={() => {
-                        console.log(this.state.headerModalTab);
-                      }}
-                      buttonStyle={styles.buttonModal}
-                    />
-                  </View>
-                </View>
-              </View>
+              <PassengerTypeModal
+                headerModalTab={this.state.headerModalTab}
+                headerPassengerClick={ () => this.setState({headerModalTab: 0})}
+                headerFlightClick={() =>  this.setState({headerModalTab: 1})}
+              ></PassengerTypeModal>
             </Modal>
+
             {/* <View style={styles.line2}></View> */}
             <View style={styles.container_four}>
               <Button
