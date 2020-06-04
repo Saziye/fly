@@ -9,6 +9,10 @@ import SearchScreen2 from './src/screens/SearchScreen/SearchScreen2';
 import OriginListScreen from './src/screens/OriginListScreen/OriginListScreen';
 import AirportsListScreen from './src/screens/AirportsListScreen/AirportsListScreen';
 import thunkMiddleware from "redux-thunk";
+
+console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
+console.disableYellowBox = true;
+
 import {
   Provider
 } from "react-redux";

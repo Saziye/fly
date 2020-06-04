@@ -12,6 +12,7 @@ import SearchInput, { createFilter } from "react-native-search-filter";
 import { getAirports } from "../../services/airportService";
 import { connect } from "react-redux";
 import { setOriginAirport, setDestinationAirport } from "../../actions/passengerAction";
+import { Fontisto } from "@expo/vector-icons";
 
 const KEYS_TO_FILTERS = [
   "AirportCode",
@@ -71,10 +72,14 @@ class AirportsListScreen extends Component {
   }
 
   static navigationOptions = ({ navigation }) => ({
-    title: `${navigation.state.params.type}` == 1 ? "NEREDEN" : "NEREYE",
-    headerTitleStyle: { textAlign: "center", alignSelf: "center" },
+    title: `${navigation.state.params.type}` == 1 ? "Varış Havalimanı" : "Kalkış Havalimanı",
+    headerTitleStyle: { 
+      fontWeight: 'bold',
+      fontSize: 16, 
+    },
+    headerTintColor: 'white',
     headerStyle: {
-      backgroundColor: "white",
+      backgroundColor: "#3ca0cd",
     },
   });
 
@@ -87,10 +92,12 @@ class AirportsListScreen extends Component {
   airportItem = ({ item }) => (
     <TouchableOpacity onPress={()=> {
       if(this.state.type === 0) {
-        this.props.setOriginAirport(item.AirportName);
+        // this.props.setOriginAirport(item.AirportName);
+        this.props.setOriginAirport(item);
         this.props.navigation.navigate('Search2')
       } else {
-        this.props.setDestinationAirport(item.AirportName);
+        // this.props.setDestinationAirport(item.AirportName);
+        this.props.setDestinationAirport(item);
         this.props.navigation.navigate('Search2');
       }
       
@@ -131,14 +138,25 @@ class AirportsListScreen extends Component {
 
     return (
       <View style={styles.container}>
-        <SearchInput
+        <View style={styles.searchContainer}>
+          <Fontisto
+            name="search"
+            size={22}
+            color="#3ca0cd"
+            style={styles.buttonIcon}
+          />
+          <SearchInput
           onChangeText={(term) => {
             this.searchUpdated(term);
           }}
           style={styles.searchInput}
           placeholder="Şehir, havalimanı adı veya kodu"
-          clearIcon
-        />
+          // clearIcon
+          // sortResults= {true}
+          />
+        </View>
+        
+        
         <ScrollView>
           <FlatList
             // showsHorizontalScrollIndicator={false}
@@ -158,24 +176,39 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     justifyContent: "flex-start",
-    borderColor: "red",
-    borderWidth: 1,
+    // borderColor: "red",
+    // borderWidth: 1,
+    // marginHorizontal:8
+  },
+  searchContainer: {
+    flexDirection: 'row',
+    //alignSelf:'stretch',
+    // borderColor: "red",
+    // borderWidth: 1,
+  },
+  buttonIcon: {
+    margin: 8,
+    alignSelf: "center",
   },
   searchInput: {
     padding: 10,
-    borderColor: "blue",
+    borderColor: "rgba(114, 122, 113, 0.99)",
     borderWidth: 1,
     margin: 10,
+    width: '150%'
+    // alignSelf: 'stretch',
+
   },
   listItem: {
     // color: 'black',
     flexDirection: "row",
-    borderColor: "pink",
-    borderWidth: 1,
+    // borderColor: "pink",
+    // borderWidth: 1,
+    backgroundColor:'rgba(202, 206, 202, 0.59)',
   },
   airportCode: {
-    borderColor: "red",
-    borderWidth: 2,
+    // borderColor: "red",
+    // borderWidth: 2,
     width: 50,
     height: 50,
     //width: '50%',
@@ -187,10 +220,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     //justifyContent: 'center',
     alignSelf: "center",
-    //marginLeft: '10%',
+    marginLeft: '8%',
     paddingLeft: "8%",
-    borderColor: "yellow",
-    borderWidth: 2,
+    paddingVertical: "4%",
+    borderColor: "rgba(114, 122, 113, 0.99)",
+    //borderWidth: 2,
+    borderTopWidth: 1,
+    //borderBottomWidth: 2
   },
   textAirportCode: {
     fontSize: 20,
@@ -200,21 +236,23 @@ const styles = StyleSheet.create({
   },
   cityName: {
     //margin: 3,
-    borderColor: "green",
-    borderWidth: 2,
+    // borderColor: "green",
+    // borderWidth: 2,
   },
   textCityName: {
     justifyContent: "center",
     fontFamily: "Roboto",
     fontWeight: "bold",
+    fontSize: 16,
   },
   airportName: {
-    borderColor: "red",
-    borderWidth: 1,
+    // borderColor: "red",
+    // borderWidth: 1,
   },
   textAirportName: {
-    fontSize: 15,
+    fontSize: 14,
     textAlign: "center",
+    //color: "#3ca0cd",
     color: "black",
     justifyContent: "center",
     fontFamily: "Roboto",

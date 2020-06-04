@@ -12,6 +12,7 @@ import DatePicker from "react-native-datepicker";
 //for redux
 import { connect } from "react-redux";
 import { setDepartureDate, setReturnDate } from "../../actions/passengerAction";
+import Modal from "react-native-modal";
 
 import instance from "../../api";
 
@@ -38,18 +39,38 @@ class SearchScreen2 extends Component {
         "Kasım",
         "Aralık",
       ],
-      today: '',
-      minReturnDate: ''
+      today: "",
+      minReturnDate: "",
+      defaultOrigin: {
+        AirportCode: "IST",
+        AirportName: "İstanbul Havalimanı",
+        CityName: "Istanbul",
+        CountryName: "Türkiye",
+        IsCity: false,
+      },
+      defaultDestination: {
+        AirportCode: "ESB",
+        AirportName: "Esenboga",
+        CityName: "Ankara",
+        CountryName: "Türkiye",
+        IsCity: false,
+      },
     };
   }
   componentDidMount() {
-        const date = new Date();
-        const today = ( ((date.getDate() > 9) ? date.getDate() : ('0' + date.getDate()))+ '/' +((date.getMonth() > 8) ? (date.getMonth() + 1) : ('0' + (date.getMonth() + 1))) + '/' + date.getFullYear());
-        this.setState({today: today});
-        this.setState({minReturnDate: today});
-        this.props.setDepartureDate(today);
-        //this.props.setReturnDate(today);
-        
+    const date = new Date();
+    const today =
+      (date.getDate() > 9 ? date.getDate() : "0" + date.getDate()) +
+      "/" +
+      (date.getMonth() > 8
+        ? date.getMonth() + 1
+        : "0" + (date.getMonth() + 1)) +
+      "/" +
+      date.getFullYear();
+    this.setState({ today: today });
+    this.setState({ minReturnDate: today });
+    this.props.setDepartureDate(today);
+    //this.props.setReturnDate(today);
   }
 
   handleIndexChange = (index) => {
@@ -59,9 +80,9 @@ class SearchScreen2 extends Component {
     });
   };
 
-  navigateFunction = (screen,type) => {
+  navigateFunction = (screen, type) => {
     const { navigation } = this.props;
-    navigation.navigate(screen,{type: type});
+    navigation.navigate(screen, { type: type });
     console.log("navigate");
   };
 
@@ -69,31 +90,23 @@ class SearchScreen2 extends Component {
     const { dateType } = this.state;
     if (dateType === 1) {
       this.props.setDepartureDate(date);
-      this.setState({minReturnDate: date})
+      this.setState({ minReturnDate: date });
     } else {
       this.props.setReturnDate(date);
-        this.setState({selectedIndex: 1})
+      this.setState({ selectedIndex: 1 });
     }
   };
-
-//   onDatePressFunction2 = (date) => {
-//     console.log("DÖNÜŞ");
-//     this.setState({ selectedIndex: 1 });
-//     this.props.setReturnDate(date);
-//     console.log(this.props.returnDate);
-//   };
 
   chooseDate(type) {
     this.setState({ dateType: type });
     setTimeout(() => {
-        this._date.onPressDate();
+      this._date.onPressDate();
     }, 100);
-    
   }
 
   render() {
-    const { selectedIndex } = this.state;
-    //console.log(this.state.departureDate);
+    const { selectedIndex, defaultOrigin, defaultDestination } = this.state;
+    //console.log(this.props.origin);
     return (
       <SafeAreaView forceInset={{ top: "always" }}>
         <ImageBackground
@@ -117,8 +130,16 @@ class SearchScreen2 extends Component {
             <View style={styles.container_one}>
               <TextItem
                 title={"Kalkış"}
-                text={"IST"}
-                subtext={this.props.origin}
+                text={
+                  this.props.origin.AirportCode == null
+                    ? defaultOrigin.AirportCode
+                    : this.props.origin.AirportCode
+                }
+                subtext={
+                  this.props.origin.AirportName == null
+                    ? defaultOrigin.AirportName
+                    : this.props.origin.AirportName
+                }
                 click={() => this.navigateFunction("AirportsList", 0)}
               />
               <TouchableOpacity style={styles.iconContainer}>
@@ -126,10 +147,17 @@ class SearchScreen2 extends Component {
               </TouchableOpacity>
               <TextItem
                 title={"Varış"}
-                text={"IST"}
-                subtext={this.props.destination}
+                text={
+                  this.props.destination.AirportCode == null
+                    ? defaultDestination.AirportCode
+                    : this.props.destination.AirportCode
+                }
+                subtext={
+                  this.props.destination.AirportName == null
+                    ? defaultDestination.AirportName
+                    : this.props.destination.AirportName
+                }
                 click={() => this.navigateFunction("AirportsList", 1)}
-
               />
             </View>
             <View
@@ -186,6 +214,23 @@ class SearchScreen2 extends Component {
                 <Text style={styles.textYolcu}>1 yolcu- En uygun</Text>
               </View>
             </TouchableOpacity>
+            <Modal
+              testID={"modal"}
+              isVisible={true}
+              onSwipeComplete={this.close}
+              swipeDirection={["up", "left", "right", "down"]}
+              style={styles.modalView}
+            >
+              <View
+                style={{
+                  backgroundColor: "#fff",
+                  height: "70%",
+                  width: "100%",
+                  borderTopLeftRadius: 10,
+                  borderTopRightRadius: 10,
+                }}
+              ></View>
+            </Modal>
             {/* <View style={styles.line2}></View> */}
             <View style={styles.container_four}>
               <Button
@@ -211,10 +256,17 @@ class SearchScreen2 extends Component {
             </View>
 
             <DatePicker
-              date={ this.state.dateType === 1 ? this.props.departureDate: this.props.returnDate }
+              date={
+                this.state.dateType === 1
+                  ? this.props.departureDate
+                  : this.props.returnDate
+              }
               mode="date"
-              
-              minDate={ this.state.dateType === 1 ? this.state.today :  this.state.minReturnDate }
+              minDate={
+                this.state.dateType === 1
+                  ? this.state.today
+                  : this.state.minReturnDate
+              }
               //format= {moment().format('D')}
               format="DD/MM/YYYY"
               showIcon={false}
@@ -363,6 +415,10 @@ const styles = StyleSheet.create({
     fontFamily: "sans-serif-medium",
     fontSize: 17,
   },
+  modalView: {
+    justifyContent: "flex-end",
+    margin: 0,
+  },
 });
 
 const mapStateToProps = (state) => {
@@ -370,7 +426,7 @@ const mapStateToProps = (state) => {
     departureDate: state.passenger.departureDate,
     returnDate: state.passenger.returnDate,
     origin: state.passenger.originAirport,
-    destination: state.passenger.destinationAirport
+    destination: state.passenger.destinationAirport,
   };
 };
 

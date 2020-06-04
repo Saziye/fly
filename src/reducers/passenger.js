@@ -1,6 +1,6 @@
 const initialState = {
-    originAirport: '',
-    destinationAirport: '',
+    originAirport: {},
+    destinationAirport: {},
     departureDate: '',
     returnDate: '',
     numberOfPassenger: '',
