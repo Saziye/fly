@@ -29,11 +29,12 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   passengerType: {
-    fontSize: 20,
+    fontSize: 18,
+    // fontSize: 20,
     opacity: 0.6,
   },
   description: {
-    fontSize: 16,
+    fontSize: 14,
     opacity: 0.3,
     marginLeft: 10,
   },

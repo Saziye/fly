@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
   buttonModal: {
     backgroundColor: green,
     height: 50,
+    borderRadius:7
   },
   headerTitle: {
     fontSize: 16,

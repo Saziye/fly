@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   passengerType: {
-    fontSize: 20,
+    fontSize: 18,
     opacity: 0.6,
   },
   description: {
