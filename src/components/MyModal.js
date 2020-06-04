@@ -5,7 +5,13 @@ import SegmentedControlTab from "react-native-segmented-control-tab";
 import { Button } from "react-native-elements";
 import { PassengerRow } from "../screens/SearchScreen/components/PassengerRow";
 import { FontAwesome5 } from "@expo/vector-icons";
-import RadioButton from "../screens/SearchScreen/components/RadioButton";
+// import RadioButton from "../screens/SearchScreen/components/RadioButton";
+
+import RadioForm, {
+  RadioButton,
+  RadioButtonInput,
+  RadioButtonLabel,
+} from "react-native-simple-radio-button";
 
 const orange = "#ee7621";
 
@@ -17,6 +23,11 @@ const passengerMap = [
   { type: "student", label: "Öğrenci", sub: "(12-24 Yaş)" },
 ];
 
+var radio_props = [
+  { label: "param1", value: 0 },
+  { label: "param2", value: 1 },
+];
+
 class MyModal extends Component {
   constructor(props) {
     super(props);
@@ -24,9 +35,10 @@ class MyModal extends Component {
       modalVisible: props.modalVisible,
       selectedIndex: 0,
       cabinMap: [
-        { type: "economy", label: "Ekonomi", selected: true },
-        { type: "bussiness", label: "Bussiness", selected: false },
+        { type: "economy", label: "Ekonomi", selected: true, value: 0 },
+        { type: "bussiness", label: "Bussiness", selected: false, value: 1 },
       ],
+      flightType: 0,
     };
   }
   setModalVisible = (visible) => {
@@ -43,8 +55,8 @@ class MyModal extends Component {
   };
 
   setCabinRadio(index) {
-      console.log('===========set cabin radio');
-      console.log(index);
+    console.log("===========set cabin radio");
+    console.log(index);
     if (index === 0) {
       this.setState({
         cabinMap: [
@@ -60,6 +72,7 @@ class MyModal extends Component {
         ],
       });
     }
+    // this.props.setPassengerType()
   }
 
   render() {
@@ -103,18 +116,64 @@ class MyModal extends Component {
             </View>
           ) : (
             <View style={styles.containerClass}>
-              {cabinMap.map((cabin, i) => (
-                //   <Text>{cabin.label}</Text>
-                <RadioButton
-                  key={i}
-                  label={cabin.label}
-                  type={cabin.type}
-                  selected={cabin.selected}
-                  onSelect={() => this.setCabinRadio(i)}
-                />
-              ))}
+              {/* <RadioForm
+                radio_props={cabinMap}
+                initial={0}
+                onPress={(value) => {
+                    console.log(value);
+                  this.setState({ flightType: value });
+                }}
+                
+              /> */}
+              <View style={styles.radioFrmStyle}>
+                <RadioForm formHorizontal={false} animation={true}>
+                  {cabinMap.map((cabin, i) => (
+                    <RadioButton labelHorizontal={true} key={i}>
+                      <View style={styles.radioBtnStyle}>
+                        <RadioButtonLabel
+                          obj={cabin}
+                          index={i}
+                          labelHorizontal={true}
+                          onPress={(value) =>
+                            this.setState({ flightType: value })
+                          }
+                          labelStyle={{
+                            fontSize: 16,
+                            color: "#9b9e9f",
+                            //marginLeft: 10,
+                            fontWeight: 'bold',
+
+                          }}
+                          labelWrapStyle={{}}
+                        />
+                      </View>
+                      <View style={styles.radioInptStyle}>
+                        <RadioButtonInput
+                          obj={cabin}
+                          index={i}
+                          isSelected={this.state.flightType === i}
+                          onPress={(value) =>
+                            this.setState({ flightType: value })
+                          }
+                          borderWidth={2}
+                          buttonInnerColor={orange}
+                          buttonOuterColor={
+                            this.state.flightType === i ? orange : "#9b9e9f"
+                          }
+                          buttonSize={12}
+                          buttonOuterSize={20}
+                          buttonStyle={{}}
+                          buttonWrapStyle={{ marginLeft: 10 }}
+                        />
+                      </View>
+                    </RadioButton>
+                  ))}
+                </RadioForm>
+              </View>
             </View>
           )}
+          {/* <Button onPress={() => console.log(this.state.flightType)} />
+          <Button></Button> */}
 
           <View style={styles.containerButton}>
             <Button
@@ -210,6 +269,30 @@ const styles = StyleSheet.create({
   containerClass: {
     borderColor: "green",
     borderWidth: 2,
+    height: '65%',
+  },
+  radioBtnStyle: {
+    borderColor: "red",
+    borderWidth: 1,
+    padding: 10,
+    marginTop: 10,
+    width: '80%',
+    alignItems:'flex-start',
+    flexDirection: 'row'
+  },
+  radioInptStyle: {
+    borderColor: "pink",
+    borderWidth: 1,
+    width: '20%',
+    alignSelf: 'center'
+   
+  },
+  radioFrmStyle: {
+    borderColor: "blue",
+    borderWidth: 1,
+    marginTop: 20,
+    //alignItems:'flex-start'
+   
   },
 });
 
