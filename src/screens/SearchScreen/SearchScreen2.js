@@ -12,12 +12,8 @@ import DatePicker from "react-native-datepicker";
 //for redux
 import { connect } from "react-redux";
 import { setDepartureDate, setReturnDate } from "../../actions/passengerAction";
-import Modal from "react-native-modal";
+import MyModal from '../../components/MyModal';
 
-import instance from "../../api";
-
-
-const green = '#2dc44d';
 
 class SearchScreen2 extends Component {
   constructor(props) {
@@ -58,6 +54,7 @@ class SearchScreen2 extends Component {
         CountryName: "Türkiye",
         IsCity: false,
       },
+      modalVisible: false,
     };
   }
   componentDidMount() {
@@ -107,8 +104,12 @@ class SearchScreen2 extends Component {
     }, 100);
   }
 
+  setModalVisible = (visible) => {
+    this.setState({ modalVisible: visible });
+  }
+
   render() {
-    const { selectedIndex, defaultOrigin, defaultDestination } = this.state;
+    const { selectedIndex, defaultOrigin, defaultDestination, modalVisible } = this.state;
     //console.log(this.props.origin);
     return (
       <SafeAreaView forceInset={{ top: "always" }}>
@@ -206,7 +207,7 @@ class SearchScreen2 extends Component {
               {/* <TextItem title= {"Kalkış"} text = {"IST"} subtext={"Sabiha Gökçen"}/> */}
             </View>
             {/* <View style={styles.line2}></View> */}
-            <TouchableOpacity>
+            <TouchableOpacity onPress = {()=> {this.setModalVisible(true)}}>
               <View style={styles.container_three}>
                 <FontAwesome5
                   name="user-plus"
@@ -217,43 +218,7 @@ class SearchScreen2 extends Component {
                 <Text style={styles.textYolcu}>1 yolcu- En uygun</Text>
               </View>
             </TouchableOpacity>
-            <Modal
-              testID={"modal"}
-              isVisible={true}
-              onSwipeComplete={this.close}
-              swipeDirection={["up", "left", "right", "down"]}
-              style={styles.modalView}
-            >
-              <View
-                style={{
-                  backgroundColor: "#fff",
-                  height: "70%",
-                  width: "100%",
-                  borderTopLeftRadius: 10,
-                  borderTopRightRadius: 10,
-                }}
-              >
-                <View style={styles.modalHeader}>
-                  <SegmentedControlTab
-                    tabsContainerStyle={styles.segment}
-                    values={["Yolcu Sayısı", "Kabin Sınıfı"]}
-                    selectedIndex={this.state.selectedIndex}
-                    onTabPress={this.handleIndexChange}
-                    // borderRadius={5}
-                    activeTabStyle={{backgroundColor: '#fff'}}
-                    activeTabTextStyle={{color: green, fontSize:16}}
-                    tabTextStyle={styles.tabTextStyle}
-                    tabStyle={styles.tabStyle}
-                  />
-                  <Text>yetişkin</Text>
-                  <Text>yetişkin</Text>
-                  <Text>yetişkin</Text>
-                  <Text>yetişkin</Text>
-                  <Text>yetişkin</Text>
-                  <Button title='Tamam' buttonStyle={styles.buttonModal}/>
-                </View>
-              </View>
-            </Modal>
+            {modalVisible === true ? <MyModal modalVisible= {modalVisible}/> : null}
             {/* <View style={styles.line2}></View> */}
             <View style={styles.container_four}>
               <Button
@@ -270,7 +235,6 @@ class SearchScreen2 extends Component {
                 title="UÇUŞ ARA"
                 titleStyle={styles.btnTitleStyle}
                 onPress={() => {
-                  //    this.setModalVisible(true);
                   console.log("========>");
                   console.log(this.props.departureDate);
                   console.log(this.props.returnDate);
@@ -430,10 +394,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#ee7621",
     height: 35,
   },
-  buttonModal: {
-    backgroundColor: green,
-    height: 35,
-  },
   buttonIcon: {
     margin: 8,
     alignSelf: "center",
@@ -443,16 +403,7 @@ const styles = StyleSheet.create({
     fontFamily: "sans-serif-medium",
     fontSize: 17,
   },
-  modalView: {
-    justifyContent: "flex-end",
-    margin: 0,
-  },
-  modalHeader: {
-    justifyContent: "flex-start",
-    height: '15%',
-    borderBottomWidth: 2,
-    borderBottomColor: green
-  },
+  
 });
 
 const mapStateToProps = (state) => {

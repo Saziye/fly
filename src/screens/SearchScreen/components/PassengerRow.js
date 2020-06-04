@@ -21,7 +21,8 @@ export const PassengerRow = ({ type, label, sub, count, onDecrement, onIncrement
                 onPress={ () => onDecrement(type) }>
                 <Text style={ styles.textStyle }>-</Text>
             </TouchableHighlight>
-            <Text style={ { margin: 10 } }>{ count }</Text>
+            {/* <Text style={ { margin: 10 } }>{ count }</Text> */}
+            <Text style={ { margin: 10 } }>0</Text>
             <TouchableHighlight
                 underlayColor={ 'transparent' }
                 onPress={ () => onIncrement(type) }>
@@ -40,23 +41,24 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     textStyle: {
-        fontSize: 18,
-        borderWidth: 2,
-        borderRadius: 5,
-        borderColor: '#FEDBA6',
-        padding: 10,
-        paddingTop: 7.5,
-        paddingBottom: 7.5,
-        marginHorizontal: 5,
-        width:35,
+        fontSize: 20,
+        color: 'white',
+        borderRadius: 30,
+        borderColor: '#ee7621',
+        backgroundColor: '#ee7621',
+        padding: 5,
+        marginHorizontal: 8,
+        width:37,
+        height:37,
+        alignItems:'center',
         alignSelf: 'center',
         textAlign: 'center',
-        flex: 1,
         fontWeight: 'bold',
     },
     labelStyle: {
-        color: '#908f8f',
-        fontSize: 18,
-        fontWeight: 'bold',
+        color: '#53605e',
+        fontSize: 16,
+        fontWeight: '400',
+        marginLeft: 8,
     }
 });
