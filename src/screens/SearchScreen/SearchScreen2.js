@@ -1,7 +1,16 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Text, ImageBackground, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  ImageBackground,
+  TouchableOpacity,
+} from "react-native";
 import { SafeAreaView } from "react-navigation";
 import SegmentedControlTab from "react-native-segmented-control-tab";
+
+import { AntDesign } from "@expo/vector-icons";
+
 import TextItem from "../../components/TextItem";
 // import { TouchableOpacity } from "react-native-gesture-handler";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -17,6 +26,59 @@ import Modal from "react-native-modal";
 import instance from "../../api";
 
 const green = "#2dc44d";
+
+const OneRow = () => (
+  <View
+    style={{
+      flexDirection: "row",
+      justifyContent: "space-between",
+      marginHorizontal: 16,
+      height: 60,
+      alignItems: "center",
+    }}
+  >
+    <Text
+      style={{
+        fontSize: 20,
+        opacity: 0.7,
+      }}
+    >
+      yetişkin
+    </Text>
+    <View
+      style={{
+        flexDirection: "row",
+      }}
+    >
+      <Text
+        style={{
+          fontSize: 20,
+          opacity: 0.3,
+          marginHorizontal: 10,
+        }}
+      >
+        <AntDesign name="minuscircle" size={24} color={green} />
+      </Text>
+      <Text
+        style={{
+          fontSize: 20,
+          opacity: 0.7,
+        }}
+      >
+        0
+      </Text>
+      <Text
+        style={{
+          fontSize: 20,
+          opacity: 0.9,
+          marginHorizontal: 10,
+        }}
+      >
+        <AntDesign name="pluscircle" size={24} color={green} />
+      </Text>
+    </View>
+  </View>
+);
 
 class SearchScreen2 extends Component {
   constructor(props) {
@@ -261,21 +323,47 @@ class SearchScreen2 extends Component {
                     <TouchableOpacity
                       onPress={() => {
                         this.setState({ headerModalTab: 1 });
-                        console.log('DENEEM')
+                        console.log("DENEEM");
                       }}
                     >
-                      <Text>Kabin Sınıfı</Text>
+                      <Text
+                        style={{
+                          fontSize: 16,
+                          fontWeight: "500",
+                          opacity: 0.5,
+                        }}
+                      >
+                        Kabin Sınıfı
+                      </Text>
                     </TouchableOpacity>
                   </View>
                 </View>
-                <Text>yetişkin</Text>
-                <Text>yetişkin</Text>
-                <Text>yetişkin</Text>
-                <Text>yetişkin</Text>
-                <Text>yetişkin</Text>
-                <Button title="Tamam" onPress={() => {
-                  console.log(this.state.headerModalTab)
-                }} buttonStyle={styles.buttonModal} />
+                <View>
+                  <OneRow></OneRow>
+                  <OneRow></OneRow>
+                  <OneRow></OneRow>
+                  <OneRow></OneRow>
+                  <OneRow></OneRow>
+                </View>
+                <View>
+                  <View
+                    style={{
+                      // position: "absolute",
+                      width: "95%",
+                      justifyContent: "center",
+                      alignContent: "center",
+                      alignSelf: "center",
+                    }}
+                  >
+                    <Button
+                      title="Tamam"
+                      onPress={() => {
+                        console.log(this.state.headerModalTab);
+                      }}
+                      buttonStyle={styles.buttonModal}
+                    />
+                  </View>
+                </View>
               </View>
             </Modal>
             {/* <View style={styles.line2}></View> */}
@@ -456,7 +544,7 @@ const styles = StyleSheet.create({
   },
   buttonModal: {
     backgroundColor: green,
-    height: 35,
+    height: 50,
   },
   buttonIcon: {
     margin: 8,
