@@ -54,6 +54,7 @@ const PassengerTypeModal = ({
   headerModalTab,
   headerPassengerClick,
   headerFlightClick,
+  flightOptions
 }) => {
   return (
     <View
@@ -111,9 +112,12 @@ const PassengerTypeModal = ({
         </View>
       ) : (
         <View >
-          <FlightTypeRow></FlightTypeRow>
+          <FlightTypeRow 
+            flightOptions={flightOptions}
+          ></FlightTypeRow>
         </View>
       )}
+      {/* <Text>{flightOptions}</Text> */}
 
       <View
         style={{

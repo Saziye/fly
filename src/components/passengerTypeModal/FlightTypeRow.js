@@ -69,10 +69,10 @@ var radio_props = [
   { label: "param2", value: 1 },
 ];
 
-const FlightTypeRow = ({}) => (
+const FlightTypeRow = ({flightOptions}) => (
   <RadioForm formHorizontal={false} animation={true}>
     {/* To create radio buttons, loop through your array of options */}
-    {radio_props.map((obj, i) => (
+    {flightOptions.map((obj, i) => (
       <RadioButton labelHorizontal={true} key={i}>
         <View style={styles.row}>
           {/*  You can set RadioButtonLabel before RadioButtonInput */}

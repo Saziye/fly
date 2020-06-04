@@ -67,6 +67,10 @@ class SearchScreen2 extends Component {
         IsCity: false,
       },
       headerModalTab: 0,
+      flightOptions: [
+        { label: "Ekonomi", value: 0 },
+        { label: "Business", value: 1 },
+      ]
     };
   }
   componentDidMount() {
@@ -228,15 +232,17 @@ class SearchScreen2 extends Component {
             </TouchableOpacity>
             <Modal
               testID={"modal"}
-              isVisible={false}
+              isVisible={true}
               onSwipeComplete={this.close}
               swipeDirection={["up", "down"]}
               style={styles.modalView}
+              flightOptions={this.state.flightOptions}
             >
               <PassengerTypeModal
                 headerModalTab={this.state.headerModalTab}
                 headerPassengerClick={ () => this.setState({headerModalTab: 0})}
                 headerFlightClick={() =>  this.setState({headerModalTab: 1})}
+                flightOptions={this.state.flightOptions}
               ></PassengerTypeModal>
             </Modal>
 
