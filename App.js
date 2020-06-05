@@ -8,6 +8,7 @@ import SearchScreen from './src/screens/SearchScreen/SearchScreen';
 import SearchScreen2 from './src/screens/SearchScreen/SearchScreen2';
 import OriginListScreen from './src/screens/OriginListScreen/OriginListScreen';
 import AirportsListScreen from './src/screens/AirportsListScreen/AirportsListScreen';
+import SearchFlyScreen from './src/screens/SearchFlyScreen/SearchFlyScreen';
 import thunkMiddleware from "redux-thunk";
 
 console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
@@ -37,10 +38,11 @@ const switchNavigator = createStackNavigator({
     Search: SearchScreen,
     Search2: SearchScreen2,
     OriginList: OriginListScreen, 
-    AirportsList: AirportsListScreen 
+    AirportsList: AirportsListScreen, 
+    SearchFly: SearchFlyScreen
 },
 {
-  initialRouteName: 'Search2',
+  initialRouteName: 'SearchFly',
 }
 );
 

@@ -37,11 +37,18 @@ function setCabinClass (cabinName) {
         payload: cabinName
     }
 }
+function setSelectedWay(index) {
+    return {
+        type: 'SELECTED_WAY',
+        payload: index
+    }
+}
 export {
     setDepartureDate,
     setReturnDate,
     setOriginAirport,
     setDestinationAirport,
     setCabinClass,
-    setPassengers
+    setPassengers,
+    setSelectedWay
 }

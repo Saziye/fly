@@ -160,8 +160,10 @@ class MyModal extends Component {
                           obj={cabin}
                           index={i}
                           labelHorizontal={true}
-                          onPress={(value) =>
+                          onPress={(value) =>{
                             this.setState({ flightType: value })
+                            this.props.setCabinClass(this.state.cabinMap[index].type);}
+
                           }
                           labelStyle={{
                             fontSize: 16,
@@ -212,10 +214,10 @@ class MyModal extends Component {
               titleStyle={styles.buttonText}
             />
           </View>
-          <Button onPress={()=> {
+          {/* <Button onPress={()=> {
             console.log(this.props.passengers);
             console.log(this.props.cabinClass);
-          }}/>
+          }}/> */}
         </View>
       </Modal>
     );
@@ -234,14 +236,14 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
     flexDirection: "column",
-    borderColor: "red",
-    borderWidth: 1,
+    // borderColor: "red",
+    // borderWidth: 1,
   },
   modalHeader: {
     justifyContent: "flex-start",
     height: "15%",
-    borderWidth: 3,
-    borderColor: "blue",
+    // borderWidth: 3,
+    // borderColor: "blue",
   },
   buttonModal: {
     backgroundColor: orange,
@@ -279,12 +281,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   containerPassenger: {
-    borderColor: "green",
-    borderWidth: 2,
+    // borderColor: "green",
+    // borderWidth: 2,
   },
   containerButton: {
-    borderColor: "black",
-    borderWidth: 2,
+    // borderColor: "black",
+    // borderWidth: 2,
     margin: 10,
     //alignItems: 'center'
   },
@@ -293,13 +295,13 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   containerClass: {
-    borderColor: "green",
-    borderWidth: 2,
+    // borderColor: "green",
+    // borderWidth: 2,
     height: "65%",
   },
   radioBtnStyle: {
-    borderColor: "red",
-    borderWidth: 1,
+    // borderColor: "red",
+    // borderWidth: 1,
     padding: 10,
     marginTop: 10,
     width: "80%",
@@ -307,14 +309,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   radioInptStyle: {
-    borderColor: "pink",
-    borderWidth: 1,
+    // borderColor: "pink",
+    // borderWidth: 1,
     width: "20%",
     alignSelf: "center",
   },
   radioFrmStyle: {
-    borderColor: "blue",
-    borderWidth: 1,
+    // borderColor: "blue",
+    // borderWidth: 1,
     marginTop: 20,
     //alignItems:'flex-start'
   },

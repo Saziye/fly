@@ -271,6 +271,7 @@ class SearchScreen2 extends Component {
           </View>
         </ImageBackground>
       </SafeAreaView>
+    
     );
   }
 }
