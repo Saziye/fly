@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, ImageBackground } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import AirportRow from "./components/AirportRow";
 import DateRow from "./components/DateRow";
+import CabinRow from "./components/CabinRow";
 import SegmentedControlTab from "react-native-segmented-control-tab";
 //for redux
 import { connect } from "react-redux";
@@ -58,6 +59,7 @@ class SearchFlyScreen extends Component {
           <View>
             <AirportRow />
             <DateRow />
+            <CabinRow/>
           </View>
         </View>
         {/* </ImageBackground> */}
