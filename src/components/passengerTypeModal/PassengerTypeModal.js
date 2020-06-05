@@ -176,7 +176,7 @@ const PassengerTypeModal = ({
           ></PassengerTypeRow>
         </View>
       ) : (
-        <View>
+        <View style={{marginTop: 15}}>
           <FlightTypeRow flightOptions={flightOptions}></FlightTypeRow>
         </View>
       )}
