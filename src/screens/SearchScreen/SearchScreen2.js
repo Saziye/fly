@@ -9,6 +9,7 @@ import {
 import { SafeAreaView } from "react-navigation";
 import SegmentedControlTab from "react-native-segmented-control-tab";
 import PassengerTypeRow from "../../components/passengerTypeModal/PassengerTypeRow";
+import FlightType from '../../components/FlightType'
 import { AntDesign } from "@expo/vector-icons";
 
 import TextItem from "../../components/TextItem";
@@ -130,8 +131,8 @@ class SearchScreen2 extends Component {
           source={require("../../../assets/images/k.jpg")}
         >
           <View style={styles.overlay}>
-            <View style={{ marginTop: 40 }}>
-              <SegmentedControlTab
+            <View style={styles.flightTypeContainer}>
+              {/* <SegmentedControlTab
                 tabsContainerStyle={styles.segment}
                 values={["TEK GİDİŞ", "GİDİŞ DÖNÜŞ"]}
                 selectedIndex={this.state.selectedIndex}
@@ -141,7 +142,11 @@ class SearchScreen2 extends Component {
                 activeTabTextStyle={styles.activeTabTextStyle}
                 tabTextStyle={styles.tabTextStyle}
                 tabStyle={styles.tabStyle}
-              />
+              /> */}
+              <FlightType 
+                flightOptionSelected={selectedIndex}
+                onPress={(index) => this.handleIndexChange(index)}
+              ></FlightType>
             </View>
             <View style={styles.container_one}>
               <TextItem
@@ -232,7 +237,7 @@ class SearchScreen2 extends Component {
             </TouchableOpacity>
             <Modal
               testID={"modal"}
-              isVisible={true}
+              isVisible={false}
               onSwipeComplete={this.close}
               swipeDirection={["up", "down"]}
               style={styles.modalView}
@@ -313,6 +318,14 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
   },
+
+  flightTypeContainer: {
+    marginTop: 40,
+    marginHorizontal: 16,
+    height: 36
+  },  
+
+
   overlay: {
     // backgroundColor:'rgba(47,163,218, .4)',
     // backgroundColor: 'rgba(0,0,0,.6)',
