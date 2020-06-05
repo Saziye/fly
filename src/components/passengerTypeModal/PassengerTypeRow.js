@@ -31,16 +31,22 @@ const styles = StyleSheet.create({
   passengerType: {
     fontSize: 18,
     // fontSize: 20,
-    opacity: 0.6,
+    opacity: 0.7,
   },
   description: {
     fontSize: 14,
-    opacity: 0.3,
+    opacity: 0.4,
     marginLeft: 10,
   },
   minus: {
     fontSize: 20,
-    opacity: 0.3,
+    opacity: 0.2,
+    marginHorizontal: 10,
+    marginTop: 2,
+  },
+  minusStrong: {
+    fontSize: 20,
+    opacity: 0.9,
     marginHorizontal: 10,
     marginTop: 2,
   },
@@ -73,11 +79,11 @@ const PassengerTypeRow = ({
 
     <View style={styles.amountContainer}>
       <TouchableOpacity onPress={decrease}>
-        <Text style={styles.minus}>
+        <Text style={[userTypeAmount === 0 ?  styles.minus: styles.minusStrong]}>
           <AntDesign name="minuscircle" size={24} color={GREEN} />
         </Text>
       </TouchableOpacity>
-      <Text style={styles.number}>0</Text>
+      <Text style={styles.number}>{userTypeAmount}</Text>
       <TouchableOpacity onPress={increase}>
         <Text style={styles.plus}>
           <AntDesign name="pluscircle" size={24} color={GREEN} />

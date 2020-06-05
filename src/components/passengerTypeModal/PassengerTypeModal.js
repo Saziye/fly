@@ -34,12 +34,29 @@ const styles = StyleSheet.create({
   buttonModal: {
     backgroundColor: green,
     height: 50,
-    borderRadius:7
+    borderRadius: 7,
   },
   headerTitle: {
     fontSize: 16,
     fontWeight: "500",
     opacity: 0.5,
+  },
+  choosenHeaderTitle: {
+    fontSize: 16,
+    fontWeight: "500",
+    opacity: 0.8,
+    color: green,
+  },
+  headerSubtitle: {
+    fontSize: 14,
+    fontWeight: "500",
+    opacity: 0.5,
+  },
+  choosenHeaderSubtitle: {
+    fontSize: 14,
+    fontWeight: "500",
+    opacity: 0.8,
+    color: green,
   },
   okButtonContainer: {
     flex: 1,
@@ -55,7 +72,7 @@ const PassengerTypeModal = ({
   headerModalTab,
   headerPassengerClick,
   headerFlightClick,
-  flightOptions
+  flightOptions,
 }) => {
   return (
     <View
@@ -77,7 +94,26 @@ const PassengerTypeModal = ({
           ]}
         >
           <TouchableOpacity onPress={headerPassengerClick}>
-            <Text style={styles.headerTitle}>Tolcu Sayısı</Text>
+            <View style={{ alignItems: "center" }}>
+              <Text
+                style={[
+                  headerModalTab == 0
+                    ? styles.choosenHeaderTitle
+                    : styles.headerTitle,
+                ]}
+              >
+                Tolcu Sayısı
+              </Text>
+              <Text
+                style={[
+                  headerModalTab == 0
+                    ? styles.choosenHeaderSubtitle
+                    : styles.headerSubtitle,
+                ]}
+              >
+                1 Yolcu
+              </Text>
+            </View>
           </TouchableOpacity>
         </View>
         <View
@@ -89,33 +125,59 @@ const PassengerTypeModal = ({
           ]}
         >
           <TouchableOpacity onPress={headerFlightClick}>
-            <Text style={styles.headerTitle}>Kabin Sınıfı</Text>
+            <View style={{ alignItems: "center" }}>
+              <Text
+                style={[
+                  headerModalTab == 1
+                    ? styles.choosenHeaderTitle
+                    : styles.headerTitle,
+                ]}
+              >
+                Kabin Sınıfı
+              </Text>
+              <Text
+                style={[
+                  headerModalTab == 1
+                    ? styles.choosenHeaderSubtitle
+                    : styles.headerSubtitle,
+                ]}
+              >
+                Ekonomi
+              </Text>
+            </View>
           </TouchableOpacity>
         </View>
       </View>
 
       {headerModalTab === 0 ? (
-        <View>
-          <PassengerTypeRow userType={"Yetişkin"}></PassengerTypeRow>
+        <View style={{marginTop: 15}}>
+          <PassengerTypeRow
+            userType={"Yetişkin"}
+            userTypeAmount={1}
+          ></PassengerTypeRow>
           <PassengerTypeRow
             userType={"Çocuk"}
             userTypeDescription={"(2 - 12 Yaş Arası)"}
+            userTypeAmount={0}
           ></PassengerTypeRow>
           <PassengerTypeRow
             userType={"Bebek"}
             userTypeDescription={"(0 - 2 Yaş Arası)"}
+            userTypeAmount={0}
           ></PassengerTypeRow>
-          <PassengerTypeRow userType={"65 yaş üstü"}></PassengerTypeRow>
+          <PassengerTypeRow
+            userType={"65 yaş üstü"}
+            userTypeAmount={0}
+          ></PassengerTypeRow>
           <PassengerTypeRow
             userType={"Öğrenci"}
             userTypeDescription={"(12 - 24 Yaş Arası)"}
+            userTypeAmount={0}
           ></PassengerTypeRow>
         </View>
       ) : (
-        <View >
-          <FlightTypeRow 
-            flightOptions={flightOptions}
-          ></FlightTypeRow>
+        <View>
+          <FlightTypeRow flightOptions={flightOptions}></FlightTypeRow>
         </View>
       )}
       {/* <Text>{flightOptions}</Text> */}

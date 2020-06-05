@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   },
   passengerType: {
     fontSize: 18,
-    opacity: 0.6,
+    opacity: 0.7,
   },
   description: {
     fontSize: 16,
