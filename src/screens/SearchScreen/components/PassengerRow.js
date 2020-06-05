@@ -21,8 +21,7 @@ export const PassengerRow = ({ type, label, sub, count, onDecrement, onIncrement
                 onPress={ () => onDecrement(type) }>
                 <Text style={ styles.textStyle }>-</Text>
             </TouchableHighlight>
-            {/* <Text style={ { margin: 10 } }>{ count }</Text> */}
-            <Text style={ { margin: 10 } }>0</Text>
+            <Text style={ { margin: 10 } }>{ count }</Text>
             <TouchableHighlight
                 underlayColor={ 'transparent' }
                 onPress={ () => onIncrement(type) }>

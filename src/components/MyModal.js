@@ -6,12 +6,14 @@ import { Button } from "react-native-elements";
 import { PassengerRow } from "../screens/SearchScreen/components/PassengerRow";
 import { FontAwesome5 } from "@expo/vector-icons";
 // import RadioButton from "../screens/SearchScreen/components/RadioButton";
-
 import RadioForm, {
   RadioButton,
   RadioButtonInput,
   RadioButtonLabel,
 } from "react-native-simple-radio-button";
+//import for redux
+import { connect } from "react-redux";
+import { setPassengers, setCabinClass } from "../actions/passengerAction";
 
 const orange = "#ee7621";
 
@@ -21,11 +23,6 @@ const passengerMap = [
   { type: "infant", label: "Bebek", sub: "(0-2 Yaş)" },
   { type: "senior", label: "65 yaş üstü", sub: null },
   { type: "student", label: "Öğrenci", sub: "(12-24 Yaş)" },
-];
-
-var radio_props = [
-  { label: "param1", value: 0 },
-  { label: "param2", value: 1 },
 ];
 
 class MyModal extends Component {
@@ -39,6 +36,7 @@ class MyModal extends Component {
         { type: "bussiness", label: "Bussiness", selected: false, value: 1 },
       ],
       flightType: 0,
+      countPassenger: 0,
     };
   }
   setModalVisible = (visible) => {
@@ -72,8 +70,36 @@ class MyModal extends Component {
         ],
       });
     }
-    // this.props.setPassengerType()
-  }
+    console.log(this.state.cabinMap[index].type);
+    
+    this.props.setCabinClass(this.state.cabinMap[index].type);
+  };
+
+  //////////////////
+  onDecrement(type) {
+    let passengers = this.props.passengers;
+    let count = passengers[type] - 1;
+    passengers[type] = count;
+    this.onPassenger(passengers);
+    this.setState({countPassenger: this.state.countPassenger-1});
+  };
+
+  onIncrement(type) {
+    let passengers = this.props.passengers ;
+    let count = passengers[type] + 1;
+    passengers[type] = count;
+    this.onPassenger(passengers);
+    this.setState({countPassenger: this.state.countPassenger+1});
+  };
+
+  onPassenger(passengers) {
+    if (this.state.countPassenger > 0) {
+      this.props.setPassengers(passengers);
+    } else {
+      // Alert.alert("E az 1 yolcu seçmelisiniz");
+    }
+  };
+  /////////////////////
 
   render() {
     const { modalVisible, selectedIndex, cabinMap } = this.state;
@@ -110,7 +136,7 @@ class MyModal extends Component {
                   type={passenger.type}
                   label={passenger.label}
                   sub={passenger.sub}
-                  // count={ passengers[passenger.type] }
+                  count={ this.props.passengers[passenger.type] }
                 />
               ))}
             </View>
@@ -141,8 +167,7 @@ class MyModal extends Component {
                             fontSize: 16,
                             color: "#9b9e9f",
                             //marginLeft: 10,
-                            fontWeight: 'bold',
-
+                            fontWeight: "bold",
                           }}
                           labelWrapStyle={{}}
                         />
@@ -172,9 +197,6 @@ class MyModal extends Component {
               </View>
             </View>
           )}
-          {/* <Button onPress={() => console.log(this.state.flightType)} />
-          <Button></Button> */}
-
           <View style={styles.containerButton}>
             <Button
               title="Tamam"
@@ -190,6 +212,10 @@ class MyModal extends Component {
               titleStyle={styles.buttonText}
             />
           </View>
+          <Button onPress={()=> {
+            console.log(this.props.passengers);
+            console.log(this.props.cabinClass);
+          }}/>
         </View>
       </Modal>
     );
@@ -269,31 +295,43 @@ const styles = StyleSheet.create({
   containerClass: {
     borderColor: "green",
     borderWidth: 2,
-    height: '65%',
+    height: "65%",
   },
   radioBtnStyle: {
     borderColor: "red",
     borderWidth: 1,
     padding: 10,
     marginTop: 10,
-    width: '80%',
-    alignItems:'flex-start',
-    flexDirection: 'row'
+    width: "80%",
+    alignItems: "flex-start",
+    flexDirection: "row",
   },
   radioInptStyle: {
     borderColor: "pink",
     borderWidth: 1,
-    width: '20%',
-    alignSelf: 'center'
-   
+    width: "20%",
+    alignSelf: "center",
   },
   radioFrmStyle: {
     borderColor: "blue",
     borderWidth: 1,
     marginTop: 20,
     //alignItems:'flex-start'
-   
   },
 });
 
-export default MyModal;
+const mapStateToProps = (state) => {
+  return {
+    passengers: state.passenger.passengers,
+    cabinClass: state.passenger.cabinClass,
+  };
+};
+
+const mapDispatchToProps = () => {
+  return {
+    setPassengers,
+    setCabinClass,
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps())(MyModal);

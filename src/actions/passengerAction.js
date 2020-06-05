@@ -23,9 +23,25 @@ function setDestinationAirport(airportName) {
         payload: airportName
     };
 }
+
+function setPassengers (passenger) {
+    return {
+        type: 'PASSENGER',
+        payload: passenger
+    }
+}
+
+function setCabinClass (cabinName) {
+    return {
+        type: 'CABIN_CLASS',
+        payload: cabinName
+    }
+}
 export {
     setDepartureDate,
     setReturnDate,
     setOriginAirport,
-    setDestinationAirport
+    setDestinationAirport,
+    setCabinClass,
+    setPassengers
 }
