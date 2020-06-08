@@ -37,8 +37,8 @@ const styles = StyleSheet.create({
         width: '40%',
         margin: 5,
         padding:5,
-        borderColor: 'blue',
-        borderWidth:2
+        // borderColor: 'blue',
+        // borderWidth:2
     },
     wayStyle: {
         margin: 3,

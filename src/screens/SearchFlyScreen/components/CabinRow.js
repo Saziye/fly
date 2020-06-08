@@ -21,8 +21,19 @@ class CabinRow extends Component {
     return (
       <View style={styles.container}>
         <CabinItem
-          icon={<MaterialIcons name="person" size={24} color="white" />}
-          title={"1 Yetişkin"}
+          icon={<MaterialIcons name="person" size={30} color="white" />}
+          count={"1"}
+          title={"Yetişkin"}
+          //click={}
+        />
+         <CabinItem
+          icon={<MaterialIcons name="person" size={30} color="white" />}
+          title={"Bussiness"}
+          //click={}
+        />
+        <CabinItem
+          icon={<MaterialIcons name="person" size={30} color="white" />}
+          title={"Direkt Uçuşlar"}
           //click={}
         />
       </View>
@@ -32,14 +43,12 @@ class CabinRow extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: "space-around",
     flexDirection: "column",
-    marginTop: 30,
-    // marginHorizontal: '10%',
-    // height: '40%',
+    marginTop: 8,
     width: "100%",
-    borderColor: 'yellow',
-    borderWidth: 2
+    paddingHorizontal: 25,
+    // borderColor: 'yellow',
+    // borderWidth: 2
   },
 });
 

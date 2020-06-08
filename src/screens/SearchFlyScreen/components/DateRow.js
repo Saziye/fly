@@ -101,11 +101,11 @@ const styles = StyleSheet.create({
   container_two: {
     justifyContent: "space-around",
     flexDirection: "row",
-    marginTop: 30,
+    marginTop: 20,
     // marginHorizontal: '10%',
     // height: '40%',
     width: "100%",
-    // borderColor: 'yellow',
+    // borderColor: 'red',
     // borderWidth: 2
   },
 });

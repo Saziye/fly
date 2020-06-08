@@ -5,6 +5,9 @@ import AirportRow from "./components/AirportRow";
 import DateRow from "./components/DateRow";
 import CabinRow from "./components/CabinRow";
 import SegmentedControlTab from "react-native-segmented-control-tab";
+import { Button } from "react-native-elements";
+import { Fontisto } from "@expo/vector-icons";
+
 //for redux
 import { connect } from "react-redux";
 import {
@@ -60,6 +63,18 @@ class SearchFlyScreen extends Component {
             <AirportRow />
             <DateRow />
             <CabinRow/>
+            <View style={styles.container_four}>
+              <Button
+                buttonStyle={styles.buttonSearch}
+                title="UÇUŞ ARA"
+                titleStyle={styles.btnTitleStyle}
+                // onPress={() => {
+                //   console.log("========>");
+                //   console.log(this.props.departureDate);
+                //   console.log(this.props.returnDate);
+                // }}
+              />
+            </View>
           </View>
         </View>
         {/* </ImageBackground> */}
@@ -101,6 +116,20 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: "#fff",
     fontWeight: "bold",
+  },
+  container_four: {
+    width: "60%",
+    alignSelf: "center",
+    marginTop: 30,
+  },
+  buttonSearch: {
+    backgroundColor: "#ffc107",
+    height: 40,
+  },
+  btnTitleStyle: {
+    fontSize: 17,
+    fontWeight:'bold',
+    color: 'black'
   },
 });
 
