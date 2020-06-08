@@ -56,7 +56,7 @@ class AirportRow extends Component {
               ? defaultOrigin.CountryName
               : this.props.origin.CountryName)
           }
-          // click={() => this.navigateFunction("AirportsList", 0)}
+          click={() => this.navigateFunction("AirportsList", 0)}
         />
         <TouchableOpacity style={styles.iconContainer}>
           {/* <Image source={require('../../../../assets/images/change1.png')} style= {styles.imageStyle} /> */}
@@ -83,7 +83,7 @@ class AirportRow extends Component {
               ? defaultDestination.CountryName
               : this.props.destination.CountryName)
           }
-          //click={() => this.navigateFunction("AirportsList", 1)}
+          click={() => this.navigateFunction("AirportsList", 1)}
         />
       </View>
     );
