@@ -36,11 +36,11 @@ const DateItem = ({ title, date, mounth, year, day, click }) => {
 
 const styles = StyleSheet.create({
   container: {
-    // borderColor: "blue",
-    // borderWidth: 2,
+    borderColor: "blue",
+    borderWidth: 2,
     width: "40%",
     padding: 15,
-    margin:5
+    marginLeft: '18%',
     //margin: 5,
     //padding:5,
   },

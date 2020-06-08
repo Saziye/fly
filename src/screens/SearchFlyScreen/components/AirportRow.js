@@ -3,7 +3,10 @@ import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native";
 import AirportItem from "./AirportItem";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { connect } from "react-redux";
-
+import {
+  setOriginAirport,
+  setDestinationAirport,
+} from "../../../actions/passengerAction";
 class AirportRow extends Component {
   constructor(props) {
     super(props);
@@ -30,6 +33,12 @@ class AirportRow extends Component {
     navigation.navigate(screen, { type: type });
     console.log("navigate");
   };
+
+  swap() {
+    let tempAirport = this.props.destination;
+    this.props.setDestinationAirport(this.props.origin);
+    this.props.setOriginAirport(tempAirport);
+  }
 
   render() {
     const { defaultOrigin, defaultDestination } = this.state;
@@ -58,7 +67,9 @@ class AirportRow extends Component {
           }
           click={() => this.navigateFunction("AirportsList", 0)}
         />
-        <TouchableOpacity style={styles.iconContainer}>
+        <TouchableOpacity style={styles.iconContainer} onPress={() => {
+          this.swap()
+        }}>
           {/* <Image source={require('../../../../assets/images/change1.png')} style= {styles.imageStyle} /> */}
           <FontAwesome5 name="exchange-alt" size={24} color="#fff" />
         </TouchableOpacity>
@@ -118,4 +129,12 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(AirportRow);
+const mapDispatchToProps = () => {
+  return {
+    setOriginAirport,
+    setDestinationAirport,
+  };
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps())(AirportRow);
