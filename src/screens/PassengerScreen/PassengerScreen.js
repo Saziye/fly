@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { Button } from "react-native-elements";
 import { PassengerRow } from "./components/PassengerRow";
+import { AntDesign } from "@expo/vector-icons";
 
 const passengerMap = [
-  { type: "adult", label: "Yetişkin", sub:"(24 yaş üstü)"},
+  { type: "adult", label: "Yetişkin", sub: "(24 yaş üstü)" },
   { type: "child", label: "Çocuk", sub: "(2 ve 11 yaş arası)" },
   { type: "infant", label: "Bebek", sub: "(0 ve 2 yaş arası)" },
   { type: "senior", label: "Yaşlı", sub: "(65 yaş üstü)" },
@@ -18,7 +19,7 @@ class PassengerScreen extends Component {
   }
 
   static navigationOptions = ({ navigation }) => ({
-    title:"Yolcu Seçiniz",
+    title: "Yolcu Seçiniz",
     headerTitleStyle: {
       fontWeight: "bold",
       fontSize: 18,
@@ -80,15 +81,48 @@ class PassengerScreen extends Component {
               type={passenger.type}
               label={passenger.label}
               sub={passenger.sub}
-             count={"1"}
+              count={"1"}
             />
           ))}
+        </View>
+        <View style={styles.btnContainer}>
+          <Button
+            buttonStyle={styles.buttonSearch}
+            title="TAMAM"
+            titleStyle={styles.btnTitleStyle}
+            // onPress={() => {
+            //   console.log("========>");
+            //   console.log(this.props.departureDate);
+            //   console.log(this.props.returnDate);
+            // }}
+          />
         </View>
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  buttonSearch: {
+    backgroundColor: "white",
+    height: 40,
+    width: "60%",
+    borderColor: "#393939",
+    borderWidth: 2,
+    alignSelf: "center",
+
+  },
+  btnTitleStyle: {
+    fontSize: 17,
+    fontWeight: "normal",
+    color: "#393939",
+    textAlign: "center",
+  },
+  btnContainer: {
+    // borderWidth: 1,
+    // borderColor: "green",
+    marginTop: '20%'
+  },
+});
 
 export default PassengerScreen;

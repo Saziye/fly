@@ -23,8 +23,8 @@ export const PassengerRow = ({
       style={{
         flexDirection: "row",
         alignItems: "center",
-        borderColor: "red",
-        borderWidth: 2,
+        // borderColor: "red",
+        // borderWidth: 2,
       }}
     >
       <TouchableHighlight
@@ -56,8 +56,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   viewStyle2: {
-    borderWidth: 2,
-    borderColor: "blue",
+    // borderWidth: 2,
+    // borderColor: "blue",
     flex: 1,
     marginLeft: 9,
   },
