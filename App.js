@@ -3,17 +3,13 @@ import {createStackNavigator} from 'react-navigation-stack';
 import {
   createAppContainer,
 } from 'react-navigation';
-
-import SearchScreen from './src/screens/SearchScreen/SearchScreen';
 import SearchScreen2 from './src/screens/SearchScreen/SearchScreen2';
-import OriginListScreen from './src/screens/OriginListScreen/OriginListScreen';
 import AirportsListScreen from './src/screens/AirportsListScreen/AirportsListScreen';
 import SearchFlyScreen from './src/screens/SearchFlyScreen/SearchFlyScreen';
+import PassengerScreen from './src/screens/PassengerScreen/PassengerScreen';
 import thunkMiddleware from "redux-thunk";
-
 console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
 console.disableYellowBox = true;
-
 import {
   Provider
 } from "react-redux";
@@ -23,6 +19,7 @@ import {
   compose
 } from "redux";
 import reducers from "./src/reducers";
+
 
 const store = createStore(
   reducers,
@@ -35,11 +32,10 @@ const store = createStore(
 );
 console.log(store.getState());
 const switchNavigator = createStackNavigator({
-    Search: SearchScreen,
     Search2: SearchScreen2,
-    OriginList: OriginListScreen, 
     AirportsList: AirportsListScreen, 
-    SearchFly: SearchFlyScreen
+    SearchFly: SearchFlyScreen,
+    Passenger: PassengerScreen,
 },
 {
   initialRouteName: 'SearchFly',

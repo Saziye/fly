@@ -62,7 +62,7 @@ class SearchFlyScreen extends Component {
           <View>
             <AirportRow navigation={this.props.navigation}/>
             <DateRow />
-            <CabinRow/>
+            <CabinRow  navigation={this.props.navigation}/>
             <View style={styles.container_four}>
               <Button
                 buttonStyle={styles.buttonSearch}

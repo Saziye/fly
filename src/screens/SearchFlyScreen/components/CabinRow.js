@@ -15,6 +15,10 @@ class CabinRow extends Component {
     super(props);
     this.state = {};
   };
+  navigateFunction = (screen) => {
+    const { navigation } = this.props;
+    navigation.navigate(screen);
+  };
 
   render() {
     const {} = this.state;
@@ -24,7 +28,7 @@ class CabinRow extends Component {
           icon={<MaterialIcons name="person" size={30} color="white" />}
           count={"1"}
           title={"Yetişkin"}
-          //click={}
+          click={() => this.navigateFunction("Passenger")}
         />
          <CabinItem
           icon={<MaterialIcons name="person" size={30} color="white" />}
