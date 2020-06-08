@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   buttonSearch: {
-    backgroundColor: "#ffc107",
+    backgroundColor: "#ffc501",
     height: 40,
   },
   btnTitleStyle: {

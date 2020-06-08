@@ -6,7 +6,7 @@ import {
     TouchableOpacity
 } from 'react-native';
 
-const YELLOW= '#ffc107';
+const YELLOW= '#f4c00f';
 const WHITE = '#fff';
 
 const AirportItem = ({way,code,airport, city, click}) => {
