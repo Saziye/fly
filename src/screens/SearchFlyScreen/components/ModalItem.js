@@ -23,7 +23,7 @@ class ModalItem extends Component {
         { type: "economy", label: "Ekonomi", value: 1 },
         { type: "bussiness", label: "Bussiness", value: 2 },
       ],
-      cabinLabel: "",
+      // cabinLabel: "",
     };
   }
   setModalVisible = (visible) => {
@@ -34,6 +34,9 @@ class ModalItem extends Component {
   //     //this.props.setCabinClass(this.state.cabinMap[index].type);
   //   };
 
+  componentDidMount() {
+    console.log('Modal in Visible:', this.state.modalVisible);
+  }
   keyExtractor = (item, index) => index.toString();
 
   cabinItem = ({ item, index }) => (
