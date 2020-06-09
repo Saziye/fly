@@ -1,8 +1,12 @@
 import React, { Component } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, Alert } from "react-native";
 import { Button } from "react-native-elements";
 import { PassengerRow } from "./components/PassengerRow";
 import { AntDesign } from "@expo/vector-icons";
+//import for redux
+import { connect } from "react-redux";
+import { setPassengers } from "../../actions/passengerAction";
+import passenger from "../../reducers/passenger";
 
 const passengerMap = [
   { type: "adult", label: "Yetişkin", sub: "(24 yaş üstü)" },
@@ -15,7 +19,9 @@ const passengerMap = [
 class PassengerScreen extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      countPassenger: this.props.passengers["adult"],
+    };
   }
 
   static navigationOptions = ({ navigation }) => ({
@@ -23,6 +29,7 @@ class PassengerScreen extends Component {
     headerTitleStyle: {
       fontWeight: "bold",
       fontSize: 18,
+      position: "absolute",
       alignSelf: "center",
       textAlign: "center",
     },
@@ -42,33 +49,77 @@ class PassengerScreen extends Component {
     ),
     headerLeft: null,
   });
+
   //////////////////
   onDecrement(type) {
     let passengers = this.props.passengers;
     let count = passengers[type] - 1;
-    passengers[type] = count;
-    this.onPassenger(passengers);
-    this.setState({ countPassenger: this.state.countPassenger - 1 });
-  }
+    if (
+      (type == "adult" || type == "senior" || type == "student") &&
+      count === 0 &&
+      (this.props.passengers["child"] > this.props.passengers["adult"] ||
+        this.props.passengers["child"] > this.props.passengers["senior"] ||
+        this.props.passengers["child"] > this.props.passengers["student"])
+    ) {
+      Alert.alert("Çocuklar tek başına seyahat edemez.");
+      passengers["child"] = 0;
+    }
+    if (
+      (type == "adult" || type == "senior") &&
+      (this.props.passengers["infant"] > this.props.passengers["adult"] ||
+        this.props.passengers["infant"] > this.props.passengers["senior"])
+    ) {
+      Alert.alert("Bebek sayısı yetişkin sayısından fazla olamaz.");
+      passengers["infant"] = count;
+    }
+    if (count < 0) {
+      Alert.alert("Yolcu sayısı daha az olamaz");
+    } else {
+      passengers[type] = count;
+      this.setState({ countPassenger: this.state.countPassenger - 1 });
 
+      this.onPassenger(passengers);
+    }
+  }
   onIncrement(type) {
-    let passengers = this.props.passengers;
-    let count = passengers[type] + 1;
-    passengers[type] = count;
-    this.onPassenger(passengers);
-    this.setState({ countPassenger: this.state.countPassenger + 1 });
+    if (
+      type == "child" &&
+      this.props.passengers["adult"] == 0 &&
+      this.props.passengers["student"] == 0 &&
+      this.props.passengers["senior"] == 0
+    ) {
+      Alert.alert("Çocuklar tek başına seyahat edemez.");
+    } else if (
+      type == "infant" &&
+      this.props.passengers["adult"] == 0 &&
+      this.props.passengers["senior"] == 0
+    ) {
+      Alert.alert("Bebek sayısı yetişkin sayısından fazla olamaz.");
+    } else {
+      let passengers = this.props.passengers;
+      let count = passengers[type] + 1;
+      passengers[type] = count;
+
+      this.setState({ countPassenger: this.state.countPassenger + 1 });
+      this.onPassenger(passengers);
+    }
   }
 
   onPassenger(passengers) {
-    if (this.state.countPassenger > 0) {
-      this.props.setPassengers(passengers);
-    } else {
-      // Alert.alert("E az 1 yolcu seçmelisiniz");
-    }
+    // setTimeout(() => {
+    //   console.log("Countt Dene");
+    //   console.log(this.state.countPassenger);
+    // }, 2000);
+    this.props.setPassengers(passengers);
+    // if (this.state.countPassenger > 0) {
+    //   this.props.setPassengers(passengers);
+    // } else {
+    //   Alert.alert("Lütfen en az bir yolcu seçiniz");
+    // }
   }
   /////////////////////
   render() {
-    const {} = this.state;
+    const { countPassenger, buttonDisable } = this.state;
 
     return (
       <View>
@@ -81,7 +132,7 @@ class PassengerScreen extends Component {
               type={passenger.type}
               label={passenger.label}
               sub={passenger.sub}
-              count={"1"}
+              count={this.props.passengers[passenger.type]}
             />
           ))}
         </View>
@@ -90,11 +141,15 @@ class PassengerScreen extends Component {
             buttonStyle={styles.buttonSearch}
             title="TAMAM"
             titleStyle={styles.btnTitleStyle}
-            // onPress={() => {
-            //   console.log("========>");
-            //   console.log(this.props.departureDate);
-            //   console.log(this.props.returnDate);
-            // }}
+            onPress={() => {
+              if (countPassenger > 0) {
+                // console.log("PASSENGER SCREEN========>");
+                // console.log(this.props.passengers);
+                this.props.navigation.goBack();
+              } else {
+                Alert.alert("Lütfen en az bir yolcu seçiniz");
+              }
+            }}
           />
         </View>
       </View>
@@ -110,7 +165,6 @@ const styles = StyleSheet.create({
     borderColor: "#393939",
     borderWidth: 2,
     alignSelf: "center",
-
   },
   btnTitleStyle: {
     fontSize: 17,
@@ -121,8 +175,20 @@ const styles = StyleSheet.create({
   btnContainer: {
     // borderWidth: 1,
     // borderColor: "green",
-    marginTop: '20%'
+    marginTop: "20%",
   },
 });
 
-export default PassengerScreen;
+const mapStateToProps = (state) => {
+  return {
+    passengers: state.passenger.passengers,
+  };
+};
+
+const mapDispatchToProps = () => {
+  return {
+    setPassengers,
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps())(PassengerScreen);

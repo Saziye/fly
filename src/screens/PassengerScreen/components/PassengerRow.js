@@ -10,6 +10,7 @@ export const PassengerRow = ({
   count,
   onDecrement,
   onIncrement,
+  buttonDisable
 }) => (
   <View style={styles.viewStyle}>
     <View style={styles.viewStyle2}>
@@ -30,6 +31,7 @@ export const PassengerRow = ({
       <TouchableHighlight
         underlayColor={"transparent"}
         onPress={() => onDecrement(type)}
+        disabled={buttonDisable}
       >
         <AntDesign name="minuscircleo" size={24} color="black" />
       </TouchableHighlight>

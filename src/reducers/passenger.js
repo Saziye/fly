@@ -41,6 +41,9 @@ export default (state = initialState, action = {}) => {
         cabinClass: action.payload,
       });
     case "PASSENGER":
+      console.log('=================PASSENGERS');
+      console.log(action.payload);
+      
       return Object.assign({}, state, {
         passengers: action.payload,
       });
