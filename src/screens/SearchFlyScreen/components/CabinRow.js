@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   Image,
   Button,
-  AndroidToast
+  AndroidToast,
+  TouchableHighlightBase
 } from "react-native";
 import CabinItem from "./CabinItem";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -14,6 +15,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 //import for redux
 import { connect } from "react-redux";
 import { setPassengers } from "../../../actions/passengerAction";
+import ModalItem from './ModalItem';
 
 class CabinRow extends Component {
   constructor(props) {
@@ -21,7 +23,8 @@ class CabinRow extends Component {
     this.state = {
       passengerArrayLabels: ['Yetişkin', 'Çocuk', 'Bebek', 'Yaşlı', 'Öğrenci'],
       rowLabel: '',
-      passenger: props.passengers.passengers
+      modalVisible: false,
+      cabinArrayLabels: ['Tüm Sınıflar', 'Ekonomi', 'Bussiness'],
     };
   };
   navigateFunction = (screen) => {
@@ -39,9 +42,7 @@ class CabinRow extends Component {
           rowLabel = rowLabel + myValues[index] + ' ' + this.state.passengerArrayLabels[index]  + ', ';
         else 
           rowLabel = rowLabel + myValues[index] + ' ' + this.state.passengerArrayLabels[index];
-
       }
-      
     });
     this.setState({rowLabel});
   }
@@ -53,9 +54,13 @@ class CabinRow extends Component {
   componentDidMount() {
     this.labelPassenger(this.props.passengers.passengers);
   }
+  setModalVisible = (visible) => {
+    this.setState({ modalVisible: visible });
+    console.log('Cabin Modal:',this.state.modalVisible)
+  }
 
   render() {
-    const {} = this.state;
+    const {modalVisible} = this.state;
     return (
       <View style={styles.container}>
         <CabinItem
@@ -64,14 +69,15 @@ class CabinRow extends Component {
           click={() => this.navigateFunction("Passenger")}
         />
          <CabinItem
-          icon={<MaterialIcons name="person" size={30} color="white" />}
-          title={"Bussiness"}
-          //click={}
+          icon={<MaterialCommunityIcons name="car-seat" size={30} color="white" />}
+          title={this.props.cabinClass === "economy" ? "Ekonomi" : this.props.cabinClass === "bussiness" ? "Bussiness"  : "Tüm Sınıflar"}
+          click={()=> {this.setModalVisible(true); }}
         />
+        {modalVisible === true ? <ModalItem modalVisible= {modalVisible}/> : null}
         <CabinItem
-          icon={<MaterialIcons name="person" size={30} color="white" />}
+          icon={<MaterialCommunityIcons name="airplane-takeoff" size={30} color="white" />}
           title={"Direkt Uçuşlar"}
-          //click={}
+          // click={}
         />
       </View>
     );
@@ -91,7 +97,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    passengers: state.passenger
+    passengers: state.passenger,
+    cabinClass: state.passenger.cabinClass,
   };
 };
 

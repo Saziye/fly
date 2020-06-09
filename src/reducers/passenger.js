@@ -15,7 +15,7 @@ const initialState = {
     senior: 0,
     student: 0,
   },
-  cabinClass: "Ekonomi", //initial olarak ekonomi ekle
+  cabinClass: "", //initial olarak all class ekle
 };
 
 export default (state = initialState, action = {}) => {
@@ -41,9 +41,6 @@ export default (state = initialState, action = {}) => {
         cabinClass: action.payload,
       });
     case "PASSENGER":
-      console.log('=================PASSENGERS');
-      console.log(action.payload);
-      
       return Object.assign({}, state, {
         passengers: action.payload,
       });

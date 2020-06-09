@@ -242,8 +242,8 @@ const styles = StyleSheet.create({
   modalHeader: {
     justifyContent: "flex-start",
     height: "15%",
-    // borderWidth: 3,
-    // borderColor: "blue",
+    borderWidth: 3,
+    borderColor: "blue",
   },
   buttonModal: {
     backgroundColor: orange,
