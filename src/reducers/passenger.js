@@ -3,7 +3,7 @@ const initialState = {
   destinationAirport: {},
   departureDate: "",
   returnDate: "",
-  numberOfPassenger: "",
+  numberOfPassenger: 0,
   passengerType: "",
   flyType: "",
   selectedWay: 0,
@@ -47,6 +47,10 @@ export default (state = initialState, action = {}) => {
     case "SELECTED_WAY":
       return Object.assign({}, state, {
         selectedWay: action.payload,
+      });
+      case "NUMBER_PASSENGER":
+      return Object.assign({}, state, {
+        numberOfPassenger: action.payload,
       });
     default:
       return state;

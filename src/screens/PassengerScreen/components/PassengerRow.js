@@ -10,7 +10,7 @@ export const PassengerRow = ({
   count,
   onDecrement,
   onIncrement,
-  buttonDisable
+  buttonDisable,
 }) => (
   <View style={styles.viewStyle}>
     <View style={styles.viewStyle2}>
@@ -28,13 +28,17 @@ export const PassengerRow = ({
         // borderWidth: 2,
       }}
     >
-      <TouchableHighlight
-        underlayColor={"transparent"}
-        onPress={() => onDecrement(type)}
-        disabled={buttonDisable}
-      >
-        <AntDesign name="minuscircleo" size={24} color="black" />
-      </TouchableHighlight>
+      {count == "0" ? (
+        <AntDesign name="minuscircleo" size={24} color="#bfbfbf" />
+      ) : (
+        <TouchableHighlight
+          underlayColor={"transparent"}
+          onPress={() => onDecrement(type)}
+          disabled={buttonDisable}
+        >
+          <AntDesign name="minuscircleo" size={24} color="black" />
+        </TouchableHighlight>
+      )}
       <Text style={styles.countStyle}>{count}</Text>
       <TouchableHighlight
         underlayColor={"transparent"}

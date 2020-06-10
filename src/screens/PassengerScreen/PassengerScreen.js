@@ -5,7 +5,7 @@ import { PassengerRow } from "./components/PassengerRow";
 import { AntDesign } from "@expo/vector-icons";
 //import for redux
 import { connect } from "react-redux";
-import { setPassengers } from "../../actions/passengerAction";
+import { setPassengers, setNumberofPassenger } from "../../actions/passengerAction";
 import passenger from "../../reducers/passenger";
 
 const passengerMap = [
@@ -54,14 +54,10 @@ class PassengerScreen extends Component {
   onDecrement(type) {
     let passengers = this.props.passengers;
     let count = passengers[type] - 1;
-    if (
-      (type == "adult" || type == "senior" || type == "student") &&
-      count === 0 &&
-      (this.props.passengers["child"] > this.props.passengers["adult"] ||
-        this.props.passengers["child"] > this.props.passengers["senior"] ||
-        this.props.passengers["child"] > this.props.passengers["student"])
-    ) {
-      Alert.alert("Çocuklar tek başına seyahat edemez.");
+    let totalAdult = passengers["adult"] + passengers["senior"]+  passengers["student"]-1;
+    console.log( "Total:",totalAdult );
+    if ((type == "adult" || type == "senior" || type == "student") && (totalAdult < passengers["child"])) {
+      Alert.alert("Çocuklar tek başına seyahat edemez.gfdgdgf");
       passengers["child"] = 0;
     }
     if (
@@ -107,9 +103,9 @@ class PassengerScreen extends Component {
 
   onPassenger(passengers) {
     setTimeout(() => {
-      console.log("Countt Dene");
+      console.log("Count Toplam (countPassenger)");
       console.log(this.state.countPassenger);
-    }, 2000);
+    }, 3000);
     this.props.setPassengers(passengers);
     // if (this.state.countPassenger > 0) {
     //   this.props.setPassengers(passengers);
@@ -119,7 +115,7 @@ class PassengerScreen extends Component {
   }
   /////////////////////
   render() {
-    const { countPassenger, buttonDisable } = this.state;
+    const { countPassenger } = this.state;
 
     return (
       <View>
@@ -143,8 +139,13 @@ class PassengerScreen extends Component {
             titleStyle={styles.btnTitleStyle}
             onPress={() => {
               if (countPassenger > 0) {
-                // console.log("PASSENGER SCREEN========>");
-                // console.log(this.props.passengers);
+                this.props.setNumberofPassenger(countPassenger);
+                setTimeout(()=> {
+                  console.log("Number of pass::",this.props.numberOfPassenger);
+                }) 
+                console.log("PASSENGER SCREEN========>");
+                console.log(this.props.passengers);
+                console.log("toplam:", this.state.countPassenger);
                 this.props.navigation.goBack();
               } else {
                 Alert.alert("Lütfen en az bir yolcu seçiniz");
@@ -182,12 +183,14 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return {
     passengers: state.passenger.passengers,
+    numberOfPassenger: state.passenger.numberOfPassenger,
   };
 };
 
 const mapDispatchToProps = () => {
   return {
     setPassengers,
+    setNumberofPassenger,
   };
 };
 

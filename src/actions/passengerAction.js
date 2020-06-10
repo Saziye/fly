@@ -43,6 +43,12 @@ function setSelectedWay(index) {
         payload: index
     }
 }
+function setNumberofPassenger(count) {
+    return {
+        type: 'NUMBER_PASSENGER',
+        payload: count
+    }
+}
 export {
     setDepartureDate,
     setReturnDate,
@@ -50,5 +56,6 @@ export {
     setDestinationAirport,
     setCabinClass,
     setPassengers,
-    setSelectedWay
+    setSelectedWay,
+    setNumberofPassenger
 }
