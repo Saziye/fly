@@ -9,7 +9,7 @@ const CabinItem = ({ icon, count, title, rightIcon, click }) => {
       <TouchableOpacity onPress={click} style={styles.container}>
         <View style={styles.iconStyle}>{icon}</View>
         <View style={styles.titleStyle}>
-          <Text style={styles.textTitle}>{count}</Text>
+          {/* <Text style={styles.textTitle}>{count}</Text> */}
           <Text style={styles.textTitle}>{title}</Text>
         </View>
         <View style={styles.rightIconStyle}>{rightIcon}</View>
@@ -37,10 +37,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   titleStyle: {
+    flex:1,
     // borderColor: "green",
     // borderWidth: 2,
     alignItems: "center",
-    justifyContent: "center",
+    //justifyContent: "center",
     marginLeft: 5,
     flexDirection: "row",
   },

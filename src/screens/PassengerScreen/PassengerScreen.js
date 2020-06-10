@@ -23,7 +23,7 @@ class PassengerScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      countPassenger: this.props.passengers["adult"],
+      countPassenger: this.props.numberOfPassenger,
     };
   }
 
@@ -45,7 +45,11 @@ class PassengerScreen extends Component {
           name="close"
           size={32}
           color="white"
-          onPress={() => navigation.goBack()}
+          onPress={() => {
+            
+            
+            navigation.goBack();
+          }}
         />
       </View>
     ),
@@ -56,9 +60,8 @@ class PassengerScreen extends Component {
   onDecrement(type) {
     let passengers = this.props.passengers;
     let count = passengers[type] - 1;
-    let totalAdult =
-      passengers["adult"] + passengers["senior"] + passengers["student"] - 1;
-    console.log("Total:", totalAdult);
+    let totalAdult = passengers["adult"] + passengers["senior"] + passengers["student"] - 1;
+    console.log("Total Adult Count:", totalAdult);
     if (
       (type == "adult" || type == "senior" || type == "student") &&
       totalAdult < passengers["child"]
@@ -71,7 +74,6 @@ class PassengerScreen extends Component {
       Alert.alert("Bilgilendirme", "Çocuklar tek başına seyahat edemez.", [
         { text: "Tamam", onPress: () => null },
       ]);
-      //Alert.alert("Çocuklar tek başına seyahat edemez.");
       passengers["child"] = 0;
     }
     if (
@@ -84,22 +86,29 @@ class PassengerScreen extends Component {
         "Bebek sayısı yetişkin sayısından fazla olamaz.",
         [{ text: "Tamam", onPress: () => null }]
       );
-      //Alert.alert("Bebek sayısı yetişkin sayısından fazla olamaz.");
       passengers["infant"] = count;
     }
     if (count < 0) {
       Alert.alert("Bilgilendirme", "Yolcu sayısı daha az olamaz", [
         { text: "Tamam", onPress: () => null },
       ]);
-      // Alert.alert("Yolcu sayısı daha az olamaz");
     } else {
       passengers[type] = count;
       this.setState({ countPassenger: this.state.countPassenger - 1 });
-
-      this.onPassenger(passengers);
+      setTimeout(()=> {
+        console.log("Azaldı",this.state.countPassenger);
+      })
     }
+    
+
+    setTimeout(() => {console.log('==========================> GO BACK');
+            
+    console.log(this.props.passengers);},2000)
+    // this.onPassenger(passengers);
   }
   onIncrement(type) {
+    let passengers = this.props.passengers;
+    let count = passengers[type] + 1;
     if (
       type == "child" &&
       this.props.passengers["adult"] == 0 &&
@@ -109,7 +118,8 @@ class PassengerScreen extends Component {
       Alert.alert("Bilgilendirme", "Çocuklar tek başına seyahat edemez.", [
         { text: "Tamam", onPress: () => null },
       ]);
-    } else if (
+    }
+    if (
       type == "infant" &&
       this.props.passengers["adult"] == 0 &&
       this.props.passengers["senior"] == 0
@@ -120,26 +130,26 @@ class PassengerScreen extends Component {
         [{ text: "Tamam", onPress: () => null }]
       );
     } else {
-      let passengers = this.props.passengers;
-      let count = passengers[type] + 1;
       passengers[type] = count;
 
-      this.setState({ countPassenger: this.state.countPassenger + 1 });
-      this.onPassenger(passengers);
+    this.setState({ countPassenger: this.state.countPassenger + 1 });
+      setTimeout(()=> {
+        console.log("Arttı:",this.state.countPassenger);
+      })
     }
+
+    
+    // this.onPassenger(passengers);
   }
 
   onPassenger(passengers) {
     setTimeout(() => {
-      console.log("Count Toplam (countPassenger)");
+      console.log("========================");
+      console.log("ON PASSENGER");
       console.log(this.state.countPassenger);
+      console.log("========================");
     }, 3000);
     this.props.setPassengers(passengers);
-    // if (this.state.countPassenger > 0) {
-    //   this.props.setPassengers(passengers);
-    // } else {
-    //   Alert.alert("Lütfen en az bir yolcu seçiniz");
-    // }
   }
   /////////////////////
   render() {
@@ -166,20 +176,30 @@ class PassengerScreen extends Component {
             title="TAMAM"
             titleStyle={styles.btnTitleStyle}
             onPress={() => {
+              setTimeout(() => {
+                console.log("========================");
+                console.log("ON PRESS ONCE");
+                console.log(this.state.countPassenger);
+                console.log("========================");
+              }, 2000);
               if (countPassenger > 0) {
+                this.onPassenger(this.props.passengers);
                 this.props.setNumberofPassenger(countPassenger);
+                setTimeout(() => {
+                  console.log("========================");
+                  console.log("ON PRESS SONRA");
+                  console.log(this.state.countPassenger);
+                  console.log("========================");
+                }, 2000);
                 setTimeout(() => {
                   console.log("Number of pass::", this.props.numberOfPassenger);
                 });
-                console.log("PASSENGER SCREEN========>");
                 console.log(this.props.passengers);
-                console.log("toplam:", this.state.countPassenger);
                 this.props.navigation.goBack();
               } else {
                 Alert.alert("Bilgilendirme", "Lütfen en az bir yolcu seçiniz", [
                   { text: "Tamam", onPress: () => null },
                 ]);
-                //Alert.alert("Lütfen en az bir yolcu seçiniz");
               }
             }}
           />

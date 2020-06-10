@@ -3,7 +3,7 @@ const initialState = {
   destinationAirport: {},
   departureDate: "",
   returnDate: "",
-  numberOfPassenger: 0,
+  numberOfPassenger: 1,
   passengerType: "",
   flyType: "",
   selectedWay: 0,

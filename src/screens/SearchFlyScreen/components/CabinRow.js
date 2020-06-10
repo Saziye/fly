@@ -41,9 +41,9 @@ class CabinRow extends Component {
           rowLabel =
             rowLabel +
             myValues[index] +
-            " " +
+            "-" +
             this.state.passengerArrayLabels[index] +
-            ", ";
+            " ";
         else
           rowLabel =
             rowLabel +
@@ -73,7 +73,7 @@ class CabinRow extends Component {
       <View style={styles.container}>
         <CabinItem
           icon={<MaterialIcons name="person" size={30} color="white" />}
-          count={this.state.rowLabel}
+          title={this.state.rowLabel}
           click={() => this.navigateFunction("Passenger")}
         />
         <CabinItem
