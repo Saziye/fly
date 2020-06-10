@@ -133,7 +133,7 @@ class DateRow extends Component {
         />
         {selectedWay === 1 ? (
           <DateItem
-            title={"Gidiş Tarihi"}
+            title={"Dönüş Tarihi"}
             date={this.props.returnDate.substring(0, 2)}
             mounth={
               this.state.months[
@@ -168,7 +168,7 @@ class DateRow extends Component {
           />
         ) : (
           <DateItem
-            title={"Gidiş Tarihi"}
+            title={"Dönüş Tarihi"}
             date={"+"}
             mounth={"DÖNÜŞ EKLE"}
             click={() => this.chooseDate(2)}
