@@ -123,13 +123,13 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   buttonSearch: {
-    backgroundColor: "#ffc501",
+    backgroundColor: "#f6c10b",
     height: 40,
   },
   btnTitleStyle: {
     fontSize: 17,
     fontWeight:'bold',
-    color: 'black'
+    color: '#3f391a'
   },
 });
 

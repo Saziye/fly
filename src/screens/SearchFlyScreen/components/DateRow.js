@@ -52,10 +52,7 @@ class DateRow extends Component {
 
   componentWillReceiveProps(nextProps) {
     console.log(nextProps);
-    //this.setState({ selectedWay: nextProps.selectedWay });
-    // if(nextProps.departureDate > nextProps.returnDate) {
-    //   this.props.setSelectedWay(0);
-    // }
+    this.setState({selectedWay: nextProps.selectedWay});
   }
 
   componentDidMount() {
@@ -71,6 +68,7 @@ class DateRow extends Component {
     this.setState({ today: today });
     this.setState({ minReturnDate: today });
     this.props.setDepartureDate(today);
+    this.props.setReturnDate(today);
     //this.props.setReturnDate(today);
   }
 
