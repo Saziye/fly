@@ -106,10 +106,10 @@ class PassengerScreen extends Component {
   }
 
   onPassenger(passengers) {
-    // setTimeout(() => {
-    //   console.log("Countt Dene");
-    //   console.log(this.state.countPassenger);
-    // }, 2000);
+    setTimeout(() => {
+      console.log("Countt Dene");
+      console.log(this.state.countPassenger);
+    }, 2000);
     this.props.setPassengers(passengers);
     // if (this.state.countPassenger > 0) {
     //   this.props.setPassengers(passengers);

@@ -23,29 +23,23 @@ class ModalItem extends Component {
         { type: "economy", label: "Ekonomi", value: 1 },
         { type: "bussiness", label: "Bussiness", value: 2 },
       ],
-      // cabinLabel: "",
+      setModalVisible: (i) => {props.onPress(i)}
     };
   }
-  setModalVisible = (visible) => {
-    this.setState({ modalVisible: visible });
-  }
-  //   setCabinRadio(index) {
 
-  //     //this.props.setCabinClass(this.state.cabinMap[index].type);
-  //   };
-
-  componentDidMount() {
-    console.log('Modal in Visible:', this.state.modalVisible);
+  componentWillReceiveProps(nextProps) {
+    this.setState({modalVisible: nextProps.modalVisible})
   }
+ 
   keyExtractor = (item, index) => index.toString();
 
   cabinItem = ({ item, index }) => (
     <TouchableOpacity
       onPress={() => {
         this.props.setCabinClass(this.state.cabinMap[index].type);
-        this.setState({cabinLabel: this.state.cabinMap[index].label })
+        this.setState({ cabinLabel: this.state.cabinMap[index].label });
         //console.log(this.props.cabinClass);
-        this.setState({modalVisible: false})
+        this.state.setModalVisible(false)
       }}
     >
       <View>
@@ -63,7 +57,7 @@ class ModalItem extends Component {
       <Modal
         testID={"modal"}
         isVisible={modalVisible}
-        onSwipeComplete={() => this.setModalVisible(false)}
+        onSwipeComplete={() => this.props.onPress(false)}
         swipeDirection={["left", "right", "down"]}
         style={styles.modalView}
       >
@@ -107,7 +101,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   headerText: {
-    //textAlign: "center",
     marginLeft: "6%",
     padding: 5,
     fontSize: 16,

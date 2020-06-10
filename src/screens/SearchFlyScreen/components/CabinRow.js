@@ -7,26 +7,25 @@ import {
   Image,
   Button,
   AndroidToast,
-  TouchableHighlightBase
+  TouchableHighlightBase,
 } from "react-native";
 import CabinItem from "./CabinItem";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 //import for redux
 import { connect } from "react-redux";
 import { setPassengers } from "../../../actions/passengerAction";
-import ModalItem from './ModalItem';
+import ModalItem from "./ModalItem";
 
 class CabinRow extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      passengerArrayLabels: ['Yetişkin', 'Çocuk', 'Bebek', 'Yaşlı', 'Öğrenci'],
-      rowLabel: '',
+      passengerArrayLabels: ["Yetişkin", "Çocuk", "Bebek", "Yaşlı", "Öğrenci"],
+      rowLabel: "",
       modalVisible: false,
-      cabinArrayLabels: ['Tüm Sınıflar', 'Ekonomi', 'Bussiness'],
     };
-  };
+  }
   navigateFunction = (screen) => {
     const { navigation } = this.props;
     navigation.navigate(screen);
@@ -35,16 +34,25 @@ class CabinRow extends Component {
   labelPassenger(a) {
     let myKeys = Object.keys(a);
     let myValues = Object.values(a);
-    let rowLabel= '';
-    myKeys. forEach((element, index) => {
-      if(parseInt(myValues[index]) != 0) {
-        if(parseInt(index) != 4)
-          rowLabel = rowLabel + myValues[index] + ' ' + this.state.passengerArrayLabels[index]  + ', ';
-        else 
-          rowLabel = rowLabel + myValues[index] + ' ' + this.state.passengerArrayLabels[index];
+    let rowLabel = "";
+    myKeys.forEach((element, index) => {
+      if (parseInt(myValues[index]) != 0) {
+        if (parseInt(index) != 4)
+          rowLabel =
+            rowLabel +
+            myValues[index] +
+            " " +
+            this.state.passengerArrayLabels[index] +
+            ", ";
+        else
+          rowLabel =
+            rowLabel +
+            myValues[index] +
+            " " +
+            this.state.passengerArrayLabels[index];
       }
     });
-    this.setState({rowLabel});
+    this.setState({ rowLabel });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -54,13 +62,13 @@ class CabinRow extends Component {
   componentDidMount() {
     this.labelPassenger(this.props.passengers.passengers);
   }
+
   setModalVisible = (visible) => {
     this.setState({ modalVisible: visible });
-    console.log('Cabin Modal:',this.state.modalVisible)
-  }
+  };
 
   render() {
-    const {modalVisible} = this.state;
+    const { modalVisible } = this.state;
     return (
       <View style={styles.container}>
         <CabinItem
@@ -68,14 +76,45 @@ class CabinRow extends Component {
           count={this.state.rowLabel}
           click={() => this.navigateFunction("Passenger")}
         />
-         <CabinItem
-          icon={<MaterialCommunityIcons name="car-seat" size={30} color="white" />}
-          title={this.props.cabinClass === "economy" ? "Ekonomi" : this.props.cabinClass === "bussiness" ? "Bussiness"  : "Tüm Sınıflar"}
-          click={()=> {this.setModalVisible(true); }}
-        />
-        {modalVisible === true ? <ModalItem modalVisible= {modalVisible}/> : null}
         <CabinItem
-          icon={<MaterialCommunityIcons name="airplane-takeoff" size={30} color="white" />}
+          icon={
+            <MaterialCommunityIcons name="car-seat" size={30} color="white" />
+          }
+          title={
+            this.props.cabinClass === "economy"
+              ? "Ekonomi"
+              : this.props.cabinClass === "bussiness"
+              ? "Bussiness"
+              : "Tüm Sınıflar"
+          }
+          click={() => {
+            this.setModalVisible(true);
+          }}
+        />
+         <ModalItem
+          modalVisible={modalVisible}
+          onPress={(i) => {
+            this.setModalVisible(i);
+          }}
+        />
+        
+        {/* {modalVisible === true && <ModalItem
+          modalVisible={modalVisible}
+          onPress={(i) => {
+            console.log("DENEME");
+            console.log(i);
+            this.setModalVisible(i);
+          }}
+        />} */}
+        
+        <CabinItem
+          icon={
+            <MaterialCommunityIcons
+              name="airplane-takeoff"
+              size={30}
+              color="white"
+            />
+          }
           title={"Direkt Uçuşlar"}
           // click={}
         />
@@ -101,6 +140,5 @@ const mapStateToProps = (state) => {
     cabinClass: state.passenger.cabinClass,
   };
 };
-
 
 export default connect(mapStateToProps)(CabinRow);

@@ -28,6 +28,17 @@ class AirportRow extends Component {
     };
   }
 
+  componentDidMount() {
+    console.log(Object.assign(this.state.defaultDestination));
+    console.log("Destination:", this.props.destination);
+    console.log("Origin:", this.props.origin);
+    console.log("SONRASII")
+    this.props.setDestinationAirport(this.state.defaultDestination);
+    this.props.setOriginAirport(this.state.defaultOrigin);
+    console.log("Destination:", this.props.destination);
+    console.log("Origin:", this.props.origin);
+  }
+
   navigateFunction = (screen, type) => {
     const { navigation } = this.props;
     navigation.navigate(screen, { type: type });
