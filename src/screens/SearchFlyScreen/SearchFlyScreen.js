@@ -50,7 +50,7 @@ class SearchFlyScreen extends Component {
             <SegmentedControlTab
               tabsContainerStyle={styles.segment}
               values={["Tek Yön", "Gidiş Dönüş"]}
-              selectedIndex={this.state.selectedIndex}
+              selectedIndex={this.props.selectedWay}
               onTabPress={this.handleIndexChange}
               borderRadius={5}
               activeTabStyle={styles.activeTabStyle}

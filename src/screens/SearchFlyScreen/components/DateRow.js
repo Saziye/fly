@@ -12,15 +12,15 @@ import { connect } from "react-redux";
 import {
   setDepartureDate,
   setReturnDate,
+  setSelectedWay,
 } from "../../../actions/passengerAction";
 import DatePicker from "react-native-datepicker";
-import moment from "moment";
 
 class DateRow extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dateType: 0,
+      dateType: 1,
       today: "",
       minReturnDate: "",
       months: [
@@ -46,21 +46,18 @@ class DateRow extends Component {
         "Cumartesi",
         "Pazar",
       ],
-      selectedWay: props.A,
-      // day: "",
+      selectedWay: props.selectedWay,
     };
   }
-  
+
   componentWillReceiveProps(nextProps) {
     console.log(nextProps);
-    this.setState({ selectedWay: nextProps.A });
-    // let myDate = nextProps.departureDate;
-    // let day = myDate.substring(0, 2);
-    // let month = myDate.substring(3, 5);
-    // let year = myDate.substring(6);
-    // let myNewDate = new Date(month + "/" + day + "/" + year);
-    // this.setState({ day: this.state.days[myNewDate.getDay() - 1] });
+    //this.setState({ selectedWay: nextProps.selectedWay });
+    // if(nextProps.departureDate > nextProps.returnDate) {
+    //   this.props.setSelectedWay(0);
+    // }
   }
+
   componentDidMount() {
     const date = new Date();
     const today =
@@ -75,7 +72,6 @@ class DateRow extends Component {
     this.setState({ minReturnDate: today });
     this.props.setDepartureDate(today);
     //this.props.setReturnDate(today);
-    //console.log(typeof(moment(this.props.departureDate)))
   }
 
   chooseDate(type) {
@@ -92,7 +88,8 @@ class DateRow extends Component {
       this.setState({ minReturnDate: date });
     } else {
       this.props.setReturnDate(date);
-      this.setState({ selectedIndex: 1 });
+      this.props.setSelectedWay(1);
+      this.setState({ selectedWay: 1 });
     }
   };
 
@@ -109,28 +106,32 @@ class DateRow extends Component {
             ]
           }
           year={this.props.departureDate.substring(6, 10)}
-          day={this.state.days[
-            parseInt(
-             ( new Date(
-                this.props.departureDate.substring(3, 5) +
-                  "/" +
-                  this.props.departureDate.substring(0, 2) +
-                  "/" +
-                  this.props.departureDate.substring(6)
-              ).getDay() -1) <0 ? 6 : ( new Date(
-                this.props.departureDate.substring(3, 5) +
-                  "/" +
-                  this.props.departureDate.substring(0, 2) +
-                  "/" +
-                  this.props.departureDate.substring(6)
-              ).getDay() -1)
-            )
-          ]}
+          day={
+            this.state.days[
+              parseInt(
+                new Date(
+                  this.props.departureDate.substring(3, 5) +
+                    "/" +
+                    this.props.departureDate.substring(0, 2) +
+                    "/" +
+                    this.props.departureDate.substring(6)
+                ).getDay() -
+                  1 <
+                  0
+                  ? 6
+                  : new Date(
+                      this.props.departureDate.substring(3, 5) +
+                        "/" +
+                        this.props.departureDate.substring(0, 2) +
+                        "/" +
+                        this.props.departureDate.substring(6)
+                    ).getDay() - 1
+              )
+            ]
+          }
           click={() => this.chooseDate(1)}
         />
-        {selectedWay === 0 ? (
-          <DateItem title={"Gidiş Tarihi"} date={"+"} mounth={"DÖNÜŞ EKLE"} />
-        ) : (
+        {selectedWay === 1 ? (
           <DateItem
             title={"Gidiş Tarihi"}
             date={this.props.returnDate.substring(0, 2)}
@@ -143,22 +144,33 @@ class DateRow extends Component {
             day={
               this.state.days[
                 parseInt(
-                  (new Date(
+                  new Date(
                     this.props.returnDate.substring(3, 5) +
                       "/" +
                       this.props.returnDate.substring(0, 2) +
                       "/" +
                       this.props.returnDate.substring(6)
-                  ).getDay() - 1 ) < 0 ? 6 : (new Date(
-                    this.props.returnDate.substring(3, 5) +
-                      "/" +
-                      this.props.returnDate.substring(0, 2) +
-                      "/" +
-                      this.props.returnDate.substring(6)
-                  ).getDay() - 1 )
+                  ).getDay() -
+                    1 <
+                    0
+                    ? 6
+                    : new Date(
+                        this.props.returnDate.substring(3, 5) +
+                          "/" +
+                          this.props.returnDate.substring(0, 2) +
+                          "/" +
+                          this.props.returnDate.substring(6)
+                      ).getDay() - 1
                 )
               ]
             }
+            click={() => this.chooseDate(2)}
+          />
+        ) : (
+          <DateItem
+            title={"Gidiş Tarihi"}
+            date={"+"}
+            mounth={"DÖNÜŞ EKLE"}
             click={() => this.chooseDate(2)}
           />
         )}
@@ -216,7 +228,7 @@ const mapStateToProps = (state) => {
   return {
     departureDate: state.passenger.departureDate,
     returnDate: state.passenger.returnDate,
-    A: state.passenger.selectedWay,
+    selectedWay: state.passenger.selectedWay,
   };
 };
 
@@ -224,6 +236,7 @@ const mapDispatchToProps = () => {
   return {
     setDepartureDate,
     setReturnDate,
+    setSelectedWay,
   };
 };
 
