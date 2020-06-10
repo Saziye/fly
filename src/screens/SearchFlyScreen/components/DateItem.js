@@ -10,37 +10,51 @@ const DateItem = ({ title, date, mounth, year, day, click }) => {
         <Text style={styles.textTitle}>{title}</Text>
         <View style={styles.line}></View>
       </View>
-      <TouchableOpacity onPress={click}>
-        <View style={styles.container_two}>
-          <View style={styles.dateStyle}>
-            <Text style={styles.textDate}>{date}</Text>
-          </View>
-          <View style={styles.container_three}>
-            <View style={styles.mounthStyle}>
-              <Text style={styles.textMounth}>{mounth}</Text>
+      {date == "+" && mounth == "DÖNÜŞ EKLE" ? (
+        <TouchableOpacity onPress={click}>
+          <View style={styles.container_two}>
+            <View>
+              <Text style={styles.textDonus}>{date}</Text>
             </View>
-            <View style={styles.yearStyle}>
-              <Text style={styles.textYear}>{year}</Text>
+            <View>
+              <Text style={styles.textDMount}>{mounth}</Text>
             </View>
           </View>
-        </View>
-        <View >
-          <View style={styles.dayStyle}>
-            <Text style={styles.textDay}>{day}</Text>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity onPress={click}>
+          <View style={styles.container_two}>
+            <View>
+              <Text style={styles.textDate}>{date}</Text>
+            </View>
+            <View style={styles.container_three}>
+              <View>
+                <Text style={styles.textMounth}>{mounth}</Text>
+              </View>
+              <View style={styles.yearStyle}>
+                <Text style={styles.textYear}>{year}</Text>
+              </View>
+            </View>
           </View>
-        </View>
-      </TouchableOpacity>
+
+          <View>
+            <View style={styles.dayStyle}>
+              <Text style={styles.textDay}>{day}</Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    borderColor: "blue",
-    borderWidth: 2,
+    // borderColor: "blue",
+    // borderWidth: 2,
     width: "40%",
     padding: 15,
-    marginLeft: '18%',
+    marginLeft: "18%",
     //margin: 5,
     //padding:5,
   },
@@ -57,23 +71,28 @@ const styles = StyleSheet.create({
   container_two: {
     // borderColor: "black",
     // borderWidth: 2,
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    alignSelf: "center",
   },
-//   dateStyle: {
-//     borderColor: "red",
-//     borderWidth: 2,
-//     justifyContent: 'center',
-//     marginLeft: '5%',
-//     width: '60%',
-//     // height: '50%',
-//   },
+  //   dateStyle: {
+  //     borderColor: "red",
+  //     borderWidth: 2,
+  //     justifyContent: 'center',
+  //     marginLeft: '5%',
+  //     width: '60%',
+  //     // height: '50%',
+  //   },
   textDate: {
     fontSize: 40,
     textAlign: "center",
     color: WHITE,
-    fontWeight: 'bold',
+    fontWeight: "bold",
+  },
+  textDonus: {
+    fontSize: 40,
+    textAlign: "center",
+    color: "white",
   },
   mounthStyle: {
     // borderColor: "red",
@@ -84,7 +103,19 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: WHITE,
     justifyContent: "center",
-    fontWeight: 'bold',
+    fontWeight: "bold",
+  },
+  textDMount: {
+    height: 50,
+    width: 60,
+    fontSize: 17,
+    textAlign: "center",
+    color: WHITE,
+    fontWeight: "bold",
+    textAlignVertical: "center",
+    paddingLeft: 3,
+    //  borderColor: "red",
+    // borderWidth: 2,
   },
   yearStyle: {
     // borderColor: "red",
@@ -94,16 +125,15 @@ const styles = StyleSheet.create({
     fontSize: 12,
     textAlign: "center",
     color: WHITE,
-    fontWeight: 'bold',
-
+    fontWeight: "bold",
   },
   container_three: {
     // borderColor: "green",
     // borderWidth: 2,
-    alignItems:'center',
-    flexDirection: 'column',
-    width: '30%',
-    alignSelf: 'center',
+    alignItems: "center",
+    flexDirection: "column",
+    width: "30%",
+    alignSelf: "center",
   },
   dayStyle: {
     // borderColor: "red",
@@ -114,16 +144,15 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: WHITE,
     justifyContent: "center",
-    fontWeight: 'bold',
-
+    fontWeight: "bold",
   },
   line: {
     width: "90%",
     borderBottomColor: "white",
     borderBottomWidth: 1,
     marginHorizontal: 10,
-    marginTop:3,
-    marginBottom:5
+    marginTop: 3,
+    marginBottom: 5,
   },
 });
 

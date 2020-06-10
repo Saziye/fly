@@ -6,7 +6,7 @@ const initialState = {
   numberOfPassenger: "",
   passengerType: "",
   flyType: "",
-  selectedWay: 1,
+  selectedWay: 0,
   isOneWay: "",
   passengers: {
     adult: 1, //initil olarak 1 ver

@@ -41,7 +41,7 @@ class DateRow extends Component {
         "Pazartesi",
         "Salı",
         "Çarşamba",
-        "Preşembe",
+        "Perşembe",
         "Cuma",
         "Cumartesi",
         "Pazar",
@@ -50,20 +50,7 @@ class DateRow extends Component {
       // day: "",
     };
   }
-
-  getDayFunction() {
-    let myDate;
-    if (this.state.dateType === 0) {
-      myDate = this.state.today;
-    } else {
-      myDate = this.props.returnDate;
-    }
-    let day = myDate.substring(0, 2);
-    let month = myDate.substring(3, 5);
-    let year = myDate.substring(6);
-    let myNewDate = new Date(month + "/" + day + "/" + year);
-    this.setState({ day: this.state.days[myNewDate.getDay() - 1] });
-  }
+  
   componentWillReceiveProps(nextProps) {
     console.log(nextProps);
     this.setState({ selectedWay: nextProps.A });
@@ -220,8 +207,8 @@ const styles = StyleSheet.create({
     // marginHorizontal: '10%',
     // height: '40%',
     width: "100%",
-    borderColor: "red",
-    borderWidth: 2,
+    // borderColor: "red",
+    // borderWidth: 2,
   },
 });
 
