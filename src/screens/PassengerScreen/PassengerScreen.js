@@ -46,8 +46,7 @@ class PassengerScreen extends Component {
           size={32}
           color="white"
           onPress={() => {
-            
-            
+
             navigation.goBack();
           }}
         />
@@ -78,8 +77,8 @@ class PassengerScreen extends Component {
     }
     if (
       (type == "adult" || type == "senior") &&
-      (this.props.passengers["infant"] > this.props.passengers["adult"] ||
-        this.props.passengers["infant"] > this.props.passengers["senior"])
+      (passengers["infant"] > passengers["adult"] ||
+        passengers["infant"] > passengers["senior"])
     ) {
       Alert.alert(
         "Bilgilendirme",
@@ -97,6 +96,7 @@ class PassengerScreen extends Component {
       this.setState({ countPassenger: this.state.countPassenger - 1 });
       setTimeout(()=> {
         console.log("Azaldı",this.state.countPassenger);
+        //console.log(this.props.passengers);
       })
     }
     

@@ -32,6 +32,10 @@ class SearchFlyScreen extends Component {
     });
     this.props.setSelectedWay(index);
   };
+  navigateFunction = (screen) => {
+    const { navigation } = this.props;
+    navigation.navigate(screen);
+  };
 
   render() {
     const { selectedIndex } = this.state;
@@ -68,11 +72,9 @@ class SearchFlyScreen extends Component {
                 buttonStyle={styles.buttonSearch}
                 title="UÇUŞ ARA"
                 titleStyle={styles.btnTitleStyle}
-                // onPress={() => {
-                //   console.log("========>");
-                //   console.log(this.props.departureDate);
-                //   console.log(this.props.returnDate);
-                // }}
+                onPress={() => {
+                  this.navigateFunction("SearchResults")
+                }}
               />
             </View>
           </View>
