@@ -3,20 +3,29 @@ import { View, StyleSheet, Text, TouchableOpacity,FlatList,
   ScrollView } from "react-native";
 import ListItem from "./ListItem";
 import { getFlights } from "../../../services/amadeusService";
+import { connect } from "react-redux";
+import {
+  setDepartureDate,
+  setReturnDate,
+  setSelectedWay,
+} from "../../../actions/passengerAction";
 
 class ListRow extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchList: []
+      flyObj: [],
+      flyObjData: [],
     };
   }
 
   componentDidMount() {
-    getFlights("SYD", "BKK", "2020-09-01", "2020-09-05").then((response)=> {
+    getFlights(this.props.originAirport, "ESB", "2020-06-16", "2020-06-19").then((response)=> {
      console.log(response.data);
-     this.setState({searchList: response.data});
+     this.setState({flyObj: response.data});
+    this.setState({flyObjData: response.data.data});
     }); 
+
   }
 
   keyExtractor = (item, index) => index.toString();
@@ -26,14 +35,14 @@ class ListRow extends Component {
       <View style={{alignItems:'center'}} >
         <View style={styles.container_one}>
         <ListItem
-          carrierName={"Pegasus"}
+          carrierName={item.validatingAirlineCodes}
           carrierCode={"PC2092"}
           cabin={"Ekonomi"}
-          departureTime={"17:25"}
-          originAirport={"SAW"}
-          arriveTime={"18:50"}
+          //departureTime={item.itineraries[0].segments[item.itineraries[0].segments.length-1].departure.at}
+          originAirport={item.itineraries[0].segments[0].departure.iataCode}
+         // arriveTime={item.itineraries[0].segments[item.itineraries[0].segments.length-1].arrival.at}
           destinationAirport={"ADA"}
-          segment={"Direkt"}
+          //segment={item.segments.length()}
           hour={"1 sa 25 dk"}
         /> 
         </View>
@@ -42,14 +51,14 @@ class ListRow extends Component {
   );
 
   render() {
-    const {searchList} = this.state;
+    const {flyObjData} = this.state;
 
     return (
 
       <ScrollView>
           <FlatList
             // showsHorizontalScrollIndicator={false}
-            data={searchList}
+            data={flyObjData}
             keyExtractor={this.keyExtractor}
             renderItem={this.flytItem}
           />
@@ -73,4 +82,16 @@ const styles = StyleSheet.create({
   
 });
 
-export default ListRow;
+const mapStateToProps = (state) => {
+  return {
+    departureDate: state.passenger.departureDate,
+    returnDate: state.passenger.returnDate,
+    originAirport: state.passenger.originAirport,
+    destinationAirport: state.passenger.destinationAirport,
+    selectedWay: state.passenger.selectedWay,
+  };
+};
+
+
+export default connect(mapStateToProps)(ListRow);
+

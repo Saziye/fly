@@ -5,6 +5,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { getFlights } from "../../services/amadeusService";
 import ListRow from "./components/ListRow";
 import FlyItem from './components/FlyItem';
+
 class SearchResultsScreen extends Component {
   constructor(props) {
     super(props);
