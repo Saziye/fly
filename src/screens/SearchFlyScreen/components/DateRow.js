@@ -104,9 +104,9 @@ class DateRow extends Component {
               parseInt(
                 new Date(
                   this.props.departureDate.substring(5, 7) +
-                    "/" +
+                    "-" +
                     this.props.departureDate.substring(8, 10) +
-                    "/" +
+                    "-" +
                     this.props.departureDate.substring(0,4)
                 ).getDay() -
                   1 <
@@ -114,9 +114,9 @@ class DateRow extends Component {
                   ? 6
                   : new Date(
                       this.props.departureDate.substring(5, 7) +
-                        "/" +
+                        "-" +
                         this.props.departureDate.substring(8, 10) +
-                        "/" +
+                        "-" +
                         this.props.departureDate.substring(0,4)
                     ).getDay() - 1
               )
@@ -139,9 +139,9 @@ class DateRow extends Component {
                 parseInt(
                   new Date(
                     this.props.returnDate.substring(3, 5) +
-                      "/" +
+                      "-" +
                       this.props.returnDate.substring(0, 2) +
-                      "/" +
+                      "-" +
                       this.props.returnDate.substring(6)
                   ).getDay() -
                     1 <
@@ -149,9 +149,9 @@ class DateRow extends Component {
                     ? 6
                     : new Date(
                         this.props.returnDate.substring(5, 7) +
-                          "/" +
+                          "-" +
                           this.props.returnDate.substring(8, 10) +
-                          "/" +
+                          "-" +
                           this.props.returnDate.substring(0,4)
                       ).getDay() - 1
                 )
@@ -187,7 +187,7 @@ class DateRow extends Component {
           }
           //format={Moment().format('YYYY-MM-DD')}
           // format="DD/MM/YYYY"
-          format="YYYY/MM/DD"
+          format="YYYY-MM-DD"
           showIcon={false}
           customStyles={{
             dateTouchBody: {

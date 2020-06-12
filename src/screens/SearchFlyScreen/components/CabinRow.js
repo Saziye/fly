@@ -81,9 +81,9 @@ class CabinRow extends Component {
             <MaterialCommunityIcons name="car-seat" size={30} color="white" />
           }
           title={
-            this.props.cabinClass === "economy"
+            this.props.cabinClass === "ECONOMY"
               ? "Ekonomi"
-              : this.props.cabinClass === "bussiness"
+              : this.props.cabinClass === "BUSINESS"
               ? "Bussiness"
               : "Tüm Sınıflar"
           }

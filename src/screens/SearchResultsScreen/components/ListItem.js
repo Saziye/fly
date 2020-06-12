@@ -3,7 +3,8 @@ import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
-
+import moment from 'moment';
+import 'moment/locale/tr'
 const ListItem = ({
   carrierName,
   carrierCode,
@@ -14,6 +15,7 @@ const ListItem = ({
   destinationAirport,
   segment,
   hour,
+  day
 }) => {
   return (
     <View style={styles.container}>
@@ -29,7 +31,10 @@ const ListItem = ({
           <Text style={styles.cCodeText}>{carrierCode}</Text>
         </View>
         <View style={styles.cabinStyle}>
-          <Text style={styles.cabinText}>{cabin}</Text>
+          {
+            cabin == 'ECONOMY' ? <Text style={styles.cabinText}>Ekonomi</Text> : cabin == 'BUSINESS' ? <Text style={styles.cabinText}>Bussiness</Text> : <Text style={styles.cabinText}>First</Text>
+          }
+          
         </View>
       </View>
       <View style={styles.container_two}>
@@ -49,12 +54,16 @@ const ListItem = ({
           <MaterialCommunityIcons name="ray-start-arrow" size={30} color="#c1c1c1" style={{alignSelf: 'center'}}/>
           </View>
           <View>
-            <Text style={styles.textSegment}>{segment}</Text>
+            {
+              segment == 0 ? <Text style={styles.textSegment}>Direkt</Text> : <Text style={styles.textSegment}>{segment}</Text>
+            }
           </View>
         </View>
         <View style={styles.container_three}>
           <View>
-            <Text style={styles.textTime}>{arriveTime}</Text>
+          {
+            day == false ? <Text style={styles.textTimeRed}>{arriveTime}</Text>  : <Text style={styles.textTime}>{arriveTime}</Text>
+          }
           </View>
           <View>
             <Text style={styles.textAirport}>{destinationAirport}</Text>
@@ -75,7 +84,7 @@ const styles = StyleSheet.create({
     // borderColor: "red",
     // borderWidth: 1,
     flexDirection: "row",
-    marginRight: 15,
+    //marginRight: 15,
   },
   container_one: {
     // borderColor: "blue",
@@ -127,6 +136,12 @@ const styles = StyleSheet.create({
   },
   textTime: {
     color: "#303030",
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: 'center',
+  },
+  textTimeRed: {
+    color: '#d90910',
     fontSize: 18,
     fontWeight: "bold",
     textAlign: 'center',

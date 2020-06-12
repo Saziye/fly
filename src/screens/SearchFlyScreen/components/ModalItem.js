@@ -19,9 +19,9 @@ class ModalItem extends Component {
     this.state = {
       modalVisible: props.modalVisible,
       cabinMap: [
-        { type: "all", label: "Tüm Sınıflar", value: 0 },
-        { type: "economy", label: "Ekonomi", value: 1 },
-        { type: "bussiness", label: "Bussiness", value: 2 },
+        { type: "", label: "Tüm Sınıflar", value: 0 },
+        { type: "ECONOMY", label: "Ekonomi", value: 1 },
+        { type: "BUSINESS", label: "Bussiness", value: 2 },
       ],
       setModalVisible: (i) => {props.onPress(i)}
     };

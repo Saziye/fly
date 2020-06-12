@@ -8,7 +8,7 @@ const instance = axios.create({
 instance.interceptors.request.use(
   async (config) => {
     // const token = await AsyncStorage.getItem('token');
-    const token = "EwYZps6TRnAFKcSZaL87nEl4G1Q2";
+    const token = "5036QOzRN8Gg8DRIB8RCNAKgptsU";
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -26,10 +26,9 @@ export function getFlights(
   returnDate
 ) {
   // Date Format be like 2020-09-01
-  return instance
-    .get(
-      `/v2/shopping/flight-offers?originLocationCode=${originAirportCode}&destinationLocationCode=${destinationAirportCode}&departureDate=${departureDate}&returnDate=${returnDate}&adults=2&max=1`
-    );
+  return instance.get(
+    `/v2/shopping/flight-offers?${'originLocationCode='+originAirportCode}&destinationLocationCode=${destinationAirportCode}&departureDate=${departureDate}&returnDate=${returnDate}&adults=2&max=5&currencyCode=TRY`
+  );
 }
 
 export default instance;

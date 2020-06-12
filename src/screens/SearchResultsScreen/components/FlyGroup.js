@@ -1,48 +1,70 @@
 import React from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import ListItem from "./ListItem";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 
-const FlyGroup = ({ departureDate, returnDate }) => {
+const FlyGroup = ({
+  dCarrierName,
+  dCarrierCode,
+  dCabin,
+  dDepartureTime,
+  dOriginAirport,
+  dArriveTime,
+  dDestinationAirport,
+  dSegment,
+  dHour,
+  rCarrierName,
+  rCarrierCode,
+  rCabin,
+  rDepartureTime,
+  rOriginAirport,
+  rArriveTime,
+  rDestinationAirport,
+  rSegment,
+  rHour,
+  price,
+  rday,
+  dday
+}) => {
   return (
-    <TouchableOpacity>
-      <View style={styles.container_top}>
-        <View style={styles.container}>
-          <View style={styles.container_one}>
-            <ListItem
-              carrierName={"pegasus"}
-              carrierCode={"PC2092"}
-              cabin={"Ekonomi"}
-              departureTime={"17:25"}
-              originAirport={"SAW"}
-              arriveTime={"18:50"}
-              destinationAirport={"ADA"}
-              segment={"Direkt"}
-              hour={"1 sa 25 dk"}
-            />
-          </View>
-          <View style={{borderWidth:1, borderColor:'#c1c1c1'}}></View>
-          <View>
-            <ListItem
-              carrierName={"pegasus"}
-              carrierCode={"PC2092"}
-              cabin={"Ekonomi"}
-              departureTime={"17:25"}
-              originAirport={"SAW"}
-              arriveTime={"18:50"}
-              destinationAirport={"ADA"}
-              segment={"Direkt"}
-              hour={"1 sa 25 dk"}
-            />
-          </View>
+    <View style={styles.container_top}>
+      <View style={styles.container}>
+        <View style={styles.container_one}>
+          <ListItem
+            carrierName={dCarrierName}
+            carrierCode={dCarrierCode}
+            cabin={dCabin}
+            departureTime={dDepartureTime}
+            originAirport={dOriginAirport}
+            arriveTime={dArriveTime}
+            destinationAirport={dDestinationAirport}
+            segment={dSegment}
+            hour={dHour}
+            day = {dday}
+          />
         </View>
-        <View style={{borderWidth:1, borderColor:'#c1c1c1'}}></View>
-        <View style={styles.priceStyle}>
-          <Text style={styles.textPrice}>257 TL</Text>
+        <View style={{ borderWidth: 1, borderColor: "#c1c1c1" }}></View>
+        <View>
+          <ListItem
+            carrierName={rCarrierName}
+            carrierCode={rCarrierCode}
+            cabin={rCabin}
+            departureTime={rDepartureTime}
+            originAirport={rOriginAirport}
+            arriveTime={rArriveTime}
+            destinationAirport={rDestinationAirport}
+            segment={rSegment}
+            hour={rHour}
+            day= {rday}
+          />
         </View>
       </View>
-    </TouchableOpacity>
+      <View style={{ borderWidth: 1, borderColor: "#c1c1c1" }}></View>
+      <View style={styles.priceStyle}>
+        <Text style={styles.textPrice}>{price} TL</Text>
+      </View>
+    </View>
   );
 };
 
@@ -65,14 +87,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     textAlign: "center",
-    marginHorizontal:8
+    marginHorizontal: 8,
   },
   priceStyle: {
-    borderColor: "blue",
-    borderWidth: 1,
-    flexDirection:'row',
-    alignItems: 'center',
-    marginLeft: 10,
+    flexDirection: "row",
+    alignItems: "center",
+    //marginLeft: 10,
+    // borderColor: 'red',
+    // borderWidth:1,
+    flex:1
   },
 });
 

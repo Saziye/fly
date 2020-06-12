@@ -6,6 +6,7 @@ import { getFlights } from "../../services/amadeusService";
 import ListRow from "./components/ListRow";
 import FlyItem from './components/FlyItem';
 import FlyGroup from './components/FlyGroup';
+import FlyGroupList from './components/FlyGroupList';
 class SearchResultsScreen extends Component {
   constructor(props) {
     super(props);
@@ -52,7 +53,7 @@ class SearchResultsScreen extends Component {
         {/* <FlyItem departureDate={"02 Temmuz 2020 Perşembe"} returnDate= {"02 Temmuz 2020 Perşembe"}/>
         {/* <FlyItem title={"Dönüş"} date= {"02 Temmuz 2020 Perşembe"}/> */}
         {/* <ListRow />  */}
-        <FlyGroup/>
+        <FlyGroupList/>
       </View>
     );
   }
