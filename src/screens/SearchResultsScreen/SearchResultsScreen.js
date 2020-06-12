@@ -1,23 +1,18 @@
 import React, { Component } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import { AntDesign } from "@expo/vector-icons";
-import { getFlights } from "../../services/amadeusService";
-import ListRow from "./components/ListRow";
-import FlyItem from './components/FlyItem';
-import FlyGroup from './components/FlyGroup';
-import FlyGroupList from './components/FlyGroupList';
+import { FontAwesome5 } from "@expo/vector-icons";
+import FlyGroupList from "./components/FlyGroupList";
+import { connect } from "react-redux";
+import moment from 'moment';
+import 'moment/locale/tr'
 class SearchResultsScreen extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-
-    };
+    this.state = {};
   }
-  // componentDidMount() {
-  //   console.log("DID MOUNT FLIGHTS");
-  //   getFlights("SYD", "BKK", "2020-09-01", "2020-09-05", "2");
-  // }
+
   static navigationOptions = ({ navigation }) => ({
     title: "dene",
     headerTitleStyle: {
@@ -50,20 +45,62 @@ class SearchResultsScreen extends Component {
 
     return (
       <View style={styles.container}>
-        {/* <FlyItem departureDate={"02 Temmuz 2020 Perşembe"} returnDate= {"02 Temmuz 2020 Perşembe"}/>
-        {/* <FlyItem title={"Dönüş"} date= {"02 Temmuz 2020 Perşembe"}/> */}
-        {/* <ListRow />  */}
-        <FlyGroupList/>
+        <View style={styles.container_one}>
+          <Text style={styles.textStyle}> {moment(this.props.departureDate).format("DD MMMM YYYY dddd")} </Text>
+          <FontAwesome5
+            name="exchange-alt"
+            size={17}
+            color="#453914"
+            style={styles.iconStyle}
+          />
+          <Text style={styles.text2Style}> {moment(this.props.returnDate).format("DD MMMM YYYY dddd")} </Text>
+        </View>
+        <FlyGroupList />
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        backgroundColor: '#16416c',
-        flex:1,
-    }
+  container: {
+    backgroundColor: "#16416c",
+    flex: 1,
+  },
+  container_one: {
+    backgroundColor: "#ffc501",
+    height: 35,
+    flexDirection: "column",
+    justifyContent: 'center',
+  },
+  textStyle: {
+    alignSelf: "center",
+    fontSize: 14,
+    color: "#453914",
+    fontWeight: "bold",
+    alignSelf: 'flex-start',
+    padding:5,
+  },
+  text2Style: {
+    fontSize: 14,
+    color: "#453914",
+    fontWeight: "bold",
+    position: 'absolute',
+    alignSelf: "flex-end",
+    textAlign: 'center',
+    padding: 5,
+  },
+  iconStyle: {
+    alignSelf: 'center',
+    position: 'absolute',
+  }, 
 });
 
-export default SearchResultsScreen;
+const mapStateToProps = (state) => {
+  return {
+    departureDate: state.passenger.departureDate,
+    returnDate: state.passenger.returnDate,
+  };
+};
+
+
+export default connect(mapStateToProps)(SearchResultsScreen);

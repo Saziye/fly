@@ -25,7 +25,9 @@ const FlyGroup = ({
   rHour,
   price,
   rday,
-  dday
+  dday,
+  dicon,
+  ricon
 }) => {
   return (
     <View style={styles.container_top}>
@@ -42,6 +44,7 @@ const FlyGroup = ({
             segment={dSegment}
             hour={dHour}
             day = {dday}
+            icon={dicon}
           />
         </View>
         <View style={{ borderWidth: 1, borderColor: "#c1c1c1" }}></View>
@@ -57,6 +60,7 @@ const FlyGroup = ({
             segment={rSegment}
             hour={rHour}
             day= {rday}
+            icon={ricon}
           />
         </View>
       </View>

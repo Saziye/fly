@@ -1,10 +1,10 @@
 import React from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
-import { Ionicons } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons';
-import moment from 'moment';
-import 'moment/locale/tr'
+import { View, StyleSheet, Text, TouchableOpacity , Image} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
+import moment from "moment";
+import "moment/locale/tr";
 const ListItem = ({
   carrierName,
   carrierCode,
@@ -15,15 +15,22 @@ const ListItem = ({
   destinationAirport,
   segment,
   hour,
-  day
+  day,
+  icon,
 }) => {
   return (
     <View style={styles.container}>
       <View style={styles.container_one}>
-          <View>
-          <Ionicons name="ios-airplane" size={35
-        } color="#f9c40c" style={{alignSelf:'center'}}/>
-          </View>
+        <View>
+          <Image
+            style={styles.logo}
+            source={{
+              uri:
+                'https://res.cloudinary.com/turna/image/upload/q_auto,f_auto/w_30/Images/Flight/Airlines/'+'TK'+'.png',
+            }}
+          />
+          {icon}
+        </View>
         <View style={styles.cNameStyle}>
           <Text style={styles.cNameText}>{carrierName}</Text>
         </View>
@@ -31,10 +38,13 @@ const ListItem = ({
           <Text style={styles.cCodeText}>{carrierCode}</Text>
         </View>
         <View style={styles.cabinStyle}>
-          {
-            cabin == 'ECONOMY' ? <Text style={styles.cabinText}>Ekonomi</Text> : cabin == 'BUSINESS' ? <Text style={styles.cabinText}>Bussiness</Text> : <Text style={styles.cabinText}>First</Text>
-          }
-          
+          {cabin == "ECONOMY" ? (
+            <Text style={styles.cabinText}>Ekonomi</Text>
+          ) : cabin == "BUSINESS" ? (
+            <Text style={styles.cabinText}>Bussiness</Text>
+          ) : (
+            <Text style={styles.cabinText}>First</Text>
+          )}
         </View>
       </View>
       <View style={styles.container_two}>
@@ -48,22 +58,31 @@ const ListItem = ({
         </View>
         <View style={styles.container_three}>
           <View>
-            <Text  style={styles.textHour}>{hour}</Text>
+            <Text style={styles.textHour}>{hour}</Text>
           </View>
-          <View style={{width:70, height:30}}>
-          <MaterialCommunityIcons name="ray-start-arrow" size={30} color="#c1c1c1" style={{alignSelf: 'center'}}/>
+          <View style={{ width: 70, height: 30 }}>
+            <MaterialCommunityIcons
+              name="ray-start-arrow"
+              size={30}
+              color="#c1c1c1"
+              style={{ alignSelf: "center" }}
+            />
           </View>
           <View>
-            {
-              segment == 0 ? <Text style={styles.textSegment}>Direkt</Text> : <Text style={styles.textSegment}>{segment}</Text>
-            }
+            {segment == 0 ? (
+              <Text style={styles.textSegment}>Direkt</Text>
+            ) : (
+              <Text style={styles.textSegment}>{segment}</Text>
+            )}
           </View>
         </View>
         <View style={styles.container_three}>
           <View>
-          {
-            day == false ? <Text style={styles.textTimeRed}>{arriveTime}</Text>  : <Text style={styles.textTime}>{arriveTime}</Text>
-          }
+            {day == false ? (
+              <Text style={styles.textTimeRed}>{arriveTime}</Text>
+            ) : (
+              <Text style={styles.textTime}>{arriveTime}</Text>
+            )}
           </View>
           <View>
             <Text style={styles.textAirport}>{destinationAirport}</Text>
@@ -74,7 +93,6 @@ const ListItem = ({
         <Entypo name="flow-line" size={24} color="#c1c1c1" />
           <Text style={styles.textPrice}>257 TL</Text>
         </View> */}
-        
     </View>
   );
 };
@@ -100,27 +118,27 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     //flex:1
   },
-//   cNameStyle: {
-//     borderColor: "black",
-//     borderWidth: 1,
-//   },
+  //   cNameStyle: {
+  //     borderColor: "black",
+  //     borderWidth: 1,
+  //   },
   cNameText: {
     color: "#383838",
     fontSize: 14,
   },
-//   cCodeStyle: {
-//     borderColor: "black",
-//     borderWidth: 1,
-//   },
+  //   cCodeStyle: {
+  //     borderColor: "black",
+  //     borderWidth: 1,
+  //   },
   cCodeText: {
     color: "#303030",
     fontSize: 14,
     fontWeight: "bold",
   },
-//   cabinStyle: {
-//     borderColor: "black",
-//     borderWidth: 1,
-//   },
+  //   cabinStyle: {
+  //     borderColor: "black",
+  //     borderWidth: 1,
+  //   },
   cabinText: {
     color: "#383838",
     fontSize: 14,
@@ -130,7 +148,7 @@ const styles = StyleSheet.create({
     // borderColor: "red",
     flexDirection: "column",
     marginHorizontal: 5,
-    justifyContent: 'center',
+    justifyContent: "center",
 
     // flex:1
   },
@@ -138,45 +156,52 @@ const styles = StyleSheet.create({
     color: "#303030",
     fontSize: 18,
     fontWeight: "bold",
-    textAlign: 'center',
+    textAlign: "center",
   },
   textTimeRed: {
-    color: '#d90910',
+    color: "#d90910",
     fontSize: 18,
     fontWeight: "bold",
-    textAlign: 'center',
+    textAlign: "center",
   },
   textAirport: {
     color: "#383838",
     fontSize: 16,
-    textAlign:'center',
+    textAlign: "center",
   },
   textSegment: {
     color: "#383838",
     fontSize: 12,
-    textAlign:'center',
+    textAlign: "center",
   },
   textHour: {
     color: "#303030",
     fontSize: 12,
     fontWeight: "bold",
-    textAlign: 'center',
+    textAlign: "center",
   },
   textPrice: {
     color: "#303030",
     fontSize: 18,
     fontWeight: "bold",
     textAlign: "center",
-    marginHorizontal:8
+    marginHorizontal: 8,
   },
   priceStyle: {
     // borderColor: "blue",
     // borderWidth: 1,
     justifyContent: "center",
-    padding:10,
-    flexDirection:'row',
-    alignItems: 'center',
+    padding: 10,
+    flexDirection: "row",
+    alignItems: "center",
   },
+  logo: {
+    borderWidth:1,
+    borderColor: 'red',
+    width:30,
+    height:30,
+    alignSelf:'center',
+  }
 });
 
 export default ListItem;

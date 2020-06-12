@@ -68,6 +68,8 @@ class FlyGroupList extends Component {
         price={item.price.total}
         dday= {moment(item.itineraries[0].segments[item.itineraries[0].segments.length-1].arrival.at).format('D') == (moment(item.itineraries[0].segments[0].departure.at).format('D'))}
         rday = {moment(item.itineraries[1].segments[item.itineraries[1].segments.length-1].arrival.at).format('D') == (moment(item.itineraries[1].segments[0].departure.at).format('D'))}
+        ricon={item.validatingAirlineCodes}
+        dicon= {item.validatingAirlineCodes}
         /> 
       </View>
     </TouchableOpacity>
