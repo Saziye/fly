@@ -20,7 +20,9 @@ class ListRow extends Component {
   }
 
   componentDidMount() {
-    getFlights(this.props.originAirport, "ESB", "2020-06-16", "2020-06-19").then((response)=> {
+    console.log("Store object");
+    console.log(this.props.store);
+    getFlights("IST", "ESB", "2020-06-16", "2020-06-19").then((response)=> {
      console.log(response.data);
      this.setState({flyObj: response.data});
     this.setState({flyObjData: response.data.data});
@@ -84,6 +86,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
+    store: state.passenger,
     departureDate: state.passenger.departureDate,
     returnDate: state.passenger.returnDate,
     originAirport: state.passenger.originAirport,

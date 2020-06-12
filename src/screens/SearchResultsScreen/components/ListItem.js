@@ -61,10 +61,10 @@ const ListItem = ({
           </View>
         </View>
       </View>
-      <View style={styles.priceStyle}>
+      {/* <View style={styles.priceStyle}>
         <Entypo name="flow-line" size={24} color="#c1c1c1" />
           <Text style={styles.textPrice}>257 TL</Text>
-        </View>
+        </View> */}
         
     </View>
   );
@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
     // borderColor: "red",
     // borderWidth: 1,
     flexDirection: "row",
+    marginRight: 15,
   },
   container_one: {
     // borderColor: "blue",

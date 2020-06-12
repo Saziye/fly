@@ -8,7 +8,7 @@ const instance = axios.create({
 instance.interceptors.request.use(
   async (config) => {
     // const token = await AsyncStorage.getItem('token');
-    const token = "Bpl7BRsUM5RpLaDqCO5p4FPUrSQ5";
+    const token = "EwYZps6TRnAFKcSZaL87nEl4G1Q2";
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -31,16 +31,5 @@ export function getFlights(
       `/v2/shopping/flight-offers?originLocationCode=${originAirportCode}&destinationLocationCode=${destinationAirportCode}&departureDate=${departureDate}&returnDate=${returnDate}&adults=2&max=1`
     );
 }
-
-// const getFlights = async function (originAirportCode,
-//   destinationAirportCode,
-//   departureDate,
-//   returnDate) {
-//     return await instance.get(`/v2/shopping/flight-offers?originLocationCode=${originAirportCode}&destinationLocationCode=${destinationAirportCode}&departureDate=${departureDate}&returnDate=${returnDate}&adults=2&max=5`)
-//     .then((response)=> {
-//       response.json().data;
-//     });
-//   }
-
 
 export default instance;

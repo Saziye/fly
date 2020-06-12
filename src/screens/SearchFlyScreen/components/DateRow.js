@@ -57,14 +57,9 @@ class DateRow extends Component {
 
   componentDidMount() {
     const date = new Date();
-    const today =
-      (date.getDate() > 9 ? date.getDate() : "0" + date.getDate()) +
-      "/" +
-      (date.getMonth() > 8
-        ? date.getMonth() + 1
-        : "0" + (date.getMonth() + 1)) +
-      "/" +
-      date.getFullYear();
+
+    const today = date.getFullYear() + "-" + (date.getMonth() > 8 ? date.getMonth() + 1 : "0" + (date.getMonth() + 1)) + "-" + (date.getDate() > 9 ? date.getDate() : "0" + date.getDate()) ;
+    //console.log("TODAY DATE:", today);
     this.setState({ today: today });
     this.setState({ minReturnDate: today });
     this.props.setDepartureDate(today);
@@ -97,32 +92,32 @@ class DateRow extends Component {
       <View style={styles.container_two}>
         <DateItem
           title={"Gidiş Tarihi"}
-          date={this.props.departureDate.substring(0, 2)}
+          date={this.props.departureDate.substring(8, 10)}
           mounth={
             this.state.months[
-              parseInt(this.props.departureDate.substring(3, 5)) - 1
+              parseInt(this.props.departureDate.substring(5, 7)) - 1
             ]
           }
-          year={this.props.departureDate.substring(6, 10)}
+          year={this.props.departureDate.substring(0, 4)}
           day={
             this.state.days[
               parseInt(
                 new Date(
-                  this.props.departureDate.substring(3, 5) +
+                  this.props.departureDate.substring(5, 7) +
                     "/" +
-                    this.props.departureDate.substring(0, 2) +
+                    this.props.departureDate.substring(8, 10) +
                     "/" +
-                    this.props.departureDate.substring(6)
+                    this.props.departureDate.substring(0,4)
                 ).getDay() -
                   1 <
                   0
                   ? 6
                   : new Date(
-                      this.props.departureDate.substring(3, 5) +
+                      this.props.departureDate.substring(5, 7) +
                         "/" +
-                        this.props.departureDate.substring(0, 2) +
+                        this.props.departureDate.substring(8, 10) +
                         "/" +
-                        this.props.departureDate.substring(6)
+                        this.props.departureDate.substring(0,4)
                     ).getDay() - 1
               )
             ]
@@ -132,13 +127,13 @@ class DateRow extends Component {
         {selectedWay === 1 ? (
           <DateItem
             title={"Dönüş Tarihi"}
-            date={this.props.returnDate.substring(0, 2)}
+            date={this.props.returnDate.substring(8, 10)}
             mounth={
               this.state.months[
-                parseInt(this.props.returnDate.substring(3, 5)) - 1
+                parseInt(this.props.returnDate.substring(5, 7)) - 1
               ]
             }
-            year={this.props.returnDate.substring(6, 10)}
+            year={this.props.returnDate.substring(0,4)}
             day={
               this.state.days[
                 parseInt(
@@ -153,11 +148,11 @@ class DateRow extends Component {
                     0
                     ? 6
                     : new Date(
-                        this.props.returnDate.substring(3, 5) +
+                        this.props.returnDate.substring(5, 7) +
                           "/" +
-                          this.props.returnDate.substring(0, 2) +
+                          this.props.returnDate.substring(8, 10) +
                           "/" +
-                          this.props.returnDate.substring(6)
+                          this.props.returnDate.substring(0,4)
                       ).getDay() - 1
                 )
               ]
@@ -191,7 +186,8 @@ class DateRow extends Component {
               : this.state.minReturnDate
           }
           //format={Moment().format('YYYY-MM-DD')}
-          format="DD/MM/YYYY"
+          // format="DD/MM/YYYY"
+          format="YYYY/MM/DD"
           showIcon={false}
           customStyles={{
             dateTouchBody: {
