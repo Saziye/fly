@@ -7,6 +7,7 @@ import FlyGroupList from "./components/FlyGroupList";
 import { connect } from "react-redux";
 import moment from 'moment';
 import 'moment/locale/tr'
+
 class SearchResultsScreen extends Component {
   constructor(props) {
     super(props);
@@ -99,6 +100,8 @@ const mapStateToProps = (state) => {
   return {
     departureDate: state.passenger.departureDate,
     returnDate: state.passenger.returnDate,
+    originAirport: state.passenger.originAirport,
+    destinationAirport: state.passenger.destinationAirport,
   };
 };
 

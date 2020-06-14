@@ -26,10 +26,9 @@ const ListItem = ({
             style={styles.logo}
             source={{
               uri:
-                'https://res.cloudinary.com/turna/image/upload/q_auto,f_auto/w_30/Images/Flight/Airlines/'+'TK'+'.png',
+                `https://res.cloudinary.com/turna/image/upload/q_auto,f_auto/w_30/Images/Flight/Airlines/${icon}.png`,
             }}
           />
-          {icon}
         </View>
         <View style={styles.cNameStyle}>
           <Text style={styles.cNameText}>{carrierName}</Text>
@@ -118,10 +117,11 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     //flex:1
   },
-  //   cNameStyle: {
-  //     borderColor: "black",
-  //     borderWidth: 1,
-  //   },
+    cNameStyle: {
+      // borderColor: "black",
+      // borderWidth: 1,
+      width: 70,
+    },
   cNameText: {
     color: "#383838",
     fontSize: 14,
@@ -196,11 +196,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logo: {
-    borderWidth:1,
-    borderColor: 'red',
+    // borderWidth:1,
+    // borderColor: 'red',
     width:30,
     height:30,
-    alignSelf:'center',
+    alignSelf:'flex-start',
   }
 });
 

@@ -3,6 +3,7 @@ import {createStackNavigator} from 'react-navigation-stack';
 import {
   createAppContainer,
 } from 'react-navigation';
+import {createBottomTabNavigator} from 'react-navigation-tabs';
 import SearchScreen2 from './src/screens/SearchScreen/SearchScreen2';
 import AirportsListScreen from './src/screens/AirportsListScreen/AirportsListScreen';
 import SearchFlyScreen from './src/screens/SearchFlyScreen/SearchFlyScreen';
