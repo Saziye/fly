@@ -1,94 +1,126 @@
-import React, { Component } from "react";
-import { View, StyleSheet, Text } from "react-native";
-import { Tabs, Tab, Icon } from "react-native-elements";
-import Airline from './components/Airline';
+import * as React from 'react';
+import { View, StyleSheet, Dimensions,Text } from 'react-native';
+import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { AntDesign } from "@expo/vector-icons";
+import { Entypo } from '@expo/vector-icons';
 
-class FilterScreen extends Component {
-  State;
-  constructor(props) {
-    super(props);
-    this.state = {
-        selectedTab: 'profile'
-    };
-  }
+const ClockRoute = () => (
+  <View style={[styles.scene, { backgroundColor: '#ff4081' }]} />
+);
+const AirWayRoute = () => (
+  <View style={[styles.scene, { backgroundColor: '#673ab7' }]} />
+);
+const AirLineRoute = () => (
+  <View style={[styles.scene, { backgroundColor: '#673ab7' }]} />
+);
+const TransferRoute = () => (
+  <View style={[styles.scene, { backgroundColor: '#673ab7' }]} />
+);
+const ClassRoute = () => (
+  <View style={[styles.scene, { backgroundColor: '#673ab7' }]} />
+);
+const PriceRoute = () => (
+  <View style={[styles.scene, { backgroundColor: '#673ab7' }]} />
+);
 
-  static navigationOptions = ({ navigation }) => ({
-    title: "Filtreler",
-    headerTitleStyle: {
-      fontWeight: "bold",
-      fontSize: 18,
-      alignSelf: "center",
-      textAlign: "center",
-    },
-    headerTintColor: "white",
-    headerStyle: {
-      backgroundColor: "#16416c",
-    },
-    headerRight: (
-      <View>
-        <Text style={styles.hStyle}>Uygula</Text>
-      </View>
-    ),
-    headerLeft: (
-      <View style={{ marginLeft: 15 }}>
-        <AntDesign
-          name="left"
-          size={32}
-          color="white"
-          onPress={() => {
-            navigation.goBack();
-          }}
-        />
-      </View>
-    ),
+
+//const initialLayout = { width: Dimensions.get('window').width };
+
+export default function FilterScreen() {
+  const [index, setIndex] = React.useState(0);
+  const [routes] = React.useState([
+    { key: 'clock', title: 'Saat/Süre', icon: 'clock'},
+    { key: 'airway', title: 'Havayolu', icon: 'globe' },
+    { key: 'airline', title: 'Havalimanı', icon: 'paper-plane' },
+    { key: 'transfer', title: 'Aktarma', icon: '' },
+    { key: 'class', title: 'Sınıf', icon: 'ticket' },
+    { key: 'price', title: 'Fiyat',icon: 'price-tag' },
+  ]);
+
+  const renderScene = SceneMap({
+    clock: ClockRoute,
+    airway: AirWayRoute,
+    airline: AirLineRoute,
+    transfer: TransferRoute,
+    class: ClassRoute,
+    price: PriceRoute,
   });
 
-  changeTab (selectedTab) {
-    this.setState({selectedTab})
-  }
+  const renderIcon = ({ route}) => (
+    <Entypo name={route.icon} size={24} color={'#343434'} />
+  );
+  const renderTabBar = props => (
+    <TabBar
+    {...props}
+      indicatorStyle={styles.indicator}
+      //scrollEnabled
+      style={styles.tabbar}
+      labelStyle={styles.label}
+      renderIcon= {renderIcon}
+      tabStyle={styles.tab}
+      activeColor= {'#ffc501'}
+    />
+  );
 
-  render() {
-    const { selectedTab } = this.state;
-
-    return (
-        <Tabs>
-        {/* <Tab
-          titleStyle={{fontWeight: 'bold', fontSize: 10}}
-          selectedTitleStyle={{marginTop: -1, marginBottom: 6}}
-          selected={selectedTab === 'feed'}
-          title={selectedTab === 'feed' ? 'FEED' : null}
-          renderIcon={() => <Icon containerStyle={{justifyContent: 'center', alignItems: 'center', marginTop: 12}} color={'#5e6977'} name='whatshot' size={33} />}
-          renderSelectedIcon={() => <Icon color={'#6296f9'} name='whatshot' size={30} />}
-          onPress={() => this.changeTab('feed')}>
-          <Airline/>
-         
-        </Tab>
-        <Tab
-          titleStyle={{fontWeight: 'bold', fontSize: 10}}
-          selectedTitleStyle={{marginTop: -1, marginBottom: 6}}
-          selected={selectedTab === 'profile'}
-          title={selectedTab === 'profile' ? 'PROFILE' : null}
-          renderIcon={() => <Icon containerStyle={{justifyContent: 'center', alignItems: 'center', marginTop: 12}} color={'#5e6977'} name='person' size={33} />}
-          renderSelectedIcon={() => <Icon color={'#6296f9'} name='person' size={30} />}
-          onPress={() => this.changeTab('profile')}>
-          <Airline/>
-        </Tab> */}
-
-      </Tabs>
-    );
-  }
+  return (
+    <TabView
+      navigationState={{ index, routes }}
+      renderScene={renderScene}
+      onIndexChange={setIndex}
+      //initialLayout={initialLayout}
+      renderTabBar= {renderTabBar}
+    />
+  );
 }
-
-const styles = StyleSheet.create({
-  hStyle: {
-    color: "white",
-    marginRight: 15,
+FilterScreen.navigationOptions = ({ navigation }) => ({
+  title: 'Filtreler',
+  headerTitleStyle: {
     fontWeight: "bold",
-    fontSize: 14,
+    fontSize: 18,
     alignSelf: "center",
     textAlign: "center",
   },
+  headerTintColor: "white",
+  headerStyle: {
+    backgroundColor: "#16416c",
+  },
+  headerRight:(
+    <Text style= {{color: 'white',fontSize: 14,
+    alignSelf: "center",
+    textAlign: "center", fontWeight: "bold", marginRight: 15}}>Uygula</Text>
+  ),
+  headerLeft: (
+    <View style={{ marginLeft: 15 }}>
+      <AntDesign
+        name="left"
+        size={32}
+        color="white"
+        onPress={() => {
+          navigation.goBack();
+        }}
+      />
+    </View>
+  ),
 });
-
-export default FilterScreen;
+const styles = StyleSheet.create({
+  scene: {
+    flex: 1,
+  },
+  tabbar: {
+    backgroundColor: '#eaeaea',
+    borderColor: 'red',
+    borderWidth:1
+  },
+  label: {
+    color: '#343434',
+    fontSize: 12,
+    textAlign: 'center',
+  },
+  tab: {
+    borderColor: 'blue',
+    borderWidth:1,
+  },
+  indicator: {
+    backgroundColor: '#ffc501',
+  }
+});

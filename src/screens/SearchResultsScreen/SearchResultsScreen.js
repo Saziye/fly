@@ -8,7 +8,8 @@ import { connect } from "react-redux";
 import moment from "moment";
 import "moment/locale/tr";
 import { MaterialIcons } from "@expo/vector-icons";
-import { Feather } from '@expo/vector-icons';
+import { Feather } from "@expo/vector-icons";
+
 class SearchResultsScreen extends Component {
   constructor(props) {
     super(props);
@@ -16,7 +17,19 @@ class SearchResultsScreen extends Component {
   }
 
   static navigationOptions = ({ navigation }) => ({
-    title: "dene",
+    title: (
+     <>
+        <Text style={{ color: "white" }}>aaaa</Text>
+        <FontAwesome5
+            name="exchange-alt"
+            size={17}
+            color="#ffc501"
+            //style={{}}
+          />
+        <Text style={{ color: "white" }}>bbbb</Text>
+      </> 
+    
+    ),
     headerTitleStyle: {
       fontWeight: "bold",
       fontSize: 18,
@@ -47,7 +60,6 @@ class SearchResultsScreen extends Component {
     navigation.navigate(screen);
   };
 
-
   render() {
     const {} = this.state;
 
@@ -71,20 +83,26 @@ class SearchResultsScreen extends Component {
         </View>
         <FlyGroupList />
         <View style={styles.filterContainer}>
-          <TouchableOpacity style={styles.sortStyle} onPress= {()=> this.navigateFunction("SortScreen")}>
+          <TouchableOpacity
+            style={styles.sortStyle}
+            onPress={() => this.navigateFunction("SortScreen")}
+          >
             <MaterialIcons name="sort" size={30} color="white" />
             <Text style={styles.sortText}>Sırala</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.sortStyle} onPress= {()=> this.navigateFunction("FilterScreen")}>
-          <Feather name="filter" size={30} color="white" />
+          <TouchableOpacity
+            style={styles.sortStyle}
+            onPress={() => this.navigateFunction("FilterScreen")}
+          >
+            <Feather name="filter" size={30} color="white" />
             <Text style={styles.sortText}>Filtrele</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.sortStyle}>
-          <Feather name="bell" size={30} color="white" />
+            <Feather name="bell" size={30} color="white" />
             <Text style={styles.sortText}>Fiyat Alarmı</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.lastStyle}>
-          <Feather name="share" size={30} color="white" />
+            <Feather name="share" size={30} color="white" />
             <Text style={styles.sortText}>Paylaş</Text>
           </TouchableOpacity>
         </View>
@@ -135,23 +153,23 @@ const styles = StyleSheet.create({
   sortStyle: {
     // borderColor: "blue",
     // borderWidth: 1,
-    width: '25%',
-    alignItems: 'center',
+    width: "25%",
+    alignItems: "center",
     marginVertical: 10,
-    borderRightColor: '#6e6e6c',
-    borderRightWidth:3
+    borderRightColor: "#6e6e6c",
+    borderRightWidth: 3,
   },
   lastStyle: {
     // borderColor: "blue",
     // borderWidth: 1,
-    width: '25%',
-    alignItems: 'center',
+    width: "25%",
+    alignItems: "center",
     marginVertical: 10,
   },
   sortText: {
     color: "white",
     fontSize: 14,
-    paddingTop:3
+    paddingTop: 3,
   },
 });
 
