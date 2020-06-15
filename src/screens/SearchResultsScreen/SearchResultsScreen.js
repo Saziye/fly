@@ -9,13 +9,16 @@ import moment from "moment";
 import "moment/locale/tr";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
+import ModalItem from './components/ModalItem';
 
 class SearchResultsScreen extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      modalVisible: false,
+    };
   }
-
+  
   static navigationOptions = ({ navigation }) => ({
     title: (
      <>
@@ -60,8 +63,12 @@ class SearchResultsScreen extends Component {
     navigation.navigate(screen);
   };
 
+  setModalVisible = (visible) => {
+    this.setState({ modalVisible: visible });
+  };
+
   render() {
-    const {} = this.state;
+    const {modalVisible} = this.state;
 
     return (
       <View style={styles.container}>
@@ -85,10 +92,16 @@ class SearchResultsScreen extends Component {
         <View style={styles.filterContainer}>
           <TouchableOpacity
             style={styles.sortStyle}
-            onPress={() => this.navigateFunction("SortScreen")}
+            onPress={()=> {this.setModalVisible(true);}}
           >
             <MaterialIcons name="sort" size={30} color="white" />
             <Text style={styles.sortText}>Sırala</Text>
+            <ModalItem
+          modalVisible={modalVisible}
+          onPress={(i) => {
+            this.setModalVisible(i);
+          }}
+        />
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.sortStyle}

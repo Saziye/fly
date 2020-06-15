@@ -1,18 +1,32 @@
 import React, { Component } from "react";
 import { View, StyleSheet, Text } from "react-native";
+//import ModalItem from './ModalItem';
 
 class SortScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        
+      modalVisible: false,
     };
   }
 
-  render() {
-    const { } = this.state;
+  setModalVisible = (visible) => {
+    this.setState({ modalVisible: visible });
+  };
 
-    return <View></View>;
+  render() {
+    const {modalVisible } = this.state;
+
+    return (
+    <View>
+      {/* <ModalItem
+          modalVisible={modalVisible}
+          onPress={(i) => {
+            this.setModalVisible(i);
+          }}
+        /> */}
+    </View>
+    );
   }
 }
 
