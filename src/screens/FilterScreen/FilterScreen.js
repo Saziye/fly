@@ -3,24 +3,30 @@ import { View, StyleSheet, Dimensions,Text } from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { AntDesign } from "@expo/vector-icons";
 import { Entypo } from '@expo/vector-icons';
+import Airline from './components/Airline';
+import Airway from './components/Airway';
+import Class from './components/Class';
+import Clock from './components/Clock';
+import Price from './components/Price';
+import Transfer from './components/Transfer';
 
 const ClockRoute = () => (
-  <View style={[styles.scene, { backgroundColor: '#ff4081' }]} />
+ <Clock/>
 );
 const AirWayRoute = () => (
-  <View style={[styles.scene, { backgroundColor: '#673ab7' }]} />
+  <Airway/>
 );
 const AirLineRoute = () => (
-  <View style={[styles.scene, { backgroundColor: '#673ab7' }]} />
+  <Airline/>
 );
 const TransferRoute = () => (
-  <View style={[styles.scene, { backgroundColor: '#673ab7' }]} />
+  <Transfer/>
 );
 const ClassRoute = () => (
-  <View style={[styles.scene, { backgroundColor: '#673ab7' }]} />
+  <Class/>
 );
 const PriceRoute = () => (
-  <View style={[styles.scene, { backgroundColor: '#673ab7' }]} />
+  <Price />
 );
 
 
@@ -59,6 +65,7 @@ export default function FilterScreen() {
       renderIcon= {renderIcon}
       tabStyle={styles.tab}
       activeColor= {'#ffc501'}
+      getLabelText= {({ route }) => route.title}
     />
   );
 
@@ -108,17 +115,19 @@ const styles = StyleSheet.create({
   },
   tabbar: {
     backgroundColor: '#eaeaea',
-    borderColor: 'red',
-    borderWidth:1
+    // borderColor: 'red',
+    // borderWidth:1,
+    
   },
   label: {
     color: '#343434',
-    fontSize: 12,
+    fontSize: 10,
     textAlign: 'center',
+    
   },
   tab: {
-    borderColor: 'blue',
-    borderWidth:1,
+    borderRightColor: 'white',
+    borderRightWidth:3
   },
   indicator: {
     backgroundColor: '#ffc501',
