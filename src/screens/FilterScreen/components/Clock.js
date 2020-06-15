@@ -2,13 +2,14 @@ import React, { Component } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { Slider } from "react-native-elements";
 
+
 class Clock extends Component {
   constructor(props) {
     super(props);
-    this.state = {value: 15};
+    this.state = { value: 15 };
   }
   render() {
-    const {value} = this.state;
+    const { value } = this.state;
 
     return (
       <View style={styles.container}>
@@ -18,15 +19,15 @@ class Clock extends Component {
         <View>
           <Slider
             value={value}
-            minimumValue= {10}
-            maximumValue= {20}
-            minimumTrackTintColor={'#3f3f3f'}
-            maximumTrackTintColor={'#ffc501'}
-            thumbTintColor= {'#ffc501'}
-            trackStyle={{borderColor: '#3f3f3f'}}
+            minimumValue={10}
+            maximumValue={20}
+            minimumTrackTintColor={"#3f3f3f"}
+            maximumTrackTintColor={"#ffc501"}
+            thumbTintColor={"#ffc501"}
+            trackStyle={{ borderColor: "#3f3f3f" }}
             onValueChange={(value) => this.setState({ value })}
           />
-           <Text>Value: {this.state.value}</Text>
+          <Text>Value: {this.state.value}</Text>
         </View>
         <View style={styles.container_one}>
           <Text style={styles.textStyle}>DÖNÜŞ</Text>
