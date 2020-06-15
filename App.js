@@ -1,27 +1,20 @@
-import React from 'react';
-import {createStackNavigator} from 'react-navigation-stack';
-import {
-  createAppContainer,
-} from 'react-navigation';
-import {createBottomTabNavigator} from 'react-navigation-tabs';
-import SearchScreen2 from './src/screens/SearchScreen/SearchScreen2';
-import AirportsListScreen from './src/screens/AirportsListScreen/AirportsListScreen';
-import SearchFlyScreen from './src/screens/SearchFlyScreen/SearchFlyScreen';
-import PassengerScreen from './src/screens/PassengerScreen/PassengerScreen';
-import SearchResultsScreen from './src/screens/SearchResultsScreen/SearchResultsScreen';
+import React from "react";
+import { createStackNavigator } from "react-navigation-stack";
+import { createAppContainer } from "react-navigation";
+// import {createBottomTabNavigator} from 'react-navigation-tabs';
+import SearchScreen2 from "./src/screens/SearchScreen/SearchScreen2";
+import AirportsListScreen from "./src/screens/AirportsListScreen/AirportsListScreen";
+import SearchFlyScreen from "./src/screens/SearchFlyScreen/SearchFlyScreen";
+import PassengerScreen from "./src/screens/PassengerScreen/PassengerScreen";
+import SearchResultsScreen from "./src/screens/SearchResultsScreen/SearchResultsScreen";
+import FilterScreen from "./src/screens/FilterScreen/FilterScreen";
+import SortScreen from "./src/screens/SortScreen/SortScreen";
 import thunkMiddleware from "redux-thunk";
-console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
+console.ignoredYellowBox = ["Warning: Each", "Warning: Failed"];
 console.disableYellowBox = true;
-import {
-  Provider
-} from "react-redux";
-import {
-  createStore,
-  applyMiddleware,
-  compose
-} from "redux";
+import { Provider } from "react-redux";
+import { createStore, applyMiddleware, compose } from "redux";
 import reducers from "./src/reducers";
-
 
 const store = createStore(
   reducers,
@@ -33,24 +26,28 @@ const store = createStore(
   )
 );
 console.log(store.getState());
-const switchNavigator = createStackNavigator({
+const switchNavigator = createStackNavigator(
+  {
     Search2: SearchScreen2,
-    AirportsList: AirportsListScreen, 
+    AirportsList: AirportsListScreen,
     SearchFly: SearchFlyScreen,
     Passenger: PassengerScreen,
+
     SearchResults: SearchResultsScreen,
-},
-{
-  initialRouteName: 'SearchFly',
-}
+    FilterScreen: FilterScreen,
+    SortScreen: SortScreen,
+  },
+  {
+    initialRouteName: "SearchFly",
+  }
 );
 
-const App =  createAppContainer(switchNavigator);
+const App = createAppContainer(switchNavigator);
 
 export default () => {
   return (
     <Provider store={store}>
-      <App/>
+      <App />
     </Provider>
   );
 };
