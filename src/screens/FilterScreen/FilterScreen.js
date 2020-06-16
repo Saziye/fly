@@ -35,10 +35,10 @@ const PriceRoute = () => (
 export default function FilterScreen() {
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
+    { key: 'transfer', title: 'Aktarma', icon: 'swap' },
     { key: 'clock', title: 'Saat/Süre', icon: 'clock'},
     { key: 'airway', title: 'Havayolu', icon: 'globe' },
     { key: 'airline', title: 'Havalimanı', icon: 'paper-plane' },
-    { key: 'transfer', title: 'Aktarma', icon: '' },
     { key: 'class', title: 'Sınıf', icon: 'ticket' },
     { key: 'price', title: 'Fiyat',icon: 'price-tag' },
   ]);

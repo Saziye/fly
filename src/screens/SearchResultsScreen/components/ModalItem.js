@@ -36,16 +36,14 @@ class ModalItem extends Component {
     <TouchableOpacity
       onPress={() => {
         this.state.setModalVisible(false)
-        // this.setState({selectedSort: `${item}`}); 
-        // console.log("SelectedSort: ",this.state.selectedSort)
-      }} key={`${item}`}
+        this.setState({selectedSort: `${item.value}`}); 
+      }}
     >
         <View style={styles.listItem}>
           <Text style={styles.textListItem}>{item.label}</Text>
-          {/* {
-            this.TouchableOpacity.key == item.value ? <AntDesign name="checkcircleo" size={20} color="#ffc501"/> : null
-          } */}
-          
+          {
+            this.state.selectedSort == item.value ? <AntDesign name="checkcircleo" size={20} color="#ffc501"/> : null
+          }
         </View>
       
     </TouchableOpacity>
@@ -88,11 +86,11 @@ const styles = StyleSheet.create({
   },
   containerOne: {
     backgroundColor: "#fff",
-    height: "40%",
+    height: "50%",
     width: "100%",
     flexDirection: "column",
-    borderColor: "red",
-    borderWidth: 1,
+    // borderColor: "red",
+    // borderWidth: 1,
   },
   modalHeader: {
     justifyContent: "flex-start",

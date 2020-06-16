@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import SelectMultiple from "react-native-select-multiple";
-import { color } from "react-native-reanimated";
 
 const segments = [
   { label: "Direkt", value: "0" },
   { label: "1 Aktarma", value: "1" },
   { label: "2 Aktarma", value: "2" },
 ];
+
 class Transfer extends Component {
   constructor(props) {
     super(props);
@@ -19,7 +19,7 @@ class Transfer extends Component {
   onDepSelectionsChange = (depSelectedSegments) => {
     this.setState({ depSelectedSegments });
   };
-  
+
   onRetSelectionsChange = (retSelectedSegments) => {
     this.setState({ retSelectedSegments });
   };
