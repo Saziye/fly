@@ -17,7 +17,6 @@ class SearchResultsScreen extends Component {
     super(props);
     this.state = {
       modalVisible: false,
-      or: "",
     };
   }
 

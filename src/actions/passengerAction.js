@@ -49,6 +49,12 @@ function setNumberofPassenger(count) {
         payload: count
     }
 }
+function setSortValue(value) {
+    return {
+        type: 'SORT_VALUE',
+        payload: value
+    }
+}
 export {
     setDepartureDate,
     setReturnDate,
@@ -57,5 +63,6 @@ export {
     setCabinClass,
     setPassengers,
     setSelectedWay,
-    setNumberofPassenger
+    setNumberofPassenger,
+    setSortValue
 }

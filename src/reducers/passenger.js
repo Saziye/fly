@@ -24,7 +24,8 @@ const initialState = {
   },
   cabinClass: "", //initial olarak all class ekle
   gidisSelected: false,
-  donusSelected: false
+  donusSelected: false,
+  sortValue: 0,
 };
 
 export default (state = initialState, action = {}) => {
@@ -57,9 +58,13 @@ export default (state = initialState, action = {}) => {
       return Object.assign({}, state, {
         selectedWay: action.payload,
       });
-      case "NUMBER_PASSENGER":
+    case "NUMBER_PASSENGER":
       return Object.assign({}, state, {
         numberOfPassenger: action.payload,
+      });
+    case "SORT_VALUE":
+      return Object.assign({}, state, {
+        sortValue: action.payload,
       });
     default:
       return state;

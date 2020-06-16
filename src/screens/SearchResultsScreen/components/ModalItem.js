@@ -9,7 +9,11 @@ import {
 } from "react-native";
 import Modal from "react-native-modal";
 import { AntDesign } from '@expo/vector-icons';
-
+//for redux
+import { connect } from "react-redux";
+import {
+  setSortValue
+} from "../../../actions/passengerAction";
 class ModalItem extends Component {
   constructor(props) {
     super(props);
@@ -37,6 +41,7 @@ class ModalItem extends Component {
       onPress={() => {
         this.state.setModalVisible(false)
         this.setState({selectedSort: `${item.value}`}); 
+        this.props.setSortValue(this.state.selectedSort);
       }}
     >
         <View style={styles.listItem}>
@@ -126,4 +131,16 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ModalItem;
+const mapStateToProps = (state) => {
+  return {
+    sortValue: state.passenger.sortValue,
+  };
+};
+
+const mapDispatchToProps = () => {
+  return {
+    setSortValue
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps())(ModalItem);
