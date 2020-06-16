@@ -31,7 +31,7 @@ export function queryBuilder(
   cabinClass
 ) {
   var baseUri = '/v2/shopping/flight-offers?';
-  var param1 = '&originLocationCode=';
+  var param1 = 'originLocationCode=';
   var param2 = '&destinationLocationCode=';
   var param3 = '&departureDate=';
   var param4 = '&returnDate=';

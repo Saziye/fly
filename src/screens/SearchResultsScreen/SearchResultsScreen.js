@@ -11,7 +11,7 @@ import "moment/locale/tr";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import ModalItem from "./components/ModalItem";
-
+import FlyItemList from './components/FlyItemList';
 class SearchResultsScreen extends Component {
   constructor(props) {
     super(props);
@@ -110,6 +110,7 @@ class SearchResultsScreen extends Component {
           />
         </View>
         <FlyGroupList />
+        {/* <FlyItemList/> */}
         <View style={styles.filterContainer}>
           <TouchableOpacity
             style={styles.sortStyle}
