@@ -57,18 +57,16 @@ class DateRow extends Component {
 
   componentDidMount() {
     const date = new Date();
-
     const today = date.getFullYear() + "-" + (date.getMonth() > 8 ? date.getMonth() + 1 : "0" + (date.getMonth() + 1)) + "-" + (date.getDate() > 9 ? date.getDate() : "0" + date.getDate()) ;
-    //console.log("TODAY DATE:", today);
+    console.log("TODAY DATE:", today);
     this.setState({ today: today });
     this.setState({ minReturnDate: today });
     this.props.setDepartureDate(today);
-    this.props.setReturnDate(today);
-    //this.props.setReturnDate(today);
   }
 
   chooseDate(type) {
     this.setState({ dateType: type });
+    //this._date.onPressDate();
     setTimeout(() => {
       this._date.onPressDate();
     }, 100);
@@ -76,7 +74,7 @@ class DateRow extends Component {
 
   onDatePressFunction = (date) => {
     const { dateType } = this.state;
-    if (dateType === 1) {
+    if (dateType == 1) {
       this.props.setDepartureDate(date);
       this.setState({ minReturnDate: date });
     } else {

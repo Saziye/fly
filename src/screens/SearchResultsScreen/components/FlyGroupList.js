@@ -6,9 +6,10 @@ import {
   TouchableOpacity,
   FlatList,
   ScrollView,
+  TouchableOpacityBase,
 } from "react-native";
 import FlyGroup from "./FlyGroup";
-import { getFlights } from "../../../services/amadeusService";
+import { getFlights, queryBuilder } from "../../../services/amadeusService";
 import { connect } from "react-redux";
 import {
   setDepartureDate,
@@ -26,37 +27,50 @@ class FlyGroupList extends Component {
       flyObjData: [],
       originalFlights: [],
       sortValue: 0,
+      queryUrl: '',
     };
   }
 
   componentDidMount() {
     console.log("Store object");
     console.log(this.props.store);
-    getFlights(
-      this.props.originAirport.AirportCode,
+    var query = queryBuilder( this.props.originAirport.AirportCode,
       this.props.destinationAirport.AirportCode,
       this.props.departureDate,
-      this.props.returnDate
-    )
+      this.props.returnDate,
+      this.props.adults,
+      this.props.children,
+      this.props.infant,
+      this.props.cabinClass
+    ).toString();
+    this.setState({queryUrl: query});
+    console.log("Lütfen Çalış");
+    console.log(query);
+
+
+    getFlights(query)
       .then((response) => {
         this.setState({ flyObj: response.data });
         this.setState({ originalFlights: response.data.data });
         if(this.state.sortValue == 1) 
-          this.sortDepartureTime();
+          {this.sortDepartureTime(); console.log("sortDeparture")}
         else if(this.state.sortValue ==2)
-          this.sortArriveTime();
+          {this.sortArriveTime(); console.log("sortArrive")}
         else if(this.state.sortValue ==3)
           this.sortCarrierName();
         else 
-          this.sortPrice();
+          {this.sortPrice(); console.log("sortPrice")}
       })
       .catch((err) => {
         console.log(err.response.request._response);
       });
   }
   componentWillReceiveProps(nextProps) {
-    this.setState({sortValue: nextProps.sortValue});
-    console.log(this.state.sortValue);
+    if(nextProps.sortValue!==this.props.sortValue) {
+      this.setState({sortValue: nextProps.sortValue});
+      console.log(this.state.sortValue);
+    }
+    
   }
 
   sortPrice = () => {
@@ -259,7 +273,10 @@ const mapStateToProps = (state) => {
     returnDate: state.passenger.returnDate,
     originAirport: state.passenger.originAirport,
     destinationAirport: state.passenger.destinationAirport,
-
+    cabinClass: state.passenger.cabinClass,
+    adults: state.passenger.passengers.adult,
+    children: state.passenger.passengers.child,
+    infant: state.passenger.passengers.infant,
     selectedWay: state.passenger.selectedWay,
   };
 };

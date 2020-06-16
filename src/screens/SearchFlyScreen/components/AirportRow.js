@@ -29,14 +29,8 @@ class AirportRow extends Component {
   }
 
   componentDidMount() {
-    // console.log(Object.assign(this.state.defaultDestination));
-    // console.log("Destination:", this.props.destination);
-    // console.log("Origin:", this.props.origin);
-    // console.log("SONRASII")
     this.props.setDestinationAirport(this.state.defaultDestination);
     this.props.setOriginAirport(this.state.defaultOrigin);
-    // console.log("Destination:", this.props.destination);
-    // console.log("Origin:", this.props.origin);
   }
 
   navigateFunction = (screen, type) => {
@@ -78,10 +72,12 @@ class AirportRow extends Component {
           }
           click={() => this.navigateFunction("AirportsList", 0)}
         />
-        <TouchableOpacity style={styles.iconContainer} onPress={() => {
-          this.swap()
-        }}>
-          {/* <Image source={require('../../../../assets/images/change1.png')} style= {styles.imageStyle} /> */}
+        <TouchableOpacity
+          style={styles.iconContainer}
+          onPress={() => {
+            this.swap();
+          }}
+        >
           <FontAwesome5 name="exchange-alt" size={24} color="#fff" />
         </TouchableOpacity>
         <AirportItem
@@ -146,6 +142,5 @@ const mapDispatchToProps = () => {
     setDestinationAirport,
   };
 };
-
 
 export default connect(mapStateToProps, mapDispatchToProps())(AirportRow);

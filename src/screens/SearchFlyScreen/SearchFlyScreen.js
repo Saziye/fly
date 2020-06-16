@@ -31,6 +31,19 @@ class SearchFlyScreen extends Component {
       selectedIndex: index,
     });
     this.props.setSelectedWay(index);
+    if (index == 0) this.props.setReturnDate("");
+    if (index == 1) {
+      const date = new Date();
+      const today =
+        date.getFullYear() +
+        "-" +
+        (date.getMonth() > 8
+          ? date.getMonth() + 1
+          : "0" + (date.getMonth() + 1)) +
+        "-" +
+        (date.getDate() > 9 ? date.getDate() : "0" + date.getDate());
+      this.props.setReturnDate(today);
+    }
   };
   navigateFunction = (screen) => {
     const { navigation } = this.props;
@@ -64,16 +77,18 @@ class SearchFlyScreen extends Component {
             />
           </View>
           <View>
-            <AirportRow navigation={this.props.navigation}/>
+            <AirportRow navigation={this.props.navigation} />
             <DateRow />
-            <CabinRow  navigation={this.props.navigation}/>
+            <CabinRow navigation={this.props.navigation} />
             <View style={styles.container_four}>
               <Button
                 buttonStyle={styles.buttonSearch}
                 title="UÇUŞ ARA"
                 titleStyle={styles.btnTitleStyle}
                 onPress={() => {
-                  this.navigateFunction("SearchResults")
+                  this.navigateFunction("SearchResults");
+                  console.log("SON HALİ");
+                  console.log(this.props.passenger);
                 }}
               />
             </View>
@@ -130,8 +145,8 @@ const styles = StyleSheet.create({
   },
   btnTitleStyle: {
     fontSize: 17,
-    fontWeight:'bold',
-    color: '#3f391a'
+    fontWeight: "bold",
+    color: "#3f391a",
   },
 });
 
@@ -142,6 +157,7 @@ const mapStateToProps = (state) => {
     origin: state.passenger.originAirport,
     destination: state.passenger.destinationAirport,
     selectedWay: state.passenger.selectedWay,
+    passenger: state.passenger,
   };
 };
 
