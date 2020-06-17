@@ -12,11 +12,11 @@ import {
 import passenger from "../../reducers/passenger";
 
 const passengerMap = [
-  { type: "adult", label: "Yetişkin", sub: "(24 yaş üstü)" },
-  { type: "child", label: "Çocuk", sub: "(2 ve 11 yaş arası)" },
+  { type: "adult", label: "Yetişkin", sub: "(12 yaş ve üzeri)" },
+  { type: "child", label: "Çocuk", sub: "(2 ve 12 yaş arası)" },
   { type: "infant", label: "Bebek", sub: "(0 ve 2 yaş arası)" },
-  { type: "senior", label: "Yaşlı", sub: "(65 yaş üstü)" },
-  { type: "student", label: "Öğrenci", sub: "(12 ve 24 yaş arası)" },
+  // { type: "senior", label: "Yaşlı", sub: "(65 yaş üstü)" },
+  // { type: "student", label: "Öğrenci", sub: "(12 ve 24 yaş arası)" },
 ];
 
 class PassengerScreen extends Component {
@@ -46,7 +46,6 @@ class PassengerScreen extends Component {
           size={32}
           color="white"
           onPress={() => {
-
             navigation.goBack();
           }}
         />
@@ -59,33 +58,19 @@ class PassengerScreen extends Component {
   onDecrement(type) {
     let passengers = this.props.passengers;
     let count = passengers[type] - 1;
-    let totalAdult = passengers["adult"] + passengers["senior"] + passengers["student"] - 1;
-    console.log("Total Adult Count:", totalAdult);
-    if (
-      (type == "adult" || type == "senior" || type == "student") &&
-      totalAdult < passengers["child"]
-    ) {
-      // ToastAndroid.showWithGravity(
-      //   "Çocuklar tek başına seyahat edemez.",
-      //   ToastAndroid.SHORT,
-      //   ToastAndroid.CENTER,25,50
-      // );
+    if (type == "adult" && passengers["adult"]-1 == 0) {
       Alert.alert("Bilgilendirme", "Çocuklar tek başına seyahat edemez.", [
         { text: "Tamam", onPress: () => null },
       ]);
-      passengers["child"] = 0;
+      passengers["child"] = passengers["adult"] - 1;
     }
-    if (
-      (type == "adult" || type == "senior") &&
-      (passengers["infant"] > passengers["adult"] ||
-        passengers["infant"] > passengers["senior"])
-    ) {
+    if (type == "adult" && passengers["adult"] - 1 < passengers["infant"]) {
       Alert.alert(
         "Bilgilendirme",
         "Bebek sayısı yetişkin sayısından fazla olamaz.",
         [{ text: "Tamam", onPress: () => null }]
       );
-      passengers["infant"] = count;
+      passengers["infant"] = passengers["adult"] - 1;
     }
     if (count < 0) {
       Alert.alert("Bilgilendirme", "Yolcu sayısı daha az olamaz", [
@@ -93,64 +78,48 @@ class PassengerScreen extends Component {
       ]);
     } else {
       passengers[type] = count;
-      this.setState({ countPassenger: this.state.countPassenger - 1 });
-      setTimeout(()=> {
-        console.log("Azaldı",this.state.countPassenger);
-        //console.log(this.props.passengers);
-      })
+      var t= passengers["adult"] +passengers["child"]+passengers["infant"];
+      this.setState({ countPassenger: t });
     }
-    
-
-    setTimeout(() => {console.log('==========================> GO BACK');
-            
-    console.log(this.props.passengers);},2000)
-    // this.onPassenger(passengers);
+    console.log("Bebek sayısı:", this.props.passengers["infant"]);
+    console.log("Yetişkin sayısı:", this.props.passengers["adult"]);
   }
   onIncrement(type) {
     let passengers = this.props.passengers;
     let count = passengers[type] + 1;
-    if (
-      type == "child" &&
-      this.props.passengers["adult"] == 0 &&
-      this.props.passengers["student"] == 0 &&
-      this.props.passengers["senior"] == 0
-    ) {
+    if (type == "child" && this.props.passengers["adult"] == 0) {
       Alert.alert("Bilgilendirme", "Çocuklar tek başına seyahat edemez.", [
         { text: "Tamam", onPress: () => null },
       ]);
+      passengers["child"] = passengers["adult"];
+      console.log(passengers["child"]);
+      console.log(passengers["adult"]);
     }
-    if (
+    else if (
       type == "infant" &&
-      this.props.passengers["adult"] == 0 &&
-      this.props.passengers["senior"] == 0
+      this.props.passengers["infant"] + 1 > this.props.passengers["adult"]
     ) {
       Alert.alert(
         "Bilgilendirme",
         "Bebek sayısı yetişkin sayısından fazla olamaz.",
         [{ text: "Tamam", onPress: () => null }]
       );
+      passengers["infant"] = passengers["adult"];
     } else {
       passengers[type] = count;
-
-    this.setState({ countPassenger: this.state.countPassenger + 1 });
-      setTimeout(()=> {
-        console.log("Arttı:",this.state.countPassenger);
-      })
+      var t= passengers["adult"] +passengers["child"]+passengers["infant"];
+      this.setState({ countPassenger: t });
     }
 
-    
+    console.log("Bebek sayısı:", this.props.passengers["infant"]);
+    console.log("Yetişkin sayısı:", this.props.passengers["adult"]);
     // this.onPassenger(passengers);
   }
 
   onPassenger(passengers) {
-    setTimeout(() => {
-      console.log("========================");
-      console.log("ON PASSENGER");
-      console.log(this.state.countPassenger);
-      console.log("========================");
-    }, 3000);
     this.props.setPassengers(passengers);
   }
+
   /////////////////////
   render() {
     const { countPassenger } = this.state;
@@ -176,21 +145,9 @@ class PassengerScreen extends Component {
             title="TAMAM"
             titleStyle={styles.btnTitleStyle}
             onPress={() => {
-              setTimeout(() => {
-                console.log("========================");
-                console.log("ON PRESS ONCE");
-                console.log(this.state.countPassenger);
-                console.log("========================");
-              }, 2000);
               if (countPassenger > 0) {
                 this.onPassenger(this.props.passengers);
                 this.props.setNumberofPassenger(countPassenger);
-                setTimeout(() => {
-                  console.log("========================");
-                  console.log("ON PRESS SONRA");
-                  console.log(this.state.countPassenger);
-                  console.log("========================");
-                }, 2000);
                 setTimeout(() => {
                   console.log("Number of pass::", this.props.numberOfPassenger);
                 });
