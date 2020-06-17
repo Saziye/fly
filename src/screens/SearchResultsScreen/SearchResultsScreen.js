@@ -11,7 +11,10 @@ import "moment/locale/tr";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import ModalItem from "./components/ModalItem";
-
+import {
+  setDepartureDate,
+  setReturnDate,
+} from "../../actions/passengerAction";
 class SearchResultsScreen extends Component {
   constructor(props) {
     super(props);
@@ -113,15 +116,24 @@ class SearchResultsScreen extends Component {
             title="Önceki Gün"
             buttonStyle={styles.btnStyle1}
             titleStyle={styles.buttonText}
+            onPress= {()=> {
+              this.props.setDepartureDate(moment(this.props.departureDate).subtract(1, 'days').format('YYYY-MM-DD'));
+              
+            }}
           />
           <Button
             title="Sonraki Gün"
             buttonStyle={styles.btnStyle2}
             titleStyle={styles.buttonText}
+            onPress = {()=> {
+              this.props.setDepartureDate(moment(this.props.departureDate).add(1, 'days').format('YYYY-MM-DD'));
+              
+
+            }}
           />
         </View>
-        <FlyGroupList />
-        {/* <FlyItemList/> */}
+        <FlyGroupList/>
+
         <View style={styles.filterContainer}>
           <TouchableOpacity
             style={styles.sortStyle}
@@ -276,4 +288,11 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(SearchResultsScreen);
+const mapDispatchToProps = () => {
+  return {
+    setDepartureDate,
+    setReturnDate,
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps())(SearchResultsScreen);
