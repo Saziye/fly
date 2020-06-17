@@ -85,6 +85,10 @@ class CabinRow extends Component {
               ? "Ekonomi"
               : this.props.cabinClass === "BUSINESS"
               ? "Bussiness"
+              : this.props.cabinClass === "FIRST"
+              ? "First"
+              : this.props.cabinClass === "PREMIUM_ECONOMY"
+              ? "Premium Ekonomi"
               : "Tüm Sınıflar"
           }
           click={() => {

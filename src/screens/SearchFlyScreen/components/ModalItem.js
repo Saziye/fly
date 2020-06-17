@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Modal from "react-native-modal";
-import { Button } from "react-native-elements";
+import { AntDesign } from "@expo/vector-icons";
 //import for redux
 import { connect } from "react-redux";
 import { setCabinClass } from "../../../actions/passengerAction";
@@ -22,30 +22,35 @@ class ModalItem extends Component {
         { type: "", label: "Tüm Sınıflar", value: 0 },
         { type: "ECONOMY", label: "Ekonomi", value: 1 },
         { type: "BUSINESS", label: "Bussiness", value: 2 },
+        { type: "PREMIUM_ECONOMY", label: "Premium Ekonomi", value: 3 },
+        { type: "FIRST", label: "First", value: 4 },
       ],
-      setModalVisible: (i) => {props.onPress(i)}
+      setModalVisible: (i) => {
+        props.onPress(i);
+      },
+      selectedCabin: "",
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({modalVisible: nextProps.modalVisible})
+    this.setState({ modalVisible: nextProps.modalVisible });
   }
- 
+
   keyExtractor = (item, index) => index.toString();
 
   cabinItem = ({ item, index }) => (
     <TouchableOpacity
       onPress={() => {
         this.props.setCabinClass(this.state.cabinMap[index].type);
-        this.setState({ cabinLabel: this.state.cabinMap[index].label });
-        //console.log(this.props.cabinClass);
-        this.state.setModalVisible(false)
+        this.setState({ selectedCabin: `${item.type}` });
+        this.state.setModalVisible(false);
       }}
     >
-      <View>
-        <View style={styles.listItem}>
-          <Text style={styles.textListItem}>{item.label}</Text>
-        </View>
+      <View style={styles.listItem}>
+        <Text style={styles.textListItem}>{item.label}</Text>
+        {this.state.selectedCabin == item.type ? (
+          <AntDesign name="checkcircleo" size={20} color="#ffc501" />
+        ) : null}
       </View>
     </TouchableOpacity>
   );
@@ -87,15 +92,15 @@ const styles = StyleSheet.create({
   },
   containerOne: {
     backgroundColor: "#fff",
-    height: "35%",
+    height: "50%",
     width: "100%",
     flexDirection: "column",
-    borderColor: "red",
-    borderWidth: 1,
+    // borderColor: "red",
+    // borderWidth: 1,
   },
   modalHeader: {
     justifyContent: "flex-start",
-    height: "20%",
+    height: "15%",
     borderBottomWidth: 2,
     borderBottomColor: "#393939",
     justifyContent: "center",
@@ -114,23 +119,21 @@ const styles = StyleSheet.create({
     marginHorizontal: "5%",
   },
   listItem: {
-    // flexDirection: "row",
-    // borderColor: 'blue',
-    // borderWidth: 1,
-    paddingVertical: "5%",
+    flexDirection: "row",
+    paddingVertical: "4%",
     borderBottomColor: "black",
     borderBottomWidth: 1,
   },
   textListItem: {
     color: "#4e4e4e",
     fontSize: 14,
+    flex: 1,
   },
 });
 
 const mapStateToProps = (state) => {
   return {
     cabinClass: state.passenger.cabinClass,
-    // fly: state.passenger.flyType,
   };
 };
 

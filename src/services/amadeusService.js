@@ -8,7 +8,7 @@ const instance = axios.create({
 instance.interceptors.request.use(
   async (config) => {
     // const token = await AsyncStorage.getItem('token');
-    const token = "sl5jGt0fhbnbXOYRRuZgnjXLaivN";
+    const token = "UHn0AG80AFfhsm5dfeoufjhC5wWJ";
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -50,11 +50,13 @@ export function queryBuilder(
     param5 + `${adults}` +
     param6 + `${childen}` +
     param7 + `${infant}`+
-    param8 + `${cabinClass}` +
     param9 + 'TRY' +
     param10 + '3'
   if(returnDate != "") {
     x = x +  param4 + `${returnDate}`
+  } 
+  if(cabinClass != "") {
+    x = x + param8 + `${cabinClass}` 
   }
   var res = baseUri.concat(x);
   return res;
