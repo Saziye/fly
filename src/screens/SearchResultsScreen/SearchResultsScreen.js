@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Button } from "react-native-elements";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity, Alert } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -11,10 +11,7 @@ import "moment/locale/tr";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import ModalItem from "./components/ModalItem";
-import {
-  setDepartureDate,
-  setReturnDate,
-} from "../../actions/passengerAction";
+import { setDepartureDate, setReturnDate } from "../../actions/passengerAction";
 class SearchResultsScreen extends Component {
   constructor(props) {
     super(props);
@@ -110,29 +107,189 @@ class SearchResultsScreen extends Component {
             </Text>
           </View>
         )}
+        {this.props.selectedWay == 0 ? (
+          <View style={styles.container_two}>
+            <Button
+              title="Önceki Gün"
+              buttonStyle={styles.btnStyle1}
+              titleStyle={styles.buttonText}
+              onPress={() => {
+                this.props.setDepartureDate(
+                  moment(this.props.departureDate)
+                    .subtract(1, "days")
+                    .format("YYYY-MM-DD")
+                );
+              }}
+            />
+            <Button
+              title="Sonraki Gün"
+              buttonStyle={styles.btnStyle2}
+              titleStyle={styles.buttonText}
+              onPress={() => {
+                this.props.setDepartureDate(
+                  moment(this.props.departureDate)
+                    .add(1, "days")
+                    .format("YYYY-MM-DD")
+                );
+              }}
+            />
+          </View>
+        ) : (
+          <View style={styles.dateContainer}>
+            <View style={styles.dateContainer_one}>
+              <View style={styles.dateContainer_two}>
+                <View
+                  style={{
+                    backgroundColor: "#474745",
+                    height: "100%",
+                    paddingHorizontal: 5,
+                    alignItems: "center",
+                    alignSelf: "center",
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: "white",
+                      alignSelf: "center",
+                      alignItems: "center",
+                      textAlign: "center",
+                    }}
+                  >
+                    GİDİŞ
+                  </Text>
+                </View>
 
-        <View style={styles.container_two}>
-          <Button
-            title="Önceki Gün"
-            buttonStyle={styles.btnStyle1}
-            titleStyle={styles.buttonText}
-            onPress= {()=> {
-              this.props.setDepartureDate(moment(this.props.departureDate).subtract(1, 'days').format('YYYY-MM-DD'));
-              
-            }}
-          />
-          <Button
-            title="Sonraki Gün"
-            buttonStyle={styles.btnStyle2}
-            titleStyle={styles.buttonText}
-            onPress = {()=> {
-              this.props.setDepartureDate(moment(this.props.departureDate).add(1, 'days').format('YYYY-MM-DD'));
-              
+                <View style={{ flexDirection: "row" }}>
+                  <TouchableOpacity
+                    style={styles.box}
+                    onPress={() => {
+                      if (
+                        moment(this.props.departureDate)
+                          .subtract(1, "days")
+                          .format("YYYY-MM-DD") > this.props.returnDate
+                      ) {
+                        Alert.alert(
+                          "Bilgilendirme",
+                          "Gidiş tarihi büyük olamaz",
+                          [{ text: "Tamam", onPress: () => null }]
+                        );
+                      } else {
+                        this.props.setDepartureDate(
+                          moment(this.props.departureDate)
+                            .subtract(1, "days")
+                            .format("YYYY-MM-DD")
+                        );
+                      }
+                    }}
+                  >
+                    <Text style={styles.boxText}>Önceki Gün</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.box}
+                    onPress={() => {
+                      if (
+                        moment(this.props.departureDate)
+                          .add(1, "days")
+                          .format("YYYY-MM-DD") > this.props.returnDate
+                      ) {
+                        Alert.alert(
+                          "Bilgilendirme",
+                          "Gidiş tarihi büyük olamaz",
+                          [{ text: "Tamam", onPress: () => null }]
+                        );
+                      } else {
+                        this.props.setDepartureDate(
+                          moment(this.props.departureDate)
+                            .add(1, "days")
+                            .format("YYYY-MM-DD")
+                        );
+                      }
+                    }}
+                  >
+                    <Text style={styles.boxText}>Sonraki Gün</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+            <View style={styles.dateContainer_one}>
+              <View style={styles.dateContainer_two}>
+                <View
+                  style={{
+                    backgroundColor: "#474745",
+                    height: "100%",
+                    paddingHorizontal: 5,
+                    alignItems: "center",
+                    alignSelf: "center",
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: "white",
+                      alignSelf: "center",
+                      alignItems: "center",
+                      textAlign: "center",
+                    }}
+                  >
+                    DÖNÜŞ
+                  </Text>
+                </View>
 
-            }}
-          />
-        </View>
-        <FlyGroupList/>
+                <View style={{ flexDirection: "row" }}>
+                  <TouchableOpacity
+                    style={styles.box}
+                    onPress={() => {
+                      if (
+                        moment(this.props.returnDate)
+                          .subtract(1, "days")
+                          .format("YYYY-MM-DD") < this.props.departureDate
+                      ) {
+                        Alert.alert(
+                          "Bilgilendirme",
+                          "Dönüş tarihi küçük olamaz",
+                          [{ text: "Tamam", onPress: () => null }]
+                        );
+                      } else {
+                        this.props.setReturnDate(
+                          moment(this.props.returnDate)
+                            .subtract(1, "days")
+                            .format("YYYY-MM-DD")
+                        );
+                      }
+                    }}
+                  >
+                    <Text style={styles.boxText}>Önceki Gün</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.box}
+                    onPress={() => {
+                      if (
+                        moment(this.props.returnDate)
+                          .add(1, "days")
+                          .format("YYYY-MM-DD") < this.props.departureDate
+                      ) {
+                        Alert.alert(
+                          "Bilgilendirme",
+                          "Dönüş tarihi küçük olamaz",
+                          [{ text: "Tamam", onPress: () => null }]
+                        );
+                      } else {
+                        this.props.setReturnDate(
+                          moment(this.props.returnDate)
+                            .add(1, "days")
+                            .format("YYYY-MM-DD")
+                        );
+                      }
+                    }}
+                  >
+                    <Text style={styles.boxText}>Sonraki Gün</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </View>
+        )}
+
+        <FlyGroupList />
 
         <View style={styles.filterContainer}>
           <TouchableOpacity
@@ -276,6 +433,32 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "white",
   },
+  dateContainer: {
+    backgroundColor: "white",
+    flexDirection: "row",
+    marginVertical: 5,
+  },
+  box: {
+    margin: 5,
+    height: 40,
+    width: 60,
+    backgroundColor: "#ffc501",
+    justifyContent: "center",
+  },
+  boxText: {
+    fontSize: 12,
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "#474745",
+    paddingHorizontal: 5,
+  },
+  dateContainer_one: {
+    flexDirection: "column",
+    width: "50%",
+  },
+  dateContainer_two: {
+    flexDirection: "row",
+  },
 });
 
 const mapStateToProps = (state) => {
@@ -295,4 +478,7 @@ const mapDispatchToProps = () => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps())(SearchResultsScreen);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps()
+)(SearchResultsScreen);
