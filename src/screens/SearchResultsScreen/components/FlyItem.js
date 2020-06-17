@@ -1,8 +1,6 @@
 import React from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import ListItem from "./ListItem";
-import { AntDesign } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
 
 const FlyItem = ({
   carrierName,
@@ -14,6 +12,9 @@ const FlyItem = ({
   destinationAirport,
   segment,
   hour,
+  day,
+  icon,
+  price
 }) => {
   return (
     <View style={styles.container}>
@@ -27,7 +28,13 @@ const FlyItem = ({
         destinationAirport={destinationAirport}
         segment={segment}
         hour={hour}
+        day={day}
+        icon={icon}
       />
+      <View style={{ borderWidth: 1, borderColor: "#c1c1c1" }}></View>
+      <View style={styles.priceStyle}>
+        <Text style={styles.textPrice}>{price} TL</Text>
+      </View>
     </View>
   );
 };
@@ -35,12 +42,25 @@ const FlyItem = ({
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#fff",
-    marginBottom: 5,
+    borderRadius: 10,
     margin: 5,
     padding: 5,
     flexDirection: "row",
-    borderColor: "red",
-    borderWidth: 1,
+  },
+  textPrice: {
+    color: "#303030",
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginHorizontal: 8,
+  },
+  priceStyle: {
+    flexDirection: "row",
+    alignItems: "center",
+    //marginLeft: 10,
+    // borderColor: 'red',
+    // borderWidth:1,
+    flex:1
   },
 });
 

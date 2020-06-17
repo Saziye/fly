@@ -8,7 +8,7 @@ const instance = axios.create({
 instance.interceptors.request.use(
   async (config) => {
     // const token = await AsyncStorage.getItem('token');
-    const token = "I5KaXEBgJMCUZAU4V7PPtfGMcqGA";
+    const token = "sl5jGt0fhbnbXOYRRuZgnjXLaivN";
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

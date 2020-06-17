@@ -11,7 +11,7 @@ import "moment/locale/tr";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import ModalItem from "./components/ModalItem";
-import FlyItemList from './components/FlyItemList';
+
 class SearchResultsScreen extends Component {
   constructor(props) {
     super(props);
@@ -81,22 +81,33 @@ class SearchResultsScreen extends Component {
 
     return (
       <View style={styles.container}>
-        <View style={styles.container_one}>
-          <Text style={styles.textStyle}>
-            {" "}
-            {moment(this.props.departureDate).format("DD MMMM YYYY dddd")}{" "}
-          </Text>
-          <FontAwesome5
-            name="exchange-alt"
-            size={17}
-            color="#453914"
-            style={styles.iconStyle}
-          />
-          <Text style={styles.text2Style}>
-            {" "}
-            {moment(this.props.returnDate).format("DD MMMM YYYY dddd")}{" "}
-          </Text>
-        </View>
+        {this.props.selectedWay == 1 ? (
+          <View style={styles.container_one}>
+            <Text style={styles.textStyle}>
+              {" "}
+              {moment(this.props.departureDate).format(
+                "DD MMMM YYYY dddd"
+              )}{" "}
+            </Text>
+            <FontAwesome5
+              name="exchange-alt"
+              size={17}
+              color="#453914"
+              style={styles.iconStyle}
+            />
+            <Text style={styles.text2Style}>
+              {" "}
+              {moment(this.props.returnDate).format("DD MMMM YYYY dddd")}{" "}
+            </Text>
+          </View>
+        ) : (
+          <View style={styles.container_one}>
+            <Text style={styles.text3Style}>
+              {moment(this.props.departureDate).format("DD MMMM YYYY dddd")}
+            </Text>
+          </View>
+        )}
+
         <View style={styles.container_two}>
           <Button
             title="Önceki Gün"
@@ -167,6 +178,13 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     padding: 5,
   },
+  text3Style: {
+    fontSize: 14,
+    color: "#453914",
+    fontWeight: "bold",
+    alignSelf: "center",
+    padding: 5,
+  },
   text2Style: {
     fontSize: 14,
     color: "#453914",
@@ -225,9 +243,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#474745",
     height: 35,
     width: "80%",
-   // position: 'absolute',
-    alignSelf:'flex-end',
-    borderRadius:0,
+    // position: 'absolute',
+    alignSelf: "flex-end",
+    borderRadius: 0,
     borderColor: "#6e6e6c",
   },
   btnStyle1: {
@@ -235,8 +253,8 @@ const styles = StyleSheet.create({
     height: 35,
     width: "80%",
     //position:'absolute',
-   alignSelf:'flex-start',
-    borderRadius:0,
+    alignSelf: "flex-start",
+    borderRadius: 0,
     borderColor: "#6e6e6c",
   },
   buttonText: {
@@ -244,9 +262,8 @@ const styles = StyleSheet.create({
     padding: 5,
     fontSize: 14,
     fontWeight: "bold",
-    color: 'white',
-  }
-  
+    color: "white",
+  },
 });
 
 const mapStateToProps = (state) => {
@@ -255,6 +272,7 @@ const mapStateToProps = (state) => {
     returnDate: state.passenger.returnDate,
     originAirport: state.passenger.originAirport,
     destinationAirport: state.passenger.destinationAirport,
+    selectedWay: state.passenger.selectedWay,
   };
 };
 
