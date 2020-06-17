@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   FlatList,
   ScrollView,
-  TouchableOpacityBase,
   ActivityIndicator,
 } from "react-native";
 import FlyGroup from "./FlyGroup";
@@ -20,6 +19,8 @@ import {
 import moment from "moment";
 import "moment/locale/tr";
 import FlyItem from "./FlyItem";
+import LottieView from 'lottie-react-native';
+import LoaderScreen from '../../LoaderScreen/LoaderScreen';
 
 class FlyGroupList extends Component {
   constructor(props) {
@@ -364,7 +365,13 @@ class FlyGroupList extends Component {
     return (
       <ScrollView>
         {flyObjData.length == 0 ? (
-          <ActivityIndicator size="large" color="#ffffff" />
+          <LottieView
+          style={styles.lottieView}
+          source={require('../../../../assets/animations/15206-plane.json')}
+          autoPlay
+          loop
+        />
+       
         ) : (
           <FlatList
             // showsHorizontalScrollIndicator={false}
@@ -379,7 +386,11 @@ class FlyGroupList extends Component {
   }
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  lottieView: {
+    height: 300,
+  },
+});
 
 const mapStateToProps = (state) => {
   return {
