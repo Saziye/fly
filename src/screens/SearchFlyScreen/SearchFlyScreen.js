@@ -14,6 +14,7 @@ import {
   setDepartureDate,
   setReturnDate,
   setSelectedWay,
+  setSortValue
 } from "../../actions/passengerAction";
 const BLUE = "#104e8b";
 
@@ -24,6 +25,16 @@ class SearchFlyScreen extends Component {
       selectedIndex: 0,
     };
   }
+
+  // componentDidMount() {
+  //   this.focusListener = this.props.navigation.addListener('didFocus',() => {
+  //     this.props.setSortValue(0);
+  //     console.log("sort value sıfırlandı");
+  //   });
+  // }
+  // componentWillUnmount() {
+  //   this.focusListener.remove();
+  // }
 
   handleIndexChange = (index) => {
     this.setState({
@@ -157,6 +168,7 @@ const mapStateToProps = (state) => {
     destination: state.passenger.destinationAirport,
     selectedWay: state.passenger.selectedWay,
     passenger: state.passenger,
+    sortValue: state.passenger.sortValue,
   };
 };
 
@@ -165,6 +177,7 @@ const mapDispatchToProps = () => {
     setDepartureDate,
     setReturnDate,
     setSelectedWay,
+    setSortValue
   };
 };
 

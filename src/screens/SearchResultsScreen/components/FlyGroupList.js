@@ -10,15 +10,10 @@ import {
   Modal,
 } from "react-native";
 import LottieView from "lottie-react-native";
-
 import FlyGroup from "./FlyGroup";
 import { getFlights, queryBuilder } from "../../../services/amadeusService";
 import { connect } from "react-redux";
-import {
-  setDepartureDate,
-  setReturnDate,
-  setSelectedWay,
-} from "../../../actions/passengerAction";
+
 import moment from "moment";
 import "moment/locale/tr";
 import FlyItem from "./FlyItem";
@@ -30,16 +25,11 @@ class FlyGroupList extends Component {
       flyObj: [],
       flyObjData: [],
       originalFlights: [],
-      sortValue: 0,
       queryUrl: "",
-      loading: this.props.loading,
     };
   }
 
   componentDidMount() {
-    // this.props.setLoading(true);
-    console.log("DENEME");
-
     this.recieveFlights(
       this.props.originAirport.AirportCode,
       this.props.destinationAirport.AirportCode,
@@ -52,12 +42,7 @@ class FlyGroupList extends Component {
     );
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.sortValue !== this.props.sortValue) {
-      this.setState({ sortValue: nextProps.sortValue });
-      // console.log(this.state.sortValue);
-    }
 
-    // console.log(nextProps);
     this.setState({ flyObjData: [] });
     this.recieveFlights(
       nextProps.originAirport.AirportCode,
@@ -69,6 +54,10 @@ class FlyGroupList extends Component {
       nextProps.infant,
       nextProps.cabinClass
     );
+    console.log("NXT PROPS FOR SORT");
+    console.log(nextProps);
+  
+    console.log("İKİNCİ");
   }
 
   recieveFlights(
@@ -97,18 +86,17 @@ class FlyGroupList extends Component {
       .then((response) => {
         this.setState({ flyObj: response.data });
         this.setState({ originalFlights: response.data.data });
-        // this.props.setLoading(false);
-
-        if (this.state.sortValue == 1) {
+        if (this.props.sortValue == 1) {
           this.sortDepartureTime();
           console.log("sortDeparture");
-        } else if (this.state.sortValue == 2) {
+        } else if (this.props.sortValue == 2) {
           this.sortArriveTime();
           console.log("sortArrive");
-        } else if (this.state.sortValue == 3) this.sortCarrierName();
+        } else if (this.props.sortValue == 3) this.sortCarrierName();
         else {
           this.sortPrice();
           console.log("sortPrice");
+          console.log(this.props.sortValue);
         }
       })
       .catch((err) => {
@@ -118,30 +106,19 @@ class FlyGroupList extends Component {
 
   sortPrice = () => {
     const myData = this.state.originalFlights.sort(function (a, b) {
-      return a.price.total > b.price.total ? 1 : -1;
+      return a.price.total < b.price.total ? 1 : -1;
     });
     this.setState({ flyObjData: myData });
-    // if (flyObjData.length == 0) {
-    //   this.props.setLoading(true);
-    // } else {
-    //   this.props.setLoading(false);
-    //   console.log("LOADING SORT PRICE İÇİNDE");
-    // }
   };
 
   sortDepartureTime = () => {
     const myData = this.state.originalFlights.sort(function (a, b) {
-      return moment(a.itineraries[0].segments[0].departure.at).format("LT") >
-        moment(b.itineraries[0].segments[0].departure.at).format("LT")
+      return moment(a.itineraries[0].segments[0].departure.at).format() >
+        moment(b.itineraries[0].segments[0].departure.at).format()
         ? 1
         : -1;
     });
     this.setState({ flyObjData: myData });
-    // if (flyObjData.length == 0) {
-    //   this.setLoading(true);
-    // } else {
-    //   this.setLoading(false);
-    // }
   };
 
   sortArriveTime = () => {
@@ -149,20 +126,15 @@ class FlyGroupList extends Component {
       return moment(
         a.itineraries[0].segments[a.itineraries[0].segments.length - 1].arrival
           .at
-      ).format("LT") >
+      ).format() >
         moment(
           b.itineraries[0].segments[b.itineraries[0].segments.length - 1]
             .arrival.at
-        ).format("LT")
+        ).format()
         ? 1
         : -1;
     });
     this.setState({ flyObjData: myData });
-    // if (flyObjData.length == 0) {
-    //   this.setLoading(true);
-    // } else {
-    //   this.setLoading(false);
-    // }
   };
 
   sortCarrierName = () => {
@@ -173,11 +145,6 @@ class FlyGroupList extends Component {
         : -1;
     });
     this.setState({ flyObjData: myData });
-    // if (flyObjData.length == 0) {
-    //   this.setLoading(true);
-    // } else {
-    //   this.setLoading(false);
-    // }
   };
 
   keyExtractor = (item, index) => index.toString();
@@ -426,7 +393,9 @@ const mapStateToProps = (state) => {
     children: state.passenger.passengers.child,
     infant: state.passenger.passengers.infant,
     selectedWay: state.passenger.selectedWay,
+    sortValue: state.passenger.sortValue,
   };
 };
+
 
 export default connect(mapStateToProps)(FlyGroupList);

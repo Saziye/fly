@@ -11,7 +11,7 @@ import "moment/locale/tr";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import ModalItem from "./components/ModalItem";
-import { setDepartureDate, setReturnDate } from "../../actions/passengerAction";
+import { setDepartureDate, setReturnDate} from "../../actions/passengerAction";
 import LottieView from "lottie-react-native";
 
 class SearchResultsScreen extends Component {
@@ -19,7 +19,6 @@ class SearchResultsScreen extends Component {
     super(props);
     this.state = {
       modalVisible: false,
-      loading: false,
     };
   }
 
@@ -55,7 +54,7 @@ class SearchResultsScreen extends Component {
           name="left"
           size={32}
           color="white"
-          onPress={() => {
+          onPress={() => { 
             navigation.goBack();
           }}
         />
@@ -75,22 +74,12 @@ class SearchResultsScreen extends Component {
     navigation.navigate(screen);
   };
 
-  setLoading = (value) => {
-    this.setState({loading: value});
-    console.log("LOADİNG");
-    console.log(this.state.loading);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.loading !== this.props.loading) {
-      this.setState({ loading: nextProps.loading });
-      console.log("LOADING DINLENİYOR");
-      console.log(nextProps.loading);
-    }
-  }
+  setModalVisible = (visible) => {
+    this.setState({ modalVisible: visible });
+  };
 
   render() {
-    const { modalVisible, loading } = this.state;
+    const { modalVisible } = this.state;
 
     return (
       <View style= {{backgroundColor:'white', flex:1}}>
@@ -316,7 +305,7 @@ class SearchResultsScreen extends Component {
               </View>
             )}
 
-            <FlyGroupList loading={loading} setLoading={(value)=> this.setLoading(value)} />
+            <FlyGroupList />
 
             <View style={styles.filterContainer}>
               <TouchableOpacity

@@ -21,7 +21,7 @@ class ModalItem extends Component {
       selectedSort: 0,
       modalVisible: props.modalVisible,
       SortMap: [
-        { type: "price", label: "Fiyata Göre", value: 0 },
+        { type: "price", label: "Fiyata Göre ", value: 0 },
         { type: "departureTime", label: "Kalkış Zamanına Göre", value: 1 },
         { type: "returnTime", label: "Varış Zamanına Göre", value: 2 },
         { type: "airline", label: "Havayoluna Göre", value: 3 },
@@ -41,7 +41,10 @@ class ModalItem extends Component {
       onPress={() => {
         this.state.setModalVisible(false)
         this.setState({selectedSort: `${item.value}`}); 
-        this.props.setSortValue(this.state.selectedSort);
+        this.props.setSortValue(`${item.value}`);
+        console.log("SEÇİLEN SORT");
+        
+        console.log(`${item.value}`)
       }}
     >
         <View style={styles.listItem}>

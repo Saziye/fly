@@ -8,7 +8,7 @@ const instance = axios.create({
 instance.interceptors.request.use(
   async (config) => {
     // const token = await AsyncStorage.getItem('token');
-    const token = "WCa1M8fc0OoisIipPpiDA3tGD6Ed";
+    const token = "Rh1dx8sKCyA7Mb9UXUQuMW7AUu9K";
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -51,7 +51,7 @@ export function queryBuilder(
     param6 + `${childen}` +
     param7 + `${infant}`+
     param9 + 'TRY' +
-    param10 + '3'
+    param10 + '25'
   if(returnDate != "") {
     x = x +  param4 + `${returnDate}`
   } 
