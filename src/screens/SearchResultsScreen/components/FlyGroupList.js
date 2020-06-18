@@ -22,14 +22,33 @@ class FlyGroupList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      flyObj: [],
+      // flyObj: [],
+      // flyObjData: [],
+      // originalFlights: [],
+      // queryUrl: "",
+      flyObj: this.props.flyObj,
       flyObjData: [],
-      originalFlights: [],
-      queryUrl: "",
+      originalFlights: this.props.originalFlights,
+      queryUrl: this.props.queryUrl,
     };
   }
 
   componentDidMount() {
+    if (this.props.sortValue == 1) {
+      this.sortDepartureTime();
+      console.log("sortDeparture");
+    } else if (this.props.sortValue == 2) {
+      this.sortArriveTime();
+      console.log("sortArrive");
+    } else if (this.props.sortValue == 3) this.sortCarrierName();
+    else {
+      this.sortPrice();
+      console.log("sortPrice");
+      console.log(this.props.sortValue);
+    }
+  }
+
+  /*componentDidMount() {
     this.recieveFlights(
       this.props.originAirport.AirportCode,
       this.props.destinationAirport.AirportCode,
@@ -40,26 +59,33 @@ class FlyGroupList extends Component {
       this.props.infant,
       this.props.cabinClass
     );
-  }
+  }*/
+
   componentWillReceiveProps(nextProps) {
+    console.log("=================================================>");
 
-    this.setState({ flyObjData: [] });
-    this.recieveFlights(
-      nextProps.originAirport.AirportCode,
-      nextProps.destinationAirport.AirportCode,
-      nextProps.departureDate,
-      nextProps.returnDate,
-      nextProps.adults,
-      nextProps.children,
-      nextProps.infant,
-      nextProps.cabinClass
-    );
-    console.log("NXT PROPS FOR SORT");
-    console.log(nextProps);
-  
-    console.log("İKİNCİ");
+    console.log(nextProps.flyObjData);
+    console.log("##################################");
+
+    this.setState({ flyObjData: nextProps.flyObjData });
+    this.setState({ flyObj: nextProps.flyObj });
+
+    // this.recieveFlights(
+    //   nextProps.originAirport.AirportCode,
+    //   nextProps.destinationAirport.AirportCode,
+    //   nextProps.departureDate,
+    //   nextProps.returnDate,
+    //   nextProps.adults,
+    //   nextProps.children,
+    //   nextProps.infant,
+    //   nextProps.cabinClass
+    // );
+    // console.log("NXT PROPS FOR SORT");
+    // console.log(nextProps);
+
+    // console.log("İKİNCİ");
   }
-
+  /*
   recieveFlights(
     originAirportCode,
     destinationAirportCode,
@@ -102,7 +128,7 @@ class FlyGroupList extends Component {
       .catch((err) => {
         console.log(err.response.request._response);
       });
-  }
+  }*/
 
   sortPrice = () => {
     const myData = this.state.originalFlights.sort(function (a, b) {
@@ -396,6 +422,5 @@ const mapStateToProps = (state) => {
     sortValue: state.passenger.sortValue,
   };
 };
-
 
 export default connect(mapStateToProps)(FlyGroupList);
