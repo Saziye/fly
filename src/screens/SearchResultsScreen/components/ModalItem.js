@@ -18,7 +18,6 @@ class ModalItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedSort: 0,
       modalVisible: props.modalVisible,
       SortMap: [
         { type: "price", label: "Fiyata Göre ", value: 0 },
@@ -31,7 +30,9 @@ class ModalItem extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({modalVisible: nextProps.modalVisible})
+    if(this.props.modalVisible != nextProps.modalVisible) {
+      this.setState({modalVisible: nextProps.modalVisible});
+    }
   }
  
   keyExtractor = (item, index) => index.toString();
@@ -40,25 +41,22 @@ class ModalItem extends Component {
     <TouchableOpacity
       onPress={() => {
         this.state.setModalVisible(false)
-        this.setState({selectedSort: `${item.value}`}); 
         this.props.setSortValue(`${item.value}`);
         console.log("SEÇİLEN SORT");
-        
         console.log(`${item.value}`)
       }}
     >
         <View style={styles.listItem}>
           <Text style={styles.textListItem}>{item.label}</Text>
           {
-            this.state.selectedSort == item.value ? <AntDesign name="checkcircleo" size={20} color="#ffc501"/> : null
+            this.props.sortValue == item.value ? <AntDesign name="checkcircleo" size={20} color="#ffc501"/> : null
           }
         </View>
-      
     </TouchableOpacity>
   );
 
   render() {
-    const { modalVisible, SortMap,selectedSort } = this.state;
+    const { modalVisible, SortMap } = this.state;
 
     return (
       <Modal

@@ -11,7 +11,7 @@ import "moment/locale/tr";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import ModalItem from "./components/ModalItem";
-import { setDepartureDate, setReturnDate } from "../../actions/passengerAction";
+import { setDepartureDate, setReturnDate,setSortValue } from "../../actions/passengerAction";
 import LottieView from "lottie-react-native";
 import { getFlights, queryBuilder } from "../../services/amadeusService";
 
@@ -86,22 +86,22 @@ class SearchResultsScreen extends Component {
     console.log("SEARCH RESULT DID MOUNT");
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   this.setState({ flyObjData: [] });
-  //   this.recieveFlights(
-  //     nextProps.originAirport.AirportCode,
-  //     nextProps.destinationAirport.AirportCode,
-  //     nextProps.departureDate,
-  //     nextProps.returnDate,
-  //     nextProps.adults,
-  //     nextProps.children,
-  //     nextProps.infant,
-  //     nextProps.cabinClass
-  //   );
-  //   console.log("NXT PROPS FOR SORT");
-  //   console.log(nextProps);
-  //   console.log("SEARCH RESULT WILL RECEIVE ")
-  // }
+  /*componentWillReceiveProps(nextProps) {
+    this.setState({ flyObjData: [] });
+    this.recieveFlights(
+      nextProps.originAirport.AirportCode,
+      nextProps.destinationAirport.AirportCode,
+      nextProps.departureDate,
+      nextProps.returnDate,
+      nextProps.adults,
+      nextProps.children,
+      nextProps.infant,
+      nextProps.cabinClass
+    );
+    console.log("NXT PROPS FOR SORT");
+    //console.log(nextProps);
+    console.log("SEARCH RESULT WILL RECEIVE ")
+  }*/
 
   recieveFlights(
     originAirportCode,
@@ -164,7 +164,20 @@ class SearchResultsScreen extends Component {
     } = this.state;
 
     return (
-      <View style={styles.container}>
+      <>
+        {
+          this.state.flyObjData.length == 0 ? (
+            <View style= {{flex:1, backgroundColor: 'white'}}>
+              <LottieView
+              style={styles.lottieView}
+              source={require("../../../assets/animations/15206-plane.json")}
+              autoPlay
+              loop
+            />
+            </View>
+            
+          ) : (
+<View style={styles.container}>
         {this.props.selectedWay == 1 ? (
           <View style={styles.container_one}>
             <Text style={styles.textStyle}>
@@ -203,6 +216,9 @@ class SearchResultsScreen extends Component {
                     .subtract(1, "days")
                     .format("YYYY-MM-DD")
                 );
+                this.props.setSortValue(0);
+                console.log("nedennnn");
+
               }}
             />
             <Button
@@ -215,6 +231,9 @@ class SearchResultsScreen extends Component {
                     .add(1, "days")
                     .format("YYYY-MM-DD")
                 );
+                this.props.setSortValue(0);
+                console.log("nedennnn");
+
               }}
             />
           </View>
@@ -263,6 +282,9 @@ class SearchResultsScreen extends Component {
                             .subtract(1, "days")
                             .format("YYYY-MM-DD")
                         );
+                        this.props.setSortValue(0);
+                console.log("nedennnn");
+
                       }
                     }}
                   >
@@ -287,6 +309,9 @@ class SearchResultsScreen extends Component {
                             .add(1, "days")
                             .format("YYYY-MM-DD")
                         );
+                this.props.setSortValue(0);
+                console.log("nedennnn");
+
                       }
                     }}
                   >
@@ -338,6 +363,9 @@ class SearchResultsScreen extends Component {
                             .subtract(1, "days")
                             .format("YYYY-MM-DD")
                         );
+                        this.props.setSortValue(0);
+                console.log("nedennnn");
+
                       }
                     }}
                   >
@@ -362,6 +390,10 @@ class SearchResultsScreen extends Component {
                             .add(1, "days")
                             .format("YYYY-MM-DD")
                         );
+                this.props.setSortValue(0);
+                console.log("nedennnn");
+                
+
                       }
                     }}
                   >
@@ -413,7 +445,11 @@ class SearchResultsScreen extends Component {
           </TouchableOpacity>
         </View>
       </View>
-    );
+    
+          )
+        }
+      </>
+      );
   }
 }
 
@@ -570,6 +606,7 @@ const mapDispatchToProps = () => {
   return {
     setDepartureDate,
     setReturnDate,
+    setSortValue,
   };
 };
 

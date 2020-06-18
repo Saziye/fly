@@ -22,12 +22,8 @@ class FlyGroupList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // flyObj: [],
-      // flyObjData: [],
-      // originalFlights: [],
-      // queryUrl: "",
       flyObj: this.props.flyObj,
-      flyObjData: [],
+      flyObjData: this.props.flyObjData,
       originalFlights: this.props.originalFlights,
       queryUrl: this.props.queryUrl,
     };
@@ -37,104 +33,38 @@ class FlyGroupList extends Component {
     if (this.props.sortValue == 1) {
       this.sortDepartureTime();
       console.log("sortDeparture");
+      console.log("FLY GROUP DEPARTURE GİRDİ");
     } else if (this.props.sortValue == 2) {
       this.sortArriveTime();
       console.log("sortArrive");
-    } else if (this.props.sortValue == 3) this.sortCarrierName();
+      console.log("FLY GROUP ARRIVE GİRDİ");
+    } else if (this.props.sortValue == 3) {
+      this.sortCarrierName();
+      console.log("sortCarrier");
+      console.log("FLY GROUP CARRIER GİRDİ");
+    }
     else {
       this.sortPrice();
       console.log("sortPrice");
+      console.log("FLY GROUP PRICE GİRDİ");
       console.log(this.props.sortValue);
     }
   }
 
-  /*componentDidMount() {
-    this.recieveFlights(
-      this.props.originAirport.AirportCode,
-      this.props.destinationAirport.AirportCode,
-      this.props.departureDate,
-      this.props.returnDate,
-      this.props.adults,
-      this.props.children,
-      this.props.infant,
-      this.props.cabinClass
-    );
-  }*/
-
   componentWillReceiveProps(nextProps) {
-    console.log("=================================================>");
-
-    console.log(nextProps.flyObjData);
-    console.log("##################################");
-
-    this.setState({ flyObjData: nextProps.flyObjData });
-    this.setState({ flyObj: nextProps.flyObj });
-
-    // this.recieveFlights(
-    //   nextProps.originAirport.AirportCode,
-    //   nextProps.destinationAirport.AirportCode,
-    //   nextProps.departureDate,
-    //   nextProps.returnDate,
-    //   nextProps.adults,
-    //   nextProps.children,
-    //   nextProps.infant,
-    //   nextProps.cabinClass
-    // );
-    // console.log("NXT PROPS FOR SORT");
-    // console.log(nextProps);
-
-    // console.log("İKİNCİ");
+      this.setState({ flyObjData: nextProps.flyObjData });
+      this.setState({ flyObj: nextProps.flyObj });
+      this.setState({originAirport: nextProps.originAirport});
+      console.log("FLY GROUP WILL RECEIVE PROPS");
+      
   }
-  /*
-  recieveFlights(
-    originAirportCode,
-    destinationAirportCode,
-    departureDate,
-    returnDate,
-    adults,
-    children,
-    infant,
-    cabinClass
-  ) {
-    var query = queryBuilder(
-      originAirportCode,
-      destinationAirportCode,
-      departureDate,
-      returnDate,
-      adults,
-      children,
-      infant,
-      cabinClass
-    ).toString();
-    this.setState({ queryUrl: query });
-
-    getFlights(query)
-      .then((response) => {
-        this.setState({ flyObj: response.data });
-        this.setState({ originalFlights: response.data.data });
-        if (this.props.sortValue == 1) {
-          this.sortDepartureTime();
-          console.log("sortDeparture");
-        } else if (this.props.sortValue == 2) {
-          this.sortArriveTime();
-          console.log("sortArrive");
-        } else if (this.props.sortValue == 3) this.sortCarrierName();
-        else {
-          this.sortPrice();
-          console.log("sortPrice");
-          console.log(this.props.sortValue);
-        }
-      })
-      .catch((err) => {
-        console.log(err.response.request._response);
-      });
-  }*/
 
   sortPrice = () => {
     const myData = this.state.originalFlights.sort(function (a, b) {
       return a.price.total < b.price.total ? 1 : -1;
     });
     this.setState({ flyObjData: myData });
+    console.log("PRICE SIRALANDI");
   };
 
   sortDepartureTime = () => {
@@ -145,6 +75,7 @@ class FlyGroupList extends Component {
         : -1;
     });
     this.setState({ flyObjData: myData });
+    console.log("DEPARTURE SIRALANDI");
   };
 
   sortArriveTime = () => {
@@ -161,6 +92,7 @@ class FlyGroupList extends Component {
         : -1;
     });
     this.setState({ flyObjData: myData });
+    console.log("ARIIVE SIRALANDI");
   };
 
   sortCarrierName = () => {
@@ -171,6 +103,7 @@ class FlyGroupList extends Component {
         : -1;
     });
     this.setState({ flyObjData: myData });
+    console.log("CARRIER SIRALANDI");
   };
 
   keyExtractor = (item, index) => index.toString();
@@ -379,7 +312,7 @@ class FlyGroupList extends Component {
 
     return (
       <ScrollView>
-        {flyObjData.length === 0 && (
+        {/* {flyObjData.length === 0 && (
           <Modal>
             <LottieView
               style={styles.lottieView}
@@ -388,7 +321,7 @@ class FlyGroupList extends Component {
               loop
             />
           </Modal>
-        )}
+        )} */}
         <FlatList
           // showsHorizontalScrollIndicator={false}
           data={flyObjData}
