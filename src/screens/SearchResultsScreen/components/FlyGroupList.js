@@ -7,7 +7,10 @@ import {
   FlatList,
   ScrollView,
   ActivityIndicator,
+  Modal,
 } from "react-native";
+import LottieView from "lottie-react-native";
+
 import FlyGroup from "./FlyGroup";
 import { getFlights, queryBuilder } from "../../../services/amadeusService";
 import { connect } from "react-redux";
@@ -19,8 +22,6 @@ import {
 import moment from "moment";
 import "moment/locale/tr";
 import FlyItem from "./FlyItem";
-import LottieView from 'lottie-react-native';
-import LoaderScreen from '../../LoaderScreen/LoaderScreen';
 
 class FlyGroupList extends Component {
   constructor(props) {
@@ -31,10 +32,14 @@ class FlyGroupList extends Component {
       originalFlights: [],
       sortValue: 0,
       queryUrl: "",
+      loading: this.props.loading,
     };
   }
 
   componentDidMount() {
+    // this.props.setLoading(true);
+    console.log("DENEME");
+
     this.recieveFlights(
       this.props.originAirport.AirportCode,
       this.props.destinationAirport.AirportCode,
@@ -51,7 +56,7 @@ class FlyGroupList extends Component {
       this.setState({ sortValue: nextProps.sortValue });
       // console.log(this.state.sortValue);
     }
-    console.log("NEXT PROPS ?=>     ");
+
     // console.log(nextProps);
     this.setState({ flyObjData: [] });
     this.recieveFlights(
@@ -76,8 +81,6 @@ class FlyGroupList extends Component {
     infant,
     cabinClass
   ) {
-    console.log("Store object");
-    console.log(this.props.store);
     var query = queryBuilder(
       originAirportCode,
       destinationAirportCode,
@@ -89,15 +92,13 @@ class FlyGroupList extends Component {
       cabinClass
     ).toString();
     this.setState({ queryUrl: query });
-    setTimeout(() => {
-      console.log("Lütfen Çalış");
-      console.log(query);
-    }, 1);
 
     getFlights(query)
       .then((response) => {
         this.setState({ flyObj: response.data });
         this.setState({ originalFlights: response.data.data });
+        // this.props.setLoading(false);
+
         if (this.state.sortValue == 1) {
           this.sortDepartureTime();
           console.log("sortDeparture");
@@ -120,6 +121,12 @@ class FlyGroupList extends Component {
       return a.price.total > b.price.total ? 1 : -1;
     });
     this.setState({ flyObjData: myData });
+    // if (flyObjData.length == 0) {
+    //   this.props.setLoading(true);
+    // } else {
+    //   this.props.setLoading(false);
+    //   console.log("LOADING SORT PRICE İÇİNDE");
+    // }
   };
 
   sortDepartureTime = () => {
@@ -130,6 +137,11 @@ class FlyGroupList extends Component {
         : -1;
     });
     this.setState({ flyObjData: myData });
+    // if (flyObjData.length == 0) {
+    //   this.setLoading(true);
+    // } else {
+    //   this.setLoading(false);
+    // }
   };
 
   sortArriveTime = () => {
@@ -146,6 +158,11 @@ class FlyGroupList extends Component {
         : -1;
     });
     this.setState({ flyObjData: myData });
+    // if (flyObjData.length == 0) {
+    //   this.setLoading(true);
+    // } else {
+    //   this.setLoading(false);
+    // }
   };
 
   sortCarrierName = () => {
@@ -156,6 +173,11 @@ class FlyGroupList extends Component {
         : -1;
     });
     this.setState({ flyObjData: myData });
+    // if (flyObjData.length == 0) {
+    //   this.setLoading(true);
+    // } else {
+    //   this.setLoading(false);
+    // }
   };
 
   keyExtractor = (item, index) => index.toString();
@@ -364,23 +386,23 @@ class FlyGroupList extends Component {
 
     return (
       <ScrollView>
-        {flyObjData.length == 0 ? (
-          <LottieView
-          style={styles.lottieView}
-          source={require('../../../../assets/animations/15206-plane.json')}
-          autoPlay
-          loop
-        />
-       
-        ) : (
-          <FlatList
-            // showsHorizontalScrollIndicator={false}
-            data={flyObjData}
-            keyExtractor={this.keyExtractor}
-            renderItem={this.flytItem}
-            extraData={flyObj.dictionaries}
-          />
+        {flyObjData.length === 0 && (
+          <Modal>
+            <LottieView
+              style={styles.lottieView}
+              source={require("../../../../assets/animations/15206-plane.json")}
+              autoPlay
+              loop
+            />
+          </Modal>
         )}
+        <FlatList
+          // showsHorizontalScrollIndicator={false}
+          data={flyObjData}
+          keyExtractor={this.keyExtractor}
+          renderItem={this.flytItem}
+          extraData={flyObj.dictionaries}
+        />
       </ScrollView>
     );
   }

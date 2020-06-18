@@ -87,8 +87,7 @@ class SearchFlyScreen extends Component {
                 titleStyle={styles.btnTitleStyle}
                 onPress={() => {
                   this.navigateFunction("SearchResults");
-                  console.log("SON HALİ");
-                  console.log(this.props.passenger);
+          
                 }}
               />
             </View>

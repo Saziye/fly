@@ -20,8 +20,7 @@ class ListRow extends Component {
   }
 
   componentDidMount() {
-    console.log("Store object");
-    console.log(this.props.store);
+    
     getFlights("IST", "ESB", "2020-06-16", "2020-06-19").then((response)=> {
      console.log(response.data);
      this.setState({flyObj: response.data});
