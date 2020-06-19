@@ -3,12 +3,12 @@ import { View, StyleSheet, Dimensions,Text } from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { AntDesign } from "@expo/vector-icons";
 import { Entypo } from '@expo/vector-icons';
-import Airline from './components/Airline';
-import Airway from './components/Airway';
-import Class from './components/Class';
-import Clock from './components/Clock';
-import Price from './components/Price';
-import Transfer from './components/Transfer';
+import Airline from './component/Airline';
+import Airway from './component/Airway';
+import Class from './component/Class';
+import Clock from './component/Clock';
+import Price from './component/Price';
+import Transfer from './component/Transfer';
 
 const ClockRoute = () => (
  <Clock/>
@@ -32,7 +32,7 @@ const PriceRoute = () => (
 
 //const initialLayout = { width: Dimensions.get('window').width };
 
-export default function FilterScreen() {
+const FilterModal = () => {
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
     { key: 'transfer', title: 'Aktarma', icon: 'swap' },
@@ -70,16 +70,24 @@ export default function FilterScreen() {
   );
 
   return (
-    <TabView
+    <>
+     
+      <View style={styles.container}>
+        <Text style={styles.btnStyle}>Uygula</Text>
+         <Text style= {styles.headerText}>Filtreler</Text>
+      </View>
+      <TabView
       navigationState={{ index, routes }}
       renderScene={renderScene}
       onIndexChange={setIndex}
       //initialLayout={initialLayout}
       renderTabBar= {renderTabBar}
     />
+    </>
+    
   );
 }
-FilterScreen.navigationOptions = ({ navigation }) => ({
+FilterModal.navigationOptions = ({ navigation }) => ({
   title: 'Filtreler',
   headerTitleStyle: {
     fontWeight: "bold",
@@ -110,14 +118,10 @@ FilterScreen.navigationOptions = ({ navigation }) => ({
   ),
 });
 const styles = StyleSheet.create({
-  scene: {
-    flex: 1,
-  },
   tabbar: {
     backgroundColor: '#eaeaea',
     // borderColor: 'red',
     // borderWidth:1,
-    
   },
   label: {
     color: '#343434',
@@ -131,5 +135,31 @@ const styles = StyleSheet.create({
   },
   indicator: {
     backgroundColor: '#ffc501',
+  },
+  container: {
+    backgroundColor: "#16416c",
+    height:40,
+    justifyContent:'center',
+    alignItems:'center'
+  },
+  headerText: {
+    fontWeight: "bold",
+    fontSize: 18,
+    alignSelf: "center",
+    textAlign: "center",
+    color:'white'
+  },
+  btnStyle: {
+    fontWeight: "bold",
+    fontSize: 16,
+    textAlign: "center",
+    color:'white',
+    position: 'absolute',
+    left:10,
+    borderWidth:1,
+    borderColor: 'white',
+    padding:3
   }
 });
+
+export default FilterModal;

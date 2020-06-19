@@ -7,7 +7,6 @@ import AirportsListScreen from "./src/screens/AirportsListScreen/AirportsListScr
 import SearchFlyScreen from "./src/screens/SearchFlyScreen/SearchFlyScreen";
 import PassengerScreen from "./src/screens/PassengerScreen/PassengerScreen";
 import SearchResultsScreen from "./src/screens/SearchResultsScreen/SearchResultsScreen";
-import FilterScreen from "./src/screens/FilterScreen/FilterScreen";
 import SortScreen from "./src/screens/SortScreen/SortScreen";
 import thunkMiddleware from "redux-thunk";
 console.ignoredYellowBox = ["Warning: Each", "Warning: Failed"];
@@ -34,7 +33,6 @@ const switchNavigator = createStackNavigator(
     Passenger: PassengerScreen,
 
     SearchResults: SearchResultsScreen,
-    FilterScreen: FilterScreen,
     SortScreen: SortScreen,
   },
   {

@@ -26,6 +26,8 @@ import {
 } from "../../actions/passengerAction";
 import LottieView from "lottie-react-native";
 import { getFlights, queryBuilder } from "../../services/amadeusService";
+import FilterModal from '../../components/FilterModal/FilterModal';
+import Modal from "react-native-modal";
 
 class SearchResultsScreen extends Component {
   constructor(props) {
@@ -38,6 +40,7 @@ class SearchResultsScreen extends Component {
       queryUrl: "",
       segments: [],
       segmentsCheckList: [],
+      filterModalVisible: false,
     };
   }
 
@@ -154,12 +157,6 @@ class SearchResultsScreen extends Component {
         this.setState({ originalFlights: response.data.data });
         this.setState({ flyObjData: response.data.data });
         this.setSengments(response.data.data);
-        // setTimeout(()=> {
-        //   console.log("gelen data")
-        //   console.log(this.state.originalFlights);
-        //   console.log(this.state.flyObjData);
-        //   console.log(this.state.flyObj);
-        // }, 1000)
       })
       .catch((err) => {
         console.log(err.response.request._response);
@@ -188,13 +185,12 @@ class SearchResultsScreen extends Component {
     return self.indexOf(value) === index;
   }
 
-  navigateFunction = (screen) => {
-    const { navigation } = this.props;
-    navigation.navigate(screen);
-  };
-
   setModalVisible = (visible) => {
     this.setState({ modalVisible: visible });
+  };
+
+  setFilterModalVisible = (visible) => {
+    this.setState({filterModalVisible: visible});
   };
 
   keyExtractor = (item, index) => index.toString();
@@ -263,6 +259,7 @@ class SearchResultsScreen extends Component {
       flyObjData,
       originalFlights,
       queryUrl,
+      filterModalVisible,
     } = this.state;
 
     return (
@@ -550,7 +547,7 @@ class SearchResultsScreen extends Component {
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.sortStyle}
-                onPress={() => this.navigateFunction("FilterScreen")}
+                onPress={() => this.setFilterModalVisible(true)}
               >
                 <Feather name="filter" size={30} color="white" />
                 <Text style={styles.sortText}>Filtrele</Text>
@@ -564,8 +561,21 @@ class SearchResultsScreen extends Component {
                 <Text style={styles.sortText}>Paylaş</Text>
               </TouchableOpacity>
             </View>
+          <Modal
+            isVisible={filterModalVisible}
+            style= {styles.modalSttyle}
+            swipeDirection={["left", "right", "down"]}
+          >
+            
+              <FilterModal/>
+          
+            
+          </Modal>
+
           </View>
         )}
+
+         
       </>
     );
   }
@@ -702,6 +712,12 @@ const styles = StyleSheet.create({
   dateContainer_two: {
     flexDirection: "row",
   },
+  modalSttyle: {
+    borderColor:'red',
+    borderWidth:1,
+    flex:1,
+    backgroundColor:'white'
+  }
 });
 
 const mapStateToProps = (state) => {
