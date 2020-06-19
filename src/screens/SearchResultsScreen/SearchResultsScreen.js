@@ -6,7 +6,7 @@ import {
   Text,
   TouchableOpacity,
   Alert,
-  FlatList,
+  FlatList
 } from "react-native";
 import { CheckBox } from "react-native-elements";
 import { SafeAreaView } from "react-navigation";
@@ -84,6 +84,35 @@ class SearchResultsScreen extends Component {
     ),
   });
 
+  setSegmentCheckList(array) {
+    this.setState({segmentsCheckList: array});
+    console.log("GELDİİİİİİ");
+    this.setState({ flyObjData: [] });
+    this.filterTheFlights();
+  };
+
+  filterTheFlights() {
+    this.filterBySegment();  
+  };
+
+filterBySegment() {
+    const {originalFlights, segmentsCheckList, segments} = this.state;
+    let filteredFligths = [];
+
+    for (let index = 0; index < segmentsCheckList.length; index++) {
+      // const element = segmentsCheckList[index];
+      if(segmentsCheckList[index]) {
+        originalFlights.forEach((element)  => {
+          if(element.itineraries[0].segments.length-1 == segments[index]) {
+            filteredFligths.push(element)
+          }
+        })
+      }
+    }
+    console.log(filteredFligths.length);
+    this.setState({flyObjData:filteredFligths })
+  }
+
   componentDidMount() {
     const origin = String(this.props.originAirport.CityName);
     const destination = String(this.props.destinationAirport.CityName);
@@ -102,15 +131,16 @@ class SearchResultsScreen extends Component {
     );
     console.log("SEARCH RESULT DID MOUNT");
   }
+  
 
   componentWillReceiveProps(nextProps) {
     if (
       this.props.departureDate != nextProps.departureDate ||
       this.props.returnDate != nextProps.returnDate ||
       this.props.selectedWay != nextProps.selectedWay ||
-      this.props.sortValue != nextProps.sortValue
+      this.props.sortValue != nextProps.sortValue 
     )
-      this.setState({ flyObjData: [] });
+    this.setState({ flyObjData: [] });
     this.recieveFlights(
       nextProps.originAirport.AirportCode,
       nextProps.destinationAirport.AirportCode,
@@ -122,6 +152,7 @@ class SearchResultsScreen extends Component {
       nextProps.cabinClass
     );
     console.log("NXT PROPS FOR SORT");
+    console.log(nextProps);
     //console.log(nextProps);
     console.log("SEARCH RESULT WILL RECEIVE ");
   }
@@ -167,7 +198,7 @@ class SearchResultsScreen extends Component {
     let allSegments = [];
 
     flights.forEach((element) => {
-      allSegments.push(element.itineraries[0].segments.length);
+      allSegments.push(element.itineraries[0].segments.length - 1);
     });
     allSegments.sort((a, b) => a - b);
 
@@ -179,6 +210,9 @@ class SearchResultsScreen extends Component {
     this.setState({ segments, segmentsCheckList });
     console.log("==========================>");
     console.log(segments);
+    console.log(segmentsCheckList);
+    console.log("olsun  artık ");
+    
   }
 
   onlyUnique(value, index, self) {
@@ -193,64 +227,7 @@ class SearchResultsScreen extends Component {
     this.setState({filterModalVisible: visible});
   };
 
-  keyExtractor = (item, index) => index.toString();
-
-  renderOption = ({ item, index }) => (
-    <View>
-      <Text>{item}</Text>
-      <CheckBox
-        center
-        title={item == 1 ? "Direkt" : `${item - 1} Aktarma`}
-        checked={this.state.segmentsCheckList[index]}
-        onPress={() => {
-          this.state.segmentsCheckList[index] = !this.state.segmentsCheckList[
-            index
-          ];
-          this.setState({
-            segmentsCheckList: this.state.segmentsCheckList,
-          });
-        }}
-      />
-    </View>
-  );
-  renderFilter() {
-    return (
-      <View>
-        <FlatList
-          horizontal={true}
-          data={this.state.segments}
-          keyExtractor={(item) => item}
-          renderItem={(item, index) => this.renderOption(item, index)}
-        />
-        <Button
-          title="FiltreyiUygula"
-          onPress={() => this.filterTheFlights()}
-        />
-      </View>
-    );
-  }
-  filterTheFlights() {
-    this.filterBySegment();
-    
-  }
-
-  filterBySegment() {
-    const {originalFlights, segmentsCheckList, segments} = this.state;
-    let filteredFligths = [];
-
-    for (let index = 0; index < segmentsCheckList.length; index++) {
-      // const element = segmentsCheckList[index];
-      if(segmentsCheckList[index]) {
-        originalFlights.forEach((element)  => {
-          if(element.itineraries[0].segments.length == segments[index]) {
-            filteredFligths.push(element)
-          }
-        })
-      }
-    }
-    console.log(filteredFligths.length);
-    this.setState({flyObjData:filteredFligths })
-  }
+  
 
   render() {
     const {
@@ -260,6 +237,8 @@ class SearchResultsScreen extends Component {
       originalFlights,
       queryUrl,
       filterModalVisible,
+      segments,
+      segmentsCheckList,
     } = this.state;
 
     return (
@@ -520,8 +499,6 @@ class SearchResultsScreen extends Component {
               </View>
             )}
 
-            {this.renderFilter()}
-
             <FlyGroupList
               flyObj={flyObj}
               flyObjData={flyObjData}
@@ -562,14 +539,15 @@ class SearchResultsScreen extends Component {
               </TouchableOpacity>
             </View>
           <Modal
-            isVisible={filterModalVisible}
+          testID={"modal"}
+          isVisible={filterModalVisible}
+          onSwipeComplete={() => this.setFilterModalVisible(false)}
+          swipeDirection={["down", "left", "up", "right"]}
+            //visible={filterModalVisible}
+            //animationType="slide"
             style= {styles.modalSttyle}
-            swipeDirection={["left", "right", "down"]}
           >
-            
-              <FilterModal/>
-          
-            
+              <FilterModal segments={segments} segmentsCheckList={segmentsCheckList} onPress={(array) => {this.setSegmentCheckList(array)}} onClick={(value)=> this.setFilterModalVisible(value)}/>  
           </Modal>
 
           </View>
@@ -713,8 +691,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   modalSttyle: {
-    borderColor:'red',
-    borderWidth:1,
     flex:1,
     backgroundColor:'white'
   }
