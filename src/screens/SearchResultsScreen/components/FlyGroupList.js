@@ -61,7 +61,7 @@ class FlyGroupList extends Component {
 
   sortPrice = () => {
     const myData = this.state.originalFlights.sort(function (a, b) {
-      return a.price.total < b.price.total ? 1 : -1;
+      return a.price.total > b.price.total ? 1 : -1;
     });
     this.setState({ flyObjData: myData });
     console.log("PRICE SIRALANDI");

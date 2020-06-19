@@ -86,7 +86,8 @@ class SearchResultsScreen extends Component {
     console.log("SEARCH RESULT DID MOUNT");
   }
 
-  /*componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps) {
+    if(this.props.departureDate != nextProps.departureDate || this.props.returnDate != nextProps.returnDate || this.props.selectedWay!= nextProps.selectedWay || this.props.sortValue != nextProps.sortValue)
     this.setState({ flyObjData: [] });
     this.recieveFlights(
       nextProps.originAirport.AirportCode,
@@ -101,7 +102,7 @@ class SearchResultsScreen extends Component {
     console.log("NXT PROPS FOR SORT");
     //console.log(nextProps);
     console.log("SEARCH RESULT WILL RECEIVE ")
-  }*/
+  }
 
   recieveFlights(
     originAirportCode,
@@ -211,13 +212,24 @@ class SearchResultsScreen extends Component {
               buttonStyle={styles.btnStyle1}
               titleStyle={styles.buttonText}
               onPress={() => {
-                this.props.setDepartureDate(
+                if( moment(this.props.departureDate)
+                      .subtract(1, "days")
+                      .format("YYYY-MM-DD") < moment().format("YYYY-MM-DD")) {
+                        Alert.alert(
+                          "Bilgilendirme",
+                          "Gidiş tarihi bugünden küçük olamaz",
+                          [{ text: "Tamam", onPress: () => null }]
+                        );
+                      } else {
+                        this.props.setDepartureDate(
                   moment(this.props.departureDate)
                     .subtract(1, "days")
                     .format("YYYY-MM-DD")
                 );
                 this.props.setSortValue(0);
                 console.log("nedennnn");
+                      }
+                
 
               }}
             />
@@ -274,6 +286,14 @@ class SearchResultsScreen extends Component {
                         Alert.alert(
                           "Bilgilendirme",
                           "Gidiş tarihi büyük olamaz",
+                          [{ text: "Tamam", onPress: () => null }]
+                        );
+                      } else if( moment(this.props.departureDate)
+                      .subtract(1, "days")
+                      .format("YYYY-MM-DD") < moment().format("YYYY-MM-DD")) {
+                        Alert.alert(
+                          "Bilgilendirme",
+                          "Gidiş tarihi bugünden küçük olamaz",
                           [{ text: "Tamam", onPress: () => null }]
                         );
                       } else {
