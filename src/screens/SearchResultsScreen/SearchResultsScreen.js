@@ -1,6 +1,14 @@
 import React, { Component } from "react";
 import { Button } from "react-native-elements";
-import { StyleSheet, View, Text, TouchableOpacity, Alert } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  Alert,
+  FlatList,
+} from "react-native";
+import { CheckBox } from "react-native-elements";
 import { SafeAreaView } from "react-navigation";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -11,7 +19,11 @@ import "moment/locale/tr";
 import { MaterialIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import ModalItem from "./components/ModalItem";
-import { setDepartureDate, setReturnDate,setSortValue } from "../../actions/passengerAction";
+import {
+  setDepartureDate,
+  setReturnDate,
+  setSortValue,
+} from "../../actions/passengerAction";
 import LottieView from "lottie-react-native";
 import { getFlights, queryBuilder } from "../../services/amadeusService";
 
@@ -24,6 +36,8 @@ class SearchResultsScreen extends Component {
       flyObjData: [],
       originalFlights: [],
       queryUrl: "",
+      segments: [],
+      segmentsCheckList: [],
     };
   }
 
@@ -87,8 +101,13 @@ class SearchResultsScreen extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(this.props.departureDate != nextProps.departureDate || this.props.returnDate != nextProps.returnDate || this.props.selectedWay!= nextProps.selectedWay || this.props.sortValue != nextProps.sortValue)
-    this.setState({ flyObjData: [] });
+    if (
+      this.props.departureDate != nextProps.departureDate ||
+      this.props.returnDate != nextProps.returnDate ||
+      this.props.selectedWay != nextProps.selectedWay ||
+      this.props.sortValue != nextProps.sortValue
+    )
+      this.setState({ flyObjData: [] });
     this.recieveFlights(
       nextProps.originAirport.AirportCode,
       nextProps.destinationAirport.AirportCode,
@@ -101,7 +120,7 @@ class SearchResultsScreen extends Component {
     );
     console.log("NXT PROPS FOR SORT");
     //console.log(nextProps);
-    console.log("SEARCH RESULT WILL RECEIVE ")
+    console.log("SEARCH RESULT WILL RECEIVE ");
   }
 
   recieveFlights(
@@ -130,10 +149,11 @@ class SearchResultsScreen extends Component {
     getFlights(query)
       .then((response) => {
         // console.log(response.data.data);
-        
+
         this.setState({ flyObj: response.data });
         this.setState({ originalFlights: response.data.data });
         this.setState({ flyObjData: response.data.data });
+        this.setSengments(response.data.data);
         // setTimeout(()=> {
         //   console.log("gelen data")
         //   console.log(this.state.originalFlights);
@@ -146,6 +166,28 @@ class SearchResultsScreen extends Component {
       });
   }
 
+  setSengments(flights) {
+    let allSegments = [];
+
+    flights.forEach((element) => {
+      allSegments.push(element.itineraries[0].segments.length);
+    });
+    allSegments.sort((a, b) => a - b);
+
+    let segments = allSegments.filter(this.onlyUnique);
+    let segmentsCheckList = [];
+    segments.forEach(() => {
+      segmentsCheckList.push(true);
+    });
+    this.setState({ segments, segmentsCheckList });
+    console.log("==========================>");
+    console.log(segments);
+  }
+
+  onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
+  }
+
   navigateFunction = (screen) => {
     const { navigation } = this.props;
     navigation.navigate(screen);
@@ -154,6 +196,46 @@ class SearchResultsScreen extends Component {
   setModalVisible = (visible) => {
     this.setState({ modalVisible: visible });
   };
+
+  keyExtractor = (item, index) => index.toString();
+
+  renderOption = ({ item, index }) => (
+    <View>
+      <Text>{item}</Text>
+      <CheckBox
+        center
+        title={item == 1 ? "Direkt" : `${item - 1} Aktarma`}
+        checked={this.state.segmentsCheckList[index]}
+        onPress={() => {
+          this.state.segmentsCheckList[index] = !this.state.segmentsCheckList[
+            index
+          ];
+          this.setState({
+            segmentsCheckList: this.state.segmentsCheckList,
+          });
+        }}
+      />
+    </View>
+  );
+  renderFilter() {
+    return (
+      <View>
+        <FlatList
+          horizontal={true}
+          data={this.state.segments}
+          keyExtractor={(item) => item}
+          renderItem={(item, index) => this.renderOption(item, index)}
+        />
+        <Button
+          title="FiltreyiUygula"
+          onPress={() => this.filterTheFlights()}
+        />
+      </View>
+    );
+  }
+  filterTheFlights() {
+    console.log(this.state.segmentsCheckList);
+  }
 
   render() {
     const {
@@ -166,310 +248,307 @@ class SearchResultsScreen extends Component {
 
     return (
       <>
-        {
-          this.state.flyObjData.length == 0 ? (
-            <View style= {{flex:1, backgroundColor: 'white'}}>
-              <LottieView
+        {this.state.flyObjData.length == 0 ? (
+          <View style={{ flex: 1, backgroundColor: "white" }}>
+            <LottieView
               style={styles.lottieView}
               source={require("../../../assets/animations/15206-plane.json")}
               autoPlay
               loop
             />
-            </View>
-            
-          ) : (
-<View style={styles.container}>
-        {this.props.selectedWay == 1 ? (
-          <View style={styles.container_one}>
-            <Text style={styles.textStyle}>
-              {" "}
-              {moment(this.props.departureDate).format(
-                "DD MMMM YYYY dddd"
-              )}{" "}
-            </Text>
-            <FontAwesome5
-              name="exchange-alt"
-              size={17}
-              color="#453914"
-              style={styles.iconStyle}
-            />
-            <Text style={styles.text2Style}>
-              {" "}
-              {moment(this.props.returnDate).format("DD MMMM YYYY dddd")}{" "}
-            </Text>
           </View>
         ) : (
-          <View style={styles.container_one}>
-            <Text style={styles.text3Style}>
-              {moment(this.props.departureDate).format("DD MMMM YYYY dddd")}
-            </Text>
-          </View>
-        )}
-        {this.props.selectedWay == 0 ? (
-          <View style={styles.container_two}>
-            <Button
-              title="Önceki Gün"
-              buttonStyle={styles.btnStyle1}
-              titleStyle={styles.buttonText}
-              onPress={() => {
-                if( moment(this.props.departureDate)
-                      .subtract(1, "days")
-                      .format("YYYY-MM-DD") < moment().format("YYYY-MM-DD")) {
-                        Alert.alert(
-                          "Bilgilendirme",
-                          "Gidiş tarihi bugünden küçük olamaz",
-                          [{ text: "Tamam", onPress: () => null }]
-                        );
-                      } else {
-                        this.props.setDepartureDate(
-                  moment(this.props.departureDate)
-                    .subtract(1, "days")
-                    .format("YYYY-MM-DD")
-                );
-                this.props.setSortValue(0);
-                console.log("nedennnn");
-                      }
-                
-
-              }}
-            />
-            <Button
-              title="Sonraki Gün"
-              buttonStyle={styles.btnStyle2}
-              titleStyle={styles.buttonText}
-              onPress={() => {
-                this.props.setDepartureDate(
-                  moment(this.props.departureDate)
-                    .add(1, "days")
-                    .format("YYYY-MM-DD")
-                );
-                this.props.setSortValue(0);
-                console.log("nedennnn");
-
-              }}
-            />
-          </View>
-        ) : (
-          <View style={styles.dateContainer}>
-            <View style={styles.dateContainer_one}>
-              <View style={styles.dateContainer_two}>
-                <View
-                  style={{
-                    backgroundColor: "#474745",
-                    height: "100%",
-                    paddingHorizontal: 5,
-                    alignItems: "center",
-                    alignSelf: "center",
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: "white",
-                      alignSelf: "center",
-                      alignItems: "center",
-                      textAlign: "center",
-                    }}
-                  >
-                    GİDİŞ
-                  </Text>
-                </View>
-
-                <View style={{ flexDirection: "row" }}>
-                  <TouchableOpacity
-                    style={styles.box}
-                    onPress={() => {
-                      if (
+          <View style={styles.container}>
+            {this.props.selectedWay == 1 ? (
+              <View style={styles.container_one}>
+                <Text style={styles.textStyle}>
+                  {" "}
+                  {moment(this.props.departureDate).format(
+                    "DD MMMM YYYY dddd"
+                  )}{" "}
+                </Text>
+                <FontAwesome5
+                  name="exchange-alt"
+                  size={17}
+                  color="#453914"
+                  style={styles.iconStyle}
+                />
+                <Text style={styles.text2Style}>
+                  {" "}
+                  {moment(this.props.returnDate).format(
+                    "DD MMMM YYYY dddd"
+                  )}{" "}
+                </Text>
+              </View>
+            ) : (
+              <View style={styles.container_one}>
+                <Text style={styles.text3Style}>
+                  {moment(this.props.departureDate).format("DD MMMM YYYY dddd")}
+                </Text>
+              </View>
+            )}
+            {this.props.selectedWay == 0 ? (
+              <View style={styles.container_two}>
+                <Button
+                  title="Önceki Gün"
+                  buttonStyle={styles.btnStyle1}
+                  titleStyle={styles.buttonText}
+                  onPress={() => {
+                    if (
+                      moment(this.props.departureDate)
+                        .subtract(1, "days")
+                        .format("YYYY-MM-DD") < moment().format("YYYY-MM-DD")
+                    ) {
+                      Alert.alert(
+                        "Bilgilendirme",
+                        "Gidiş tarihi bugünden küçük olamaz",
+                        [{ text: "Tamam", onPress: () => null }]
+                      );
+                    } else {
+                      this.props.setDepartureDate(
                         moment(this.props.departureDate)
                           .subtract(1, "days")
-                          .format("YYYY-MM-DD") > this.props.returnDate
-                      ) {
-                        Alert.alert(
-                          "Bilgilendirme",
-                          "Gidiş tarihi büyük olamaz",
-                          [{ text: "Tamam", onPress: () => null }]
-                        );
-                      } else if( moment(this.props.departureDate)
-                      .subtract(1, "days")
-                      .format("YYYY-MM-DD") < moment().format("YYYY-MM-DD")) {
-                        Alert.alert(
-                          "Bilgilendirme",
-                          "Gidiş tarihi bugünden küçük olamaz",
-                          [{ text: "Tamam", onPress: () => null }]
-                        );
-                      } else {
-                        this.props.setDepartureDate(
-                          moment(this.props.departureDate)
-                            .subtract(1, "days")
-                            .format("YYYY-MM-DD")
-                        );
-                        this.props.setSortValue(0);
-                console.log("nedennnn");
-
-                      }
-                    }}
-                  >
-                    <Text style={styles.boxText}>Önceki Gün</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.box}
-                    onPress={() => {
-                      if (
-                        moment(this.props.departureDate)
-                          .add(1, "days")
-                          .format("YYYY-MM-DD") > this.props.returnDate
-                      ) {
-                        Alert.alert(
-                          "Bilgilendirme",
-                          "Gidiş tarihi büyük olamaz",
-                          [{ text: "Tamam", onPress: () => null }]
-                        );
-                      } else {
-                        this.props.setDepartureDate(
-                          moment(this.props.departureDate)
-                            .add(1, "days")
-                            .format("YYYY-MM-DD")
-                        );
-                this.props.setSortValue(0);
-                console.log("nedennnn");
-
-                      }
-                    }}
-                  >
-                    <Text style={styles.boxText}>Sonraki Gün</Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
-            <View style={styles.dateContainer_one}>
-              <View style={styles.dateContainer_two}>
-                <View
-                  style={{
-                    backgroundColor: "#474745",
-                    height: "100%",
-                    paddingHorizontal: 5,
-                    alignItems: "center",
-                    alignSelf: "center",
+                          .format("YYYY-MM-DD")
+                      );
+                      this.props.setSortValue(0);
+                      console.log("nedennnn");
+                    }
                   }}
-                >
-                  <Text
-                    style={{
-                      color: "white",
-                      alignSelf: "center",
-                      alignItems: "center",
-                      textAlign: "center",
-                    }}
-                  >
-                    DÖNÜŞ
-                  </Text>
+                />
+                <Button
+                  title="Sonraki Gün"
+                  buttonStyle={styles.btnStyle2}
+                  titleStyle={styles.buttonText}
+                  onPress={() => {
+                    this.props.setDepartureDate(
+                      moment(this.props.departureDate)
+                        .add(1, "days")
+                        .format("YYYY-MM-DD")
+                    );
+                    this.props.setSortValue(0);
+                    console.log("nedennnn");
+                  }}
+                />
+              </View>
+            ) : (
+              <View style={styles.dateContainer}>
+                <View style={styles.dateContainer_one}>
+                  <View style={styles.dateContainer_two}>
+                    <View
+                      style={{
+                        backgroundColor: "#474745",
+                        height: "100%",
+                        paddingHorizontal: 5,
+                        alignItems: "center",
+                        alignSelf: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          color: "white",
+                          alignSelf: "center",
+                          alignItems: "center",
+                          textAlign: "center",
+                        }}
+                      >
+                        GİDİŞ
+                      </Text>
+                    </View>
+
+                    <View style={{ flexDirection: "row" }}>
+                      <TouchableOpacity
+                        style={styles.box}
+                        onPress={() => {
+                          if (
+                            moment(this.props.departureDate)
+                              .subtract(1, "days")
+                              .format("YYYY-MM-DD") > this.props.returnDate
+                          ) {
+                            Alert.alert(
+                              "Bilgilendirme",
+                              "Gidiş tarihi büyük olamaz",
+                              [{ text: "Tamam", onPress: () => null }]
+                            );
+                          } else if (
+                            moment(this.props.departureDate)
+                              .subtract(1, "days")
+                              .format("YYYY-MM-DD") <
+                            moment().format("YYYY-MM-DD")
+                          ) {
+                            Alert.alert(
+                              "Bilgilendirme",
+                              "Gidiş tarihi bugünden küçük olamaz",
+                              [{ text: "Tamam", onPress: () => null }]
+                            );
+                          } else {
+                            this.props.setDepartureDate(
+                              moment(this.props.departureDate)
+                                .subtract(1, "days")
+                                .format("YYYY-MM-DD")
+                            );
+                            this.props.setSortValue(0);
+                            console.log("nedennnn");
+                          }
+                        }}
+                      >
+                        <Text style={styles.boxText}>Önceki Gün</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={styles.box}
+                        onPress={() => {
+                          if (
+                            moment(this.props.departureDate)
+                              .add(1, "days")
+                              .format("YYYY-MM-DD") > this.props.returnDate
+                          ) {
+                            Alert.alert(
+                              "Bilgilendirme",
+                              "Gidiş tarihi büyük olamaz",
+                              [{ text: "Tamam", onPress: () => null }]
+                            );
+                          } else {
+                            this.props.setDepartureDate(
+                              moment(this.props.departureDate)
+                                .add(1, "days")
+                                .format("YYYY-MM-DD")
+                            );
+                            this.props.setSortValue(0);
+                            console.log("nedennnn");
+                          }
+                        }}
+                      >
+                        <Text style={styles.boxText}>Sonraki Gün</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
                 </View>
+                <View style={styles.dateContainer_one}>
+                  <View style={styles.dateContainer_two}>
+                    <View
+                      style={{
+                        backgroundColor: "#474745",
+                        height: "100%",
+                        paddingHorizontal: 5,
+                        alignItems: "center",
+                        alignSelf: "center",
+                      }}
+                    >
+                      <Text
+                        style={{
+                          color: "white",
+                          alignSelf: "center",
+                          alignItems: "center",
+                          textAlign: "center",
+                        }}
+                      >
+                        DÖNÜŞ
+                      </Text>
+                    </View>
 
-                <View style={{ flexDirection: "row" }}>
-                  <TouchableOpacity
-                    style={styles.box}
-                    onPress={() => {
-                      if (
-                        moment(this.props.returnDate)
-                          .subtract(1, "days")
-                          .format("YYYY-MM-DD") < this.props.departureDate
-                      ) {
-                        Alert.alert(
-                          "Bilgilendirme",
-                          "Dönüş tarihi küçük olamaz",
-                          [{ text: "Tamam", onPress: () => null }]
-                        );
-                      } else {
-                        this.props.setReturnDate(
-                          moment(this.props.returnDate)
-                            .subtract(1, "days")
-                            .format("YYYY-MM-DD")
-                        );
-                        this.props.setSortValue(0);
-                console.log("nedennnn");
-
-                      }
-                    }}
-                  >
-                    <Text style={styles.boxText}>Önceki Gün</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.box}
-                    onPress={() => {
-                      if (
-                        moment(this.props.returnDate)
-                          .add(1, "days")
-                          .format("YYYY-MM-DD") < this.props.departureDate
-                      ) {
-                        Alert.alert(
-                          "Bilgilendirme",
-                          "Dönüş tarihi küçük olamaz",
-                          [{ text: "Tamam", onPress: () => null }]
-                        );
-                      } else {
-                        this.props.setReturnDate(
-                          moment(this.props.returnDate)
-                            .add(1, "days")
-                            .format("YYYY-MM-DD")
-                        );
-                this.props.setSortValue(0);
-                console.log("nedennnn");
-                
-
-                      }
-                    }}
-                  >
-                    <Text style={styles.boxText}>Sonraki Gün</Text>
-                  </TouchableOpacity>
+                    <View style={{ flexDirection: "row" }}>
+                      <TouchableOpacity
+                        style={styles.box}
+                        onPress={() => {
+                          if (
+                            moment(this.props.returnDate)
+                              .subtract(1, "days")
+                              .format("YYYY-MM-DD") < this.props.departureDate
+                          ) {
+                            Alert.alert(
+                              "Bilgilendirme",
+                              "Dönüş tarihi küçük olamaz",
+                              [{ text: "Tamam", onPress: () => null }]
+                            );
+                          } else {
+                            this.props.setReturnDate(
+                              moment(this.props.returnDate)
+                                .subtract(1, "days")
+                                .format("YYYY-MM-DD")
+                            );
+                            this.props.setSortValue(0);
+                            console.log("nedennnn");
+                          }
+                        }}
+                      >
+                        <Text style={styles.boxText}>Önceki Gün</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={styles.box}
+                        onPress={() => {
+                          if (
+                            moment(this.props.returnDate)
+                              .add(1, "days")
+                              .format("YYYY-MM-DD") < this.props.departureDate
+                          ) {
+                            Alert.alert(
+                              "Bilgilendirme",
+                              "Dönüş tarihi küçük olamaz",
+                              [{ text: "Tamam", onPress: () => null }]
+                            );
+                          } else {
+                            this.props.setReturnDate(
+                              moment(this.props.returnDate)
+                                .add(1, "days")
+                                .format("YYYY-MM-DD")
+                            );
+                            this.props.setSortValue(0);
+                            console.log("nedennnn");
+                          }
+                        }}
+                      >
+                        <Text style={styles.boxText}>Sonraki Gün</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
                 </View>
               </View>
+            )}
+
+            {this.renderFilter()}
+
+            <FlyGroupList
+              flyObj={flyObj}
+              flyObjData={flyObjData}
+              originalFlights={originalFlights}
+              queryUrl={queryUrl}
+            />
+
+            <View style={styles.filterContainer}>
+              <TouchableOpacity
+                style={styles.sortStyle}
+                onPress={() => {
+                  this.setModalVisible(true);
+                }}
+              >
+                <MaterialIcons name="sort" size={30} color="white" />
+                <Text style={styles.sortText}>Sırala</Text>
+                <ModalItem
+                  modalVisible={modalVisible}
+                  onPress={(i) => {
+                    this.setModalVisible(i);
+                  }}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.sortStyle}
+                onPress={() => this.navigateFunction("FilterScreen")}
+              >
+                <Feather name="filter" size={30} color="white" />
+                <Text style={styles.sortText}>Filtrele</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.sortStyle}>
+                <Feather name="bell" size={30} color="white" />
+                <Text style={styles.sortText}>Fiyat Alarmı</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.lastStyle}>
+                <Feather name="share" size={30} color="white" />
+                <Text style={styles.sortText}>Paylaş</Text>
+              </TouchableOpacity>
             </View>
           </View>
         )}
-
-        <FlyGroupList
-          flyObj={flyObj}
-          flyObjData={flyObjData}
-          originalFlights={originalFlights}
-          queryUrl={queryUrl}
-        />
-
-        <View style={styles.filterContainer}>
-          <TouchableOpacity
-            style={styles.sortStyle}
-            onPress={() => {
-              this.setModalVisible(true);
-            }}
-          >
-            <MaterialIcons name="sort" size={30} color="white" />
-            <Text style={styles.sortText}>Sırala</Text>
-            <ModalItem
-              modalVisible={modalVisible}
-              onPress={(i) => {
-                this.setModalVisible(i);
-              }}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.sortStyle}
-            onPress={() => this.navigateFunction("FilterScreen")}
-          >
-            <Feather name="filter" size={30} color="white" />
-            <Text style={styles.sortText}>Filtrele</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.sortStyle}>
-            <Feather name="bell" size={30} color="white" />
-            <Text style={styles.sortText}>Fiyat Alarmı</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.lastStyle}>
-            <Feather name="share" size={30} color="white" />
-            <Text style={styles.sortText}>Paylaş</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    
-          )
-        }
       </>
-      );
+    );
   }
 }
 
