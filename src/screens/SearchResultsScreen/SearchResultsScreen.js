@@ -234,7 +234,26 @@ class SearchResultsScreen extends Component {
     );
   }
   filterTheFlights() {
-    console.log(this.state.segmentsCheckList);
+    this.filterBySegment();
+    
+  }
+
+  filterBySegment() {
+    const {originalFlights, segmentsCheckList, segments} = this.state;
+    let filteredFligths = [];
+
+    for (let index = 0; index < segmentsCheckList.length; index++) {
+      // const element = segmentsCheckList[index];
+      if(segmentsCheckList[index]) {
+        originalFlights.forEach((element)  => {
+          if(element.itineraries[0].segments.length == segments[index]) {
+            filteredFligths.push(element)
+          }
+        })
+      }
+    }
+    console.log(filteredFligths.length);
+    this.setState({flyObjData:filteredFligths })
   }
 
   render() {
