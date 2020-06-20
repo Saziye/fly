@@ -65,7 +65,11 @@ const FilterModal = (props) => {
       allClockRetDep={allClockRetDep}
       allClockRetArr={allClockRetArr}
     />
-    
+  );
+  const PriceRoute = () => (
+    <Price 
+      
+    />
   );
   const renderScene = SceneMap({
     clock: ClockRoute,

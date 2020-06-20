@@ -225,7 +225,7 @@ filterBySegment() {
         this.setState({ originalFlights: response.data.data });
         this.setState({ flyObjData: response.data.data });
         this.setSengments(response.data.data);
-        this.setClocks(response.data.data);
+        //this.setClocks(response.data.data);
       })
       .catch((err) => {
         console.log(err.response.request._response);
@@ -297,6 +297,10 @@ filterBySegment() {
   
       this.setState({allClockRetDep,allClockRetArr});
     }
+  }
+
+  setPrice(prices) {
+    
   }
 
   onlyUnique(value, index, self) {

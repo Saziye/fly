@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { Slider } from "react-native-elements";
 import { connect } from "react-redux";
+
+
 class Clock extends Component {
   constructor(props) {
     super(props);
@@ -51,7 +53,6 @@ class Clock extends Component {
             trackStyle={{ borderColor: "#3f3f3f" }}
             onValueChange={(goDepValue) => this.setState({ goDepValue })}
           />
-
           <View style={{flexDirection: 'row'}}>
           <Text style={styles.labelText}> Kalkış: </Text>
           <Text style= {{textAlign: 'center', marginVertical:10}}>  {goDepValue}</Text>
