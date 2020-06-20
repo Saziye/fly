@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View, StyleSheet, Dimensions, Text, Button } from "react-native";
+import { View, StyleSheet, Dimensions, Text, Button, Alert} from "react-native";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import { AntDesign } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
@@ -20,10 +20,13 @@ const PriceRoute = () => <Price />;
 //const initialLayout = { width: Dimensions.get('window').width };
 
 const FilterModal = (props) => {
-  const { segments, segmentsCheckList, onPress } = props;
+  const { segments, segmentsCheckList, returnSegments, returnSegmentsCheckList, selectedWay} = props;
 
   const [index, setIndex] = React.useState(0);
-  const [newSegments, newSetSegments] = segmentsCheckList;
+
+  // const [newSegments, newSetSegments] = segmentsCheckList;
+  
+  const isFalse = (currentValue) => currentValue == false;
 
   const [routes] = React.useState([
     { key: "transfer", title: "Aktarma", icon: "swap" },
@@ -35,9 +38,13 @@ const FilterModal = (props) => {
   ]);
 
   const TransferRoute = () => (
-    <Transfer segments={segments} segmentsCheckList={segmentsCheckList} />
+    <Transfer 
+      segments={segments} 
+      segmentsCheckList={segmentsCheckList} 
+      returnSegments={returnSegments} 
+      returnSegmentsCheckList={returnSegmentsCheckList}  
+    />
   );
-  console.log(props.segments);
   const renderScene = SceneMap({
     clock: ClockRoute,
     airway: AirWayRoute,
@@ -47,16 +54,17 @@ const FilterModal = (props) => {
     price: PriceRoute,
   });
   console.log("===========");
-  //const a = onPress(segmentsCheckList);
-  console.log(segmentsCheckList);
-
   console.log("FILTERMODAL SAYFASINDA");
-
+  console.log("segmentsCheckList: ",segmentsCheckList);
+  console.log("segments: ",segments);
+  console.log("returnSegments: ",returnSegments);
+  console.log("returnSegmentsCheckList: ",returnSegmentsCheckList);
   console.log("===========");
-  console.log(segmentsCheckList);
+  
   const renderIcon = ({ route }) => (
     <Entypo name={route.icon} size={24} color={"#343434"} />
   );
+  
   const renderTabBar = (props) => (
     <TabBar
       {...props}
@@ -70,6 +78,7 @@ const FilterModal = (props) => {
       getLabelText={({ route }) => route.title}
     />
   );
+  
 
   return (
     <>
@@ -84,8 +93,25 @@ const FilterModal = (props) => {
         <Button  
         title= "Uygula"
         onPress={() => {
-            props.onPress(segmentsCheckList);
-            props.onClick(false);
+          props.onClick(false);
+          if(selectedWay == 0) {
+            if(segmentsCheckList.every(isFalse) == true) {
+              Alert.alert("Bilgilendirme", "Lütfen en az bir aktarma seçiniz ", [
+                { text: "Tamam", onPress: () => null },
+              ]);
+            } else {
+              props.onPress(segmentsCheckList);
+            }
+          } else {
+            if(segmentsCheckList.every(isFalse) == true && returnSegmentsCheckList.every(isFalse) == true) {
+              Alert.alert("Bilgilendirme", "Lütfen en az bir aktarma seçiniz ", [
+                { text: "Tamam", onPress: () => null },
+              ]);
+            }else {
+              props.onPress(segmentsCheckList, returnSegmentsCheckList);
+            }
+          }
+          
           }}
           />
         <Text style={styles.headerText}>Filtreler</Text>

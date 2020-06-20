@@ -41,6 +41,8 @@ class SearchResultsScreen extends Component {
       segments: [],
       segmentsCheckList: [],
       filterModalVisible: false,
+      returnSegments:[],
+      returnSegmentsCheckList: [],
     };
   }
 
@@ -84,7 +86,10 @@ class SearchResultsScreen extends Component {
     ),
   });
 
-  setSegmentCheckList(array) {
+  setSegmentCheckList(array, array2) {
+    if(this.props.selectedWay == 1) {
+      this.setState({returnSegmentsCheckList: array2});
+    }
     this.setState({segmentsCheckList: array});
     console.log("GELDİİİİİİ");
     this.setState({ flyObjData: [] });
@@ -96,21 +101,46 @@ class SearchResultsScreen extends Component {
   };
 
 filterBySegment() {
-    const {originalFlights, segmentsCheckList, segments} = this.state;
+    const {originalFlights, segmentsCheckList, segments,returnSegments,returnSegmentsCheckList} = this.state;
     let filteredFligths = [];
-
-    for (let index = 0; index < segmentsCheckList.length; index++) {
-      // const element = segmentsCheckList[index];
-      if(segmentsCheckList[index]) {
-        originalFlights.forEach((element)  => {
-          if(element.itineraries[0].segments.length-1 == segments[index]) {
-            filteredFligths.push(element)
-          }
-        })
+    let filteredReturnFligths= [];
+    if(this.props.selectedWay == 0) {
+      for (let index = 0; index < segmentsCheckList.length; index++) {
+        // const element = segmentsCheckList[index];
+        if(segmentsCheckList[index]) {
+          originalFlights.forEach((element)  => {
+            if(element.itineraries[0].segments.length-1 == segments[index]) {
+              filteredFligths.push(element)
+            }
+          })
+        }
       }
+      console.log("GİDİŞ");
+      console.log(filteredFligths.length);
+      this.setState({flyObjData:filteredFligths })
     }
-    console.log(filteredFligths.length);
-    this.setState({flyObjData:filteredFligths })
+    else{
+      let count = this.findCount(segmentsCheckList,returnSegmentsCheckList);
+      for (let index = 0; index < count; index++) {
+        if(returnSegmentsCheckList[index] || segmentsCheckList[index]) {
+          filteredReturnFligths = originalFlights.filter((element) => element.itineraries[1].segments.length-1 == returnSegments[index] && element.itineraries[0].segments.length-1 == segments[index])
+        }
+        
+      }
+      console.log("DÖNÜŞ");
+      console.log(filteredReturnFligths.length);
+      this.setState({flyObjData:filteredReturnFligths })
+    }
+    
+  }
+
+  findCount(array1, array2) {
+    if(array1.length>array2.length)
+    return array1.length;
+    else if(array2.length> array1.length)
+    return array2.length;
+    else 
+    return array1.length;
   }
 
   componentDidMount() {
@@ -196,7 +226,8 @@ filterBySegment() {
 
   setSengments(flights) {
     let allSegments = [];
-
+    let allSegmentsReturn = [];
+    
     flights.forEach((element) => {
       allSegments.push(element.itineraries[0].segments.length - 1);
     });
@@ -208,10 +239,27 @@ filterBySegment() {
       segmentsCheckList.push(true);
     });
     this.setState({ segments, segmentsCheckList });
-    console.log("==========================>");
-    console.log(segments);
-    console.log(segmentsCheckList);
-    console.log("olsun  artık ");
+    console.log("==========================>GİDİŞ");
+    console.log("SEARCH RESULT SET SEGMENTS WORKING");
+    console.log("Gidiş: ",segments);
+    console.log("Gidiş: ",segmentsCheckList);
+    if(this.props.selectedWay == 1) {
+      flights.forEach((element) => {
+        allSegmentsReturn.push(element.itineraries[1].segments.length - 1);
+      });
+      allSegmentsReturn.sort((a, b) => a - b);
+  
+      let returnSegments = allSegmentsReturn.filter(this.onlyUnique);
+      let returnSegmentsCheckList = [];
+      returnSegments.forEach(() => {
+        returnSegmentsCheckList.push(true);
+      });
+      this.setState({ returnSegments, returnSegmentsCheckList });
+      console.log("==========================>DÖNÜŞ");
+      console.log("SEARCH RESULT SET SEGMENTS WORKING");
+      console.log("Dönüş: ",returnSegments);
+      console.log("Dönüş: ",returnSegmentsCheckList);
+    }
     
   }
 
@@ -227,8 +275,6 @@ filterBySegment() {
     this.setState({filterModalVisible: visible});
   };
 
-  
-
   render() {
     const {
       modalVisible,
@@ -239,6 +285,8 @@ filterBySegment() {
       filterModalVisible,
       segments,
       segmentsCheckList,
+      returnSegments,
+      returnSegmentsCheckList,
     } = this.state;
 
     return (
@@ -547,7 +595,15 @@ filterBySegment() {
             //animationType="slide"
             style= {styles.modalSttyle}
           >
-              <FilterModal segments={segments} segmentsCheckList={segmentsCheckList} onPress={(array) => {this.setSegmentCheckList(array)}} onClick={(value)=> this.setFilterModalVisible(value)}/>  
+              <FilterModal 
+                segments={segments} 
+                segmentsCheckList={segmentsCheckList} 
+                returnSegments={returnSegments}
+                returnSegmentsCheckList= {returnSegmentsCheckList}
+                onPress={(array, array2) => {this.setSegmentCheckList(array, array2)}} 
+                onClick={(value)=> this.setFilterModalVisible(value)}
+                selectedWay={this.props.selectedWay}
+              />  
           </Modal>
 
           </View>
