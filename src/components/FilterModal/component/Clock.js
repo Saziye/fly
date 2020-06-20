@@ -2,20 +2,31 @@ import React, { Component } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { Slider } from "react-native-elements";
 import { connect } from "react-redux";
-
 class Clock extends Component {
   constructor(props) {
     super(props);
     this.state = { 
+      allClockGoDep:this.props.allClockGoDep,
+      allClockGoArr:this.props.allClockGoArr,
+      allClockRetDep:this.props.allClockRetDep,
+      allClockRetArr:this.props.allClockRetArr,
       goDepValue: '',
       goArrValue: '',
       retDepValue: '',
       retArrValue: ''
      };
   }
-  
+  componentDidMount() {
+    console.log(this.props.allClockGoDep);
+    console.log(this.props.allClockGoArr);
+    console.log(this.props.allClockRetDep);
+    console.log(this.props.allClockRetArr);
+    console.log(this.props.allClockGoDep[0]);
+    
+    
+  }
   render() {
-    const { goDepValue,goArrValue,retDepValue,retArrValue } = this.state;
+    const { allClockGoDep, allClockGoArr,allClockRetDep, allClockRetArr, goDepValue,goArrValue,retDepValue,retArrValue } = this.state;
 
     return (
       <View style={styles.container}>
@@ -30,6 +41,8 @@ class Clock extends Component {
           </View>
           <Slider
             value={goDepValue}
+            // minimumValue={Number(allClockGoDep[0])}
+            // maximumValue={Number(allClockGoDep[allClockGoDep.length-1])}
             minimumValue={10}
             maximumValue={20}
             minimumTrackTintColor={"#3f3f3f"}
@@ -38,6 +51,7 @@ class Clock extends Component {
             trackStyle={{ borderColor: "#3f3f3f" }}
             onValueChange={(goDepValue) => this.setState({ goDepValue })}
           />
+
           <View style={{flexDirection: 'row'}}>
           <Text style={styles.labelText}> Kalkış: </Text>
           <Text style= {{textAlign: 'center', marginVertical:10}}>  {goDepValue}</Text>
@@ -51,6 +65,8 @@ class Clock extends Component {
           </View>
           <Slider
             value={goArrValue}
+            // minimumValue={allClockGoArr[0]}
+            // maximumValue={allClockGoArr[allClockGoArr.length-1]}
             minimumValue={10}
             maximumValue={20}
             minimumTrackTintColor={"#3f3f3f"}
@@ -77,6 +93,8 @@ class Clock extends Component {
           </View>
           <Slider
             value={retDepValue}
+            // minimumValue={allClockRetDep[0]}
+            // maximumValue={allClockRetDep[allClockRetDep.length-1]}
             minimumValue={10}
             maximumValue={20}
             minimumTrackTintColor={"#3f3f3f"}
@@ -98,6 +116,8 @@ class Clock extends Component {
           </View>
           <Slider
             value={retArrValue}
+            // minimumValue={allClockRetArr[0]}
+            // maximumValue={allClockRetArr[allClockRetArr.length-1]}
             minimumValue={10}
             maximumValue={20}
             minimumTrackTintColor={"#3f3f3f"}

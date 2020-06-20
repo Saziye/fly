@@ -43,6 +43,10 @@ class SearchResultsScreen extends Component {
       filterModalVisible: false,
       returnSegments:[],
       returnSegmentsCheckList: [],
+      allClockGoDep:[],
+      allClockGoArr:[],
+      allClockRetDep:[],
+      allClockRetArr:[],
     };
   }
 
@@ -131,7 +135,10 @@ filterBySegment() {
       console.log(filteredReturnFligths.length);
       this.setState({flyObjData:filteredReturnFligths })
     }
-    
+  }
+
+  filterByClock() {
+
   }
 
   findCount(array1, array2) {
@@ -218,6 +225,7 @@ filterBySegment() {
         this.setState({ originalFlights: response.data.data });
         this.setState({ flyObjData: response.data.data });
         this.setSengments(response.data.data);
+        this.setClocks(response.data.data);
       })
       .catch((err) => {
         console.log(err.response.request._response);
@@ -260,7 +268,35 @@ filterBySegment() {
       console.log("Dönüş: ",returnSegments);
       console.log("Dönüş: ",returnSegmentsCheckList);
     }
-    
+  }
+
+  setClocks(clocks) {
+    console.log("!!!!!!!!!!!!!!set clock çalıştı!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    let allClockGoDep = [];
+    let allClockGoArr = [];
+    let allClockRetDep = [];
+    let allClockRetArr = [];
+
+    clocks.forEach((element) => {
+      allClockGoDep.push(moment(element.itineraries[0].segments[0].departure.at).format("LT"));
+      allClockGoArr.push(moment(element.itineraries[0].segments[element.itineraries[0].segments.length-1].arrival.at).format("LT"));
+    });
+    allClockGoDep.sort((a, b) => a - b);
+    allClockGoArr.sort((a, b) => a - b);
+    console.log("BBİİRRRR",allClockGoDep )
+
+    this.setState({ allClockGoDep, allClockGoArr});
+
+    if(this.props.selectedWay == 1) {
+      clocks.forEach((element) => {
+        allClockRetDep.push(moment(element.itineraries[1].segments[0].departure.at).format("LT"));
+        allClockRetArr.push(moment(element.itineraries[1].segments[element.itineraries[1].segments.length-1].arrival.at).format("LT"));
+      });
+      allClockRetDep.sort((a, b) => a - b);
+      allClockRetArr.sort((a, b) => a - b);
+  
+      this.setState({allClockRetDep,allClockRetArr});
+    }
   }
 
   onlyUnique(value, index, self) {
@@ -287,6 +323,10 @@ filterBySegment() {
       segmentsCheckList,
       returnSegments,
       returnSegmentsCheckList,
+      allClockGoDep,
+      allClockGoArr,
+      allClockRetDep,
+      allClockRetArr,
     } = this.state;
 
     return (
@@ -603,6 +643,10 @@ filterBySegment() {
                 onPress={(array, array2) => {this.setSegmentCheckList(array, array2)}} 
                 onClick={(value)=> this.setFilterModalVisible(value)}
                 selectedWay={this.props.selectedWay}
+                allClockGoDep={allClockGoDep}
+                allClockGoArr={allClockGoArr}
+                allClockRetDep={allClockRetDep}
+                allClockRetArr={allClockRetArr}
               />  
           </Modal>
 

@@ -11,7 +11,6 @@ import Price from "./component/Price";
 import Transfer from "./component/Transfer";
 import { TouchableOpacity } from "react-native";
 
-const ClockRoute = () => <Clock />;
 const AirWayRoute = () => <Airway />;
 const AirLineRoute = () => <Airline />;
 const ClassRoute = () => <Class />;
@@ -20,7 +19,17 @@ const PriceRoute = () => <Price />;
 //const initialLayout = { width: Dimensions.get('window').width };
 
 const FilterModal = (props) => {
-  const { segments, segmentsCheckList, returnSegments, returnSegmentsCheckList, selectedWay} = props;
+  const { 
+    segments, 
+    segmentsCheckList, 
+    returnSegments, 
+    returnSegmentsCheckList, 
+    selectedWay, 
+    allClockGoDep,
+    allClockGoArr,
+    allClockRetDep,
+    allClockRetArr,
+  } = props;
 
   const [index, setIndex] = React.useState(0);
 
@@ -36,7 +45,10 @@ const FilterModal = (props) => {
     { key: "class", title: "Sınıf", icon: "ticket" },
     { key: "price", title: "Fiyat", icon: "price-tag" },
   ]);
-
+  console.log(allClockGoDep);
+    console.log(allClockGoArr);
+    console.log(allClockRetDep);
+    console.log(allClockRetArr);
   const TransferRoute = () => (
     <Transfer 
       segments={segments} 
@@ -44,6 +56,16 @@ const FilterModal = (props) => {
       returnSegments={returnSegments} 
       returnSegmentsCheckList={returnSegmentsCheckList}  
     />
+  );
+
+  const ClockRoute = () => (
+    <Clock 
+      allClockGoDep={allClockGoDep}
+      allClockGoArr={allClockGoArr}
+      allClockRetDep={allClockRetDep}
+      allClockRetArr={allClockRetArr}
+    />
+    
   );
   const renderScene = SceneMap({
     clock: ClockRoute,
