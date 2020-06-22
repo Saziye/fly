@@ -7,7 +7,6 @@ import {
   FlatList,
   ScrollView,
 } from "react-native";
-import LottieView from "lottie-react-native";
 import FlyGroup from "./FlyGroup";
 import { getFlights, queryBuilder } from "../../../services/amadeusService";
 import { connect } from "react-redux";
@@ -16,6 +15,7 @@ import "moment/locale/tr";
 import FlyItem from "./FlyItem";
 import Modal from "react-native-modal";
 import Dialog, { DialogContent } from 'react-native-popup-dialog';
+import DetailItem from '../components/DetailItem';
 
 class FlyGroupList extends Component {
   constructor(props) {
@@ -30,9 +30,6 @@ class FlyGroupList extends Component {
   }
 
   componentDidMount() {
-    console.log("STATE OBJECT");
-    console.log(this.state.flyObj);
-
     if (this.props.sortValue == 1) {
       this.sortDepartureTime();
       console.log("sortDeparture");
@@ -109,14 +106,59 @@ class FlyGroupList extends Component {
 
   keyExtractor = (item, index) => index.toString();
 
+  Cat(data,selectedWay) {
+    return (
+      <Dialog
+        visible={this.state.visible}
+        onTouchOutside={() => {
+          this.setState({ visible: false });
+        }}
+      >
+        <DialogContent>
+          
+            {data.map((element) => {
+              <Text>{element.departure.iataCode}</Text>
+              console.log("HADDİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİ")
+              console.log(element.departure.iataCode);
+              // <DetailItem 
+              //   carrierName={}
+              //   carrierCode={}
+              //   cabin={}
+              //   departureTime={}
+              //   originAirport={}
+              //   originAirportName={}
+              //   originCity={}
+              //   originCountry={}
+              //   arriveTime={}
+              //   destinationAirport={}
+              //   destinstionAirportCode={}
+              //   destinationCity={}
+              //   destinationCountry={}
+              //   segment={}
+              //   hour={}
+              //   day={}
+              //   icon={}
+              //   selectedWay={}
+              // />
+            })}
+          
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
   flytItem = ({ item, second }) => (
-    <View>
+    <TouchableOpacity
+      onPress={() => {
+        this.setState({ visible: true });
+        setTimeout(()=> {
+          console.log("SET", this.state.visible);
+        this.Cat(item.itineraries[0].segments, this.props.selectedWay);
+
+        },1000) 
+      }}
+    >
       {this.props.selectedWay == 1 ? (
-        <TouchableOpacity
-          onPress={() => {
-            this.setState({ visible: true });
-          }}
-        >
           <FlyGroup
             dCarrierName={this.state.flyObj.dictionaries.carriers[
               item.validatingAirlineCodes
@@ -243,24 +285,6 @@ class FlyGroupList extends Component {
             dicon={item.validatingAirlineCodes}
             flyObjData={this.state.flyObjData}
           />
-
-<Dialog
-    visible={this.state.visible}
-    onTouchOutside={() => {
-      this.setState({ visible: false });
-    }}
-  >
-    <DialogContent>
-    <View style={{ borderColor: "red", borderWidth: 2, flex: 1 }}>
-              {item.itineraries[0].segments.map((element) => {
-                 <Text>{element.departure.iataCode}</Text>
-                 console.log("HADDİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİ")
-                 console.log(element.departure.iataCode);
-              })}
-            </View>
-    </DialogContent>
-  </Dialog>
-        </TouchableOpacity>
       ) : (
         <FlyItem
           carrierName={this.state.flyObj.dictionaries.carriers[
@@ -327,7 +351,7 @@ class FlyGroupList extends Component {
           icon={item.validatingAirlineCodes}
         />
       )}
-    </View>
+    </TouchableOpacity>
   );
 
   render() {
@@ -335,16 +359,6 @@ class FlyGroupList extends Component {
 
     return (
       <ScrollView>
-        {/* {flyObjData.length === 0 && (
-          <Modal>
-            <LottieView
-              style={styles.lottieView}
-              source={require("../../../../assets/animations/15206-plane.json")}
-              autoPlay
-              loop
-            />
-          </Modal>
-        )} */}
         <FlatList
           // showsHorizontalScrollIndicator={false}
           data={flyObjData}
@@ -353,14 +367,12 @@ class FlyGroupList extends Component {
           extraData={flyObj.dictionaries}
         />
       </ScrollView>
+
     );
   }
 }
 
 const styles = StyleSheet.create({
-  lottieView: {
-    height: 300,
-  },
 });
 
 const mapStateToProps = (state) => {

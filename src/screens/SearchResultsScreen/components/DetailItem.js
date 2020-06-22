@@ -25,6 +25,7 @@ const DetailItem = ({
   hour,
   day,
   icon,
+  selectedWay
 }) => {
   return (
       <>
