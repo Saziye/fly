@@ -111,7 +111,6 @@ const FilterModal = (props) => {
     class: ClassRoute,
     price: PriceRoute,
   });
-
   console.log("===========");
   console.log("FILTERMODAL SAYFASINDA");
   console.log("segmentsCheckList: ",segmentsCheckList);
@@ -132,7 +131,6 @@ const FilterModal = (props) => {
   const renderIcon = ({ route }) => (
     <Entypo name={route.icon} size={24} color={"#343434"} />
   );
-
   const renderTabBar = (props) => (
     <TabBar
       {...props}
@@ -199,7 +197,6 @@ const FilterModal = (props) => {
     </>
   );
 };
-
 const styles = StyleSheet.create({
   tabbar: {
     backgroundColor: "#eaeaea",
