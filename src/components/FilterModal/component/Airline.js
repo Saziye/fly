@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { Component } from "react";
 import { View, StyleSheet, Text, FlatList, Button } from "react-native";
 import { connect } from "react-redux";
@@ -117,21 +116,3 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps)(Airline);
-=======
-import React from "react";
-import { View, StyleSheet, Text } from "react-native";
-const Airline = () => {
-    return (
-      <View>
-       
-      </View>
-    );
-  };
-  
-  const styles = StyleSheet.create({
-    
-  });
-  
-  export default Airline;
-  
->>>>>>> f32c9fd3f0091576caf2968e6458c878d75e8921

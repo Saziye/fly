@@ -28,6 +28,7 @@ import LottieView from "lottie-react-native";
 import { getFlights, queryBuilder } from "../../services/amadeusService";
 import FilterModal from '../../components/FilterModal/FilterModal';
 import Modal from "react-native-modal";
+import { Logs } from "expo";
 
 class SearchResultsScreen extends Component {
   constructor(props) {
@@ -158,20 +159,23 @@ class SearchResultsScreen extends Component {
   filterByCabin(){
     const {
       originalFlights, 
+      flyObjData,
       cabinClass,
       cabinClassCheckList,
     } = this.state;
     let filteredCabin = [];
       for (let index = 0; index < cabinClassCheckList.length; index++) {
         if(cabinClassCheckList[index]) {
-          originalFlights.forEach((element)  => {
+          flyObjData.forEach((element)  => {
             if( element.travelerPricings[0].fareDetailsBySegment[0].cabin == cabinClass[index]) {
               filteredCabin.push(element)
             }
           })
         }
       }
-      if(filteredCabin.length == 0) {
+      if(filteredCabin.length === 0) {
+        console.log("ALERTCABIN");
+        
         Alert.alert(
           "Bilgilendirme",
           "Aradığınız kritere ait uçuş bulunamadı",
@@ -184,21 +188,24 @@ class SearchResultsScreen extends Component {
 
   filterByAirway(){
     const {
-      originalFlights, 
+      originalFlights,
+      flyObjData, 
       airways,
       airwaysCheckList
     } = this.state;
     let filteredAirways = [];
       for (let index = 0; index < airwaysCheckList.length; index++) {
         if(airwaysCheckList[index]) {
-          originalFlights.forEach((element)  => {
+          flyObjData.forEach((element)  => {
             if( this.state.flyObj.dictionaries.carriers[element.validatingAirlineCodes]== airways[index]) {
               filteredAirways.push(element)
             }
           })
         }
       }
-      if(filteredAirways.length == 0) {
+      if(filteredAirways.length === 0) {
+        console.log("ALERTAIRWAY");
+
         Alert.alert(
           "Bilgilendirme",
           "Aradığınız kritere ait uçuş bulunamadı",
@@ -212,6 +219,7 @@ class SearchResultsScreen extends Component {
   filterByAirline(){
     const {
       originalFlights, 
+      flyObjData,
       airlines,
       airlinesCheckList,
       returnAirlines, 
@@ -222,14 +230,17 @@ class SearchResultsScreen extends Component {
     if(this.props.selectedWay == 0) {
       for (let index = 0; index < airlinesCheckList.length; index++) {
         if(airlinesCheckList[index]) {
-          originalFlights.forEach((element)  => {
-            if(element.itineraries[0].segments[element.itineraries[0].segments.length-1].arrival.iataCode == airlines[index]) {
+          flyObjData.forEach((element)  => {
+            if(element.itineraries[0].segments[0].departure.iataCode == airlines[index]) {
               filteredAirlines.push(element)
             }
           })
         }
       }
-      if(filteredAirlines.length == 0) {
+      console.log(filteredAirlines);
+      
+      if(filteredAirlines.length === 0) {
+        console.log("ALERTAIRLINES");
         Alert.alert(
           "Bilgilendirme",
           "Aradığınız kritere ait uçuş bulunamadı",
@@ -243,7 +254,7 @@ class SearchResultsScreen extends Component {
       for (let i = 0; i < airlinesCheckList.length; i++) {
         for (let j = 0; j < returnAirlinesCheckList.length; j++) {
           if(airlinesCheckList[i] && returnAirlinesCheckList[j]) {
-            originalFlights.forEach((element)  => {
+            flyObjData.forEach((element)  => {
               if(element.itineraries[0].segments[0].departure.iataCode === airlines[i]
                   && element.itineraries[1].segments[0].departure.iataCode === returnAirlines[j] 
                 ) {
@@ -253,7 +264,9 @@ class SearchResultsScreen extends Component {
           }
         }
       }
-      if(filteredReturnAirlines.length == 0) {
+      if(filteredReturnAirlines.length === 0) {
+        console.log("ALERTAIRLINES2");
+
         Alert.alert(
           "Bilgilendirme",
           "Aradığınız kritere ait uçuş bulunamadı",
@@ -266,21 +279,23 @@ class SearchResultsScreen extends Component {
   }
 
   filterBySegment() {
-    const {originalFlights, segmentsCheckList, segments,returnSegments,returnSegmentsCheckList} = this.state;
+    const {originalFlights,flyObjData, segmentsCheckList, segments,returnSegments,returnSegmentsCheckList} = this.state;
     let filteredFligths = [];
     let filteredReturnFligths= [];
     if(this.props.selectedWay == 0) {
       for (let index = 0; index < segmentsCheckList.length; index++) {
         // const element = segmentsCheckList[index];
         if(segmentsCheckList[index]) {
-          originalFlights.forEach((element)  => {
+          flyObjData.forEach((element)  => {
             if(element.itineraries[0].segments.length-1 == segments[index]) {
               filteredFligths.push(element)
             }
           })
         }
       }
-      if(filteredFligths.length == 0) {
+      if(filteredFligths.length === 0) {
+        console.log("ALERTSEGMENT");
+
         Alert.alert(
           "Bilgilendirme",
           "Aradığınız kritere ait uçuş bulunamadı",
@@ -295,7 +310,7 @@ class SearchResultsScreen extends Component {
       for (let i = 0; i < segmentsCheckList.length; i++) {
         for (let j = 0; j < returnSegmentsCheckList.length; j++) {
           if(segmentsCheckList[i] && returnSegmentsCheckList[j]) {
-            originalFlights.forEach((element)  => {
+            flyObjData.forEach((element)  => {
               if(element.itineraries[0].segments.length-1 == segments[i]
                   && element.itineraries[1].segments.length-1 == returnSegments[j] 
                 ) {
@@ -305,7 +320,8 @@ class SearchResultsScreen extends Component {
           }
         }
       }
-      if(filteredReturnFligths.length == 0) {
+      if(filteredReturnFligths.length === 0) {
+        console.log("ALERTSEGMENT");
         Alert.alert(
           "Bilgilendirme",
           "Aradığınız kritere ait uçuş bulunamadı",
@@ -318,9 +334,9 @@ class SearchResultsScreen extends Component {
   }
 
   filertByPrice() {
-    const {originalFlights, price} = this.state;
+    const {originalFlights,flyObjData, price} = this.state;
     let filteredPrices = [];
-    filteredPrices = originalFlights.filter((element) => element.price.total == price)
+    filteredPrices = flyObjData.filter((element) => element.price.total == price)
     console.log("PRICEEEEE");
     console.log(filteredPrices.length);
     this.setState({flyObjData:filteredPrices})
@@ -394,7 +410,7 @@ class SearchResultsScreen extends Component {
 
     getFlights(query)
       .then((response) => {
-        if(response.data.data== 0) {
+        if(response.data.data=== 0) {
           Alert.alert(
             "Bilgilendirme",
             "Aradığınız kritere ait uçuş bulunamadı",
