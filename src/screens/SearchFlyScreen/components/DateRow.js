@@ -68,12 +68,13 @@ class DateRow extends Component {
     //this._date.onPressDate();
     setTimeout(() => {
       this._date.onPressDate();
-    }, 300);
+      console.log("chooose date:", this.state.dateType );
+    }, 200);
   }
 
   onDatePressFunction = (date) => {
     const { dateType } = this.state;
-    if (dateType == 1) {
+    if (this.state.dateType == 1) {
       this.props.setDepartureDate(date);
       this.setState({ minReturnDate: date });
     } else {
@@ -183,6 +184,7 @@ class DateRow extends Component {
               display: "none",
             },
           }}
+          // datePicker
           onDateChange={(date) => {
             //   this.setState({ date: date });
             this.onDatePressFunction(date);

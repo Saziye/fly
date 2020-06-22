@@ -6,10 +6,8 @@ import {
   Text,
   TouchableOpacity,
   Alert,
-  FlatList
+  FlatList,
 } from "react-native";
-import { CheckBox } from "react-native-elements";
-import { SafeAreaView } from "react-navigation";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import FlyGroupList from "./components/FlyGroupList";
@@ -26,9 +24,8 @@ import {
 } from "../../actions/passengerAction";
 import LottieView from "lottie-react-native";
 import { getFlights, queryBuilder } from "../../services/amadeusService";
-import FilterModal from '../../components/FilterModal/FilterModal';
+import FilterModal from "../../components/FilterModal/FilterModal";
 import Modal from "react-native-modal";
-import { Logs } from "expo";
 
 class SearchResultsScreen extends Component {
   constructor(props) {
@@ -42,7 +39,7 @@ class SearchResultsScreen extends Component {
       segments: [],
       segmentsCheckList: [],
       filterModalVisible: false,
-      returnSegments:[],
+      returnSegments: [],
       returnSegmentsCheckList: [],
       // allClockGoDep:[],
       // allClockGoArr:[],
@@ -50,14 +47,14 @@ class SearchResultsScreen extends Component {
       // allClockRetArr:[],
       allPriceArr: [],
       price: 0,
-      airlines:[],
-      airlinesCheckList:[],
-      returnAirlines:[], 
-      returnAirlinesCheckList:[],
-      airways:[],
-      airwaysCheckList:[],
-      cabinClass:[],
-      cabinClassCheckList:[],
+      airlines: [],
+      airlinesCheckList: [],
+      returnAirlines: [],
+      returnAirlinesCheckList: [],
+      airways: [],
+      airwaysCheckList: [],
+      cabinClass: [],
+      cabinClassCheckList: [],
     };
   }
 
@@ -101,9 +98,9 @@ class SearchResultsScreen extends Component {
     ),
   });
 
-  setFilter (array,array2,price,airline1, airline2,airway,cabin) {
+  setFilter(array, array2, price, airline1, airline2, airway, cabin) {
     this.setState({ flyObjData: [] });
-    this.setSegmentCheckList(array,array2);
+    this.setSegmentCheckList(array, array2);
     this.setPrice(price);
     this.setAirlinesCheckList(airline1, airline2);
     this.setAirwaysCheckList(airway);
@@ -112,234 +109,403 @@ class SearchResultsScreen extends Component {
   }
 
   setSegmentCheckList(array, array2) {
-    if(this.props.selectedWay == 1) {
-      this.setState({returnSegmentsCheckList: array2});
+    if (this.props.selectedWay == 1) {
+      this.setState({ returnSegmentsCheckList: array2 });
     }
-    this.setState({segmentsCheckList: array});
-  };
+    this.setState({ segmentsCheckList: array });
+  }
 
-  setCabinCheckList(cabin){
-    this.setState({cabinClassCheckList: cabin});
+  setCabinCheckList(cabin) {
+    this.setState({ cabinClassCheckList: cabin });
     //this.setState({ flyObjData: [] });
     //this.filterTheFlights();
   }
 
   setAirwaysCheckList(airway) {
-    this.setState({airwaysCheckList: airway});
+    this.setState({ airwaysCheckList: airway });
     // this.setState({ flyObjData: [] });
     // this.filterTheFlights();
-  };
+  }
 
   setAirlinesCheckList(airline1, airline2) {
-    if(this.props.selectedWay == 1) {
-      this.setState({returnAirlinesCheckList: airline2});
+    if (this.props.selectedWay == 1) {
+      this.setState({ returnAirlinesCheckList: airline2 });
     }
-    this.setState({airlinesCheckList: airline1});
+    this.setState({ airlinesCheckList: airline1 });
     // this.setState({ flyObjData: [] });
     // this.filterTheFlights();
-  };
+  }
 
   setPrice(value) {
-    this.setState({price: value});
+    this.setState({ price: value });
     // this.setState({ flyObjData: [] });
     // console.log("Price değeri:",value);
     // setTimeout(()=> {
     //   this.filterTheFlights();
-    // },100) 
+    // },100)
   }
 
   filterTheFlights() {
-  this.filterBySegment();  
-   //this.filertByPrice();
-   this.filterByAirline();
-   this.filterByAirway();
-   //this.filterByCabin();
-  };
-
-  filterByCabin(){
+    // this.filterBySegment();
+    //  //this.filertByPrice();
+    // this.filterByAirline();
+    //  //this.filterByAirway();
+    //  //this.filterByCabin();
     const {
-      originalFlights, 
+      originalFlights,
+      flyObjData,
+      cabinClass,
+      cabinClassCheckList,
+      airways,
+      airwaysCheckList,
+      airlines,
+      airlinesCheckList,
+      returnAirlines,
+      returnAirlinesCheckList,
+      segmentsCheckList,
+      segments,
+      returnSegments,
+      returnSegmentsCheckList,
+    } = this.state;
+    let filteredCabin = [];
+    for (let index = 0; index < cabinClassCheckList.length; index++) {
+      if (cabinClassCheckList[index]) {
+        originalFlights.forEach((element) => {
+          if (
+            element.travelerPricings[0].fareDetailsBySegment[0].cabin ==
+            cabinClass[index]
+          ) {
+            filteredCabin.push(element);
+          }
+        });
+      }
+    }
+    if (filteredCabin.length === 0) {
+      console.log("ALERTCABIN");
+
+      Alert.alert("Bilgilendirme", "Aradığınız kritere ait uçuş bulunamadı", [
+        { text: "Tamam", onPress: () => null },
+      ]);
+      return;
+    } else {
+      this.setState({ flyObjData: filteredCabin });
+    }
+    let filteredAirways = [];
+    for (let index = 0; index < airwaysCheckList.length; index++) {
+      if (airwaysCheckList[index]) {
+        filteredCabin.forEach((element) => {
+          if (
+            this.state.flyObj.dictionaries.carriers[
+              element.validatingAirlineCodes
+            ] == airways[index]
+          ) {
+            filteredAirways.push(element);
+          }
+        });
+      }
+    }
+    if (filteredAirways.length === 0) {
+      console.log("ALERTAIRWAY");
+
+      Alert.alert("Bilgilendirme", "Aradığınız kritere ait uçuş bulunamadı", [
+        { text: "Tamam", onPress: () => null },
+      ]);
+      return;
+    } else {
+      this.setState({ flyObjData: filteredAirways });
+    }
+    let filteredAirlines = [];
+    let filteredReturnAirlines = [];
+    let filteredFligths = [];
+    let filteredReturnFligths = [];
+    if (this.props.selectedWay == 0) {
+      for (let index = 0; index < airlinesCheckList.length; index++) {
+        if (airlinesCheckList[index]) {
+          filteredAirways.forEach((element) => {
+            if (
+              element.itineraries[0].segments[0].departure.iataCode ==
+              airlines[index]
+            ) {
+              filteredAirlines.push(element);
+            }
+          });
+        }
+      }
+      if (filteredAirlines.length === 0) {
+        console.log("ALERTAIRLINES");
+        Alert.alert("Bilgilendirme", "Aradığınız kritere ait uçuş bulunamadı", [
+          { text: "Tamam", onPress: () => null },
+        ]);
+        return;
+      } else {
+        this.setState({ flyObjData: filteredAirlines });
+      }
+      for (let index = 0; index < segmentsCheckList.length; index++) {
+        // const element = segmentsCheckList[index];
+        if (segmentsCheckList[index]) {
+          filteredAirlines.forEach((element) => {
+            if (element.itineraries[0].segments.length - 1 == segments[index]) {
+              filteredFligths.push(element);
+            }
+          });
+        }
+      }
+      if (filteredFligths.length === 0) {
+        console.log("ALERTSEGMENT");
+
+        Alert.alert("Bilgilendirme", "Aradığınız kritere ait uçuş bulunamadı", [
+          { text: "Tamam", onPress: () => null },
+        ]);
+        return;
+      } else {
+        this.setState({ flyObjData: filteredFligths });
+      }
+    } else {
+      for (let i = 0; i < airlinesCheckList.length; i++) {
+        for (let j = 0; j < returnAirlinesCheckList.length; j++) {
+          if (airlinesCheckList[i] && returnAirlinesCheckList[j]) {
+            filteredAirways.forEach((element) => {
+              if (
+                element.itineraries[0].segments[0].departure.iataCode ===
+                  airlines[i] &&
+                element.itineraries[1].segments[0].departure.iataCode ===
+                  returnAirlines[j]
+              ) {
+                filteredReturnAirlines.push(element);
+              }
+            });
+          }
+        }
+      }
+      if (filteredReturnAirlines.length === 0) {
+        console.log("ALERTAIRLINES2");
+
+        Alert.alert("Bilgilendirme", "Aradığınız kritere ait uçuş bulunamadı", [
+          { text: "Tamam", onPress: () => null },
+        ]);
+        return;
+      } else {
+        this.setState({ flyObjData: filteredReturnAirlines });
+      }
+      for (let i = 0; i < segmentsCheckList.length; i++) {
+        for (let j = 0; j < returnSegmentsCheckList.length; j++) {
+          if (segmentsCheckList[i] && returnSegmentsCheckList[j]) {
+            filteredReturnAirlines.forEach((element) => {
+              if (
+                element.itineraries[0].segments.length - 1 == segments[i] &&
+                element.itineraries[1].segments.length - 1 == returnSegments[j]
+              ) {
+                filteredReturnFligths.push(element);
+              }
+            });
+          }
+        }
+      }
+      if (filteredReturnFligths.length === 0) {
+        console.log("ALERTSEGMENT");
+        Alert.alert("Bilgilendirme", "Aradığınız kritere ait uçuş bulunamadı", [
+          { text: "Tamam", onPress: () => null },
+        ]);
+      } else {
+        this.setState({ flyObjData: filteredReturnFligths });
+      }
+    }
+
+
+  }
+
+  filterByCabin() {
+    const {
+      originalFlights,
       flyObjData,
       cabinClass,
       cabinClassCheckList,
     } = this.state;
     let filteredCabin = [];
-      for (let index = 0; index < cabinClassCheckList.length; index++) {
-        if(cabinClassCheckList[index]) {
-          flyObjData.forEach((element)  => {
-            if( element.travelerPricings[0].fareDetailsBySegment[0].cabin == cabinClass[index]) {
-              filteredCabin.push(element)
-            }
-          })
-        }
+    for (let index = 0; index < cabinClassCheckList.length; index++) {
+      if (cabinClassCheckList[index]) {
+        flyObjData.forEach((element) => {
+          if (
+            element.travelerPricings[0].fareDetailsBySegment[0].cabin ==
+            cabinClass[index]
+          ) {
+            filteredCabin.push(element);
+          }
+        });
       }
-      if(filteredCabin.length === 0) {
-        console.log("ALERTCABIN");
-        
-        Alert.alert(
-          "Bilgilendirme",
-          "Aradığınız kritere ait uçuş bulunamadı",
-          [{ text: "Tamam", onPress: () => null }]
-        );
-      }else {
-        this.setState({flyObjData:filteredCabin })
-      }
+    }
+    if (filteredCabin.length === 0) {
+      console.log("ALERTCABIN");
+
+      Alert.alert("Bilgilendirme", "Aradığınız kritere ait uçuş bulunamadı", [
+        { text: "Tamam", onPress: () => null },
+      ]);
+    } else {
+      this.setState({ flyObjData: filteredCabin });
+    }
   }
 
-  filterByAirway(){
+  filterByAirway() {
     const {
       originalFlights,
-      flyObjData, 
+      flyObjData,
       airways,
-      airwaysCheckList
+      airwaysCheckList,
     } = this.state;
     let filteredAirways = [];
-      for (let index = 0; index < airwaysCheckList.length; index++) {
-        if(airwaysCheckList[index]) {
-          flyObjData.forEach((element)  => {
-            if( this.state.flyObj.dictionaries.carriers[element.validatingAirlineCodes]== airways[index]) {
-              filteredAirways.push(element)
-            }
-          })
-        }
+    for (let index = 0; index < airwaysCheckList.length; index++) {
+      if (airwaysCheckList[index]) {
+        flyObjData.forEach((element) => {
+          if (
+            this.state.flyObj.dictionaries.carriers[
+              element.validatingAirlineCodes
+            ] == airways[index]
+          ) {
+            filteredAirways.push(element);
+          }
+        });
       }
-      if(filteredAirways.length === 0) {
-        console.log("ALERTAIRWAY");
+    }
+    if (filteredAirways.length === 0) {
+      console.log("ALERTAIRWAY");
 
-        Alert.alert(
-          "Bilgilendirme",
-          "Aradığınız kritere ait uçuş bulunamadı",
-          [{ text: "Tamam", onPress: () => null }]
-        );
-      }else {
-        this.setState({flyObjData:filteredAirways })
-      }
+      Alert.alert("Bilgilendirme", "Aradığınız kritere ait uçuş bulunamadı", [
+        { text: "Tamam", onPress: () => null },
+      ]);
+    } else {
+      this.setState({ flyObjData: filteredAirways });
+    }
   }
 
-  filterByAirline(){
+  filterByAirline() {
     const {
-      originalFlights, 
+      originalFlights,
       flyObjData,
       airlines,
       airlinesCheckList,
-      returnAirlines, 
-      returnAirlinesCheckList
+      returnAirlines,
+      returnAirlinesCheckList,
     } = this.state;
     let filteredAirlines = [];
-    let filteredReturnAirlines= [];
-    if(this.props.selectedWay == 0) {
+    let filteredReturnAirlines = [];
+    if (this.props.selectedWay == 0) {
       for (let index = 0; index < airlinesCheckList.length; index++) {
-        if(airlinesCheckList[index]) {
-          flyObjData.forEach((element)  => {
-            if(element.itineraries[0].segments[0].departure.iataCode == airlines[index]) {
-              filteredAirlines.push(element)
+        if (airlinesCheckList[index]) {
+          flyObjData.forEach((element) => {
+            if (
+              element.itineraries[0].segments[0].departure.iataCode ==
+              airlines[index]
+            ) {
+              filteredAirlines.push(element);
             }
-          })
+          });
         }
       }
       console.log(filteredAirlines);
-      
-      if(filteredAirlines.length === 0) {
+
+      if (filteredAirlines.length === 0) {
         console.log("ALERTAIRLINES");
-        Alert.alert(
-          "Bilgilendirme",
-          "Aradığınız kritere ait uçuş bulunamadı",
-          [{ text: "Tamam", onPress: () => null }]
-        );
-      }else {
-        this.setState({flyObjData:filteredAirlines })
+        Alert.alert("Bilgilendirme", "Aradığınız kritere ait uçuş bulunamadı", [
+          { text: "Tamam", onPress: () => null },
+        ]);
+      } else {
+        this.setState({ flyObjData: filteredAirlines });
       }
-    }
-    else{
+    } else {
       for (let i = 0; i < airlinesCheckList.length; i++) {
         for (let j = 0; j < returnAirlinesCheckList.length; j++) {
-          if(airlinesCheckList[i] && returnAirlinesCheckList[j]) {
-            flyObjData.forEach((element)  => {
-              if(element.itineraries[0].segments[0].departure.iataCode === airlines[i]
-                  && element.itineraries[1].segments[0].departure.iataCode === returnAirlines[j] 
-                ) {
-                  filteredReturnAirlines.push(element)
+          if (airlinesCheckList[i] && returnAirlinesCheckList[j]) {
+            flyObjData.forEach((element) => {
+              if (
+                element.itineraries[0].segments[0].departure.iataCode ===
+                  airlines[i] &&
+                element.itineraries[1].segments[0].departure.iataCode ===
+                  returnAirlines[j]
+              ) {
+                filteredReturnAirlines.push(element);
               }
-            })
+            });
           }
         }
       }
-      if(filteredReturnAirlines.length === 0) {
+      if (filteredReturnAirlines.length === 0) {
         console.log("ALERTAIRLINES2");
 
-        Alert.alert(
-          "Bilgilendirme",
-          "Aradığınız kritere ait uçuş bulunamadı",
-          [{ text: "Tamam", onPress: () => null }]
-        );
-      }else {
-        this.setState({flyObjData:filteredReturnAirlines })
+        Alert.alert("Bilgilendirme", "Aradığınız kritere ait uçuş bulunamadı", [
+          { text: "Tamam", onPress: () => null },
+        ]);
+      } else {
+        this.setState({ flyObjData: filteredReturnAirlines });
       }
     }
   }
 
   filterBySegment() {
-    const {originalFlights,flyObjData, segmentsCheckList, segments,returnSegments,returnSegmentsCheckList} = this.state;
+    const {
+      originalFlights,
+      flyObjData,
+      segmentsCheckList,
+      segments,
+      returnSegments,
+      returnSegmentsCheckList,
+    } = this.state;
     let filteredFligths = [];
-    let filteredReturnFligths= [];
-    if(this.props.selectedWay == 0) {
+    let filteredReturnFligths = [];
+    if (this.props.selectedWay == 0) {
       for (let index = 0; index < segmentsCheckList.length; index++) {
         // const element = segmentsCheckList[index];
-        if(segmentsCheckList[index]) {
-          flyObjData.forEach((element)  => {
-            if(element.itineraries[0].segments.length-1 == segments[index]) {
-              filteredFligths.push(element)
+        if (segmentsCheckList[index]) {
+          flyObjData.forEach((element) => {
+            if (element.itineraries[0].segments.length - 1 == segments[index]) {
+              filteredFligths.push(element);
             }
-          })
+          });
         }
       }
-      if(filteredFligths.length === 0) {
+      if (filteredFligths.length === 0) {
         console.log("ALERTSEGMENT");
 
-        Alert.alert(
-          "Bilgilendirme",
-          "Aradığınız kritere ait uçuş bulunamadı",
-          [{ text: "Tamam", onPress: () => null }]
-        );
-      }else {
-        this.setState({flyObjData:filteredFligths })
+        Alert.alert("Bilgilendirme", "Aradığınız kritere ait uçuş bulunamadı", [
+          { text: "Tamam", onPress: () => null },
+        ]);
+      } else {
+        this.setState({ flyObjData: filteredFligths });
       }
-
-    }
-    else{
+    } else {
       for (let i = 0; i < segmentsCheckList.length; i++) {
         for (let j = 0; j < returnSegmentsCheckList.length; j++) {
-          if(segmentsCheckList[i] && returnSegmentsCheckList[j]) {
-            flyObjData.forEach((element)  => {
-              if(element.itineraries[0].segments.length-1 == segments[i]
-                  && element.itineraries[1].segments.length-1 == returnSegments[j] 
-                ) {
-                  filteredReturnFligths.push(element)
+          if (segmentsCheckList[i] && returnSegmentsCheckList[j]) {
+            flyObjData.forEach((element) => {
+              if (
+                element.itineraries[0].segments.length - 1 == segments[i] &&
+                element.itineraries[1].segments.length - 1 == returnSegments[j]
+              ) {
+                filteredReturnFligths.push(element);
               }
-            })
+            });
           }
         }
       }
-      if(filteredReturnFligths.length === 0) {
+      if (filteredReturnFligths.length === 0) {
         console.log("ALERTSEGMENT");
-        Alert.alert(
-          "Bilgilendirme",
-          "Aradığınız kritere ait uçuş bulunamadı",
-          [{ text: "Tamam", onPress: () => null }]
-        );
-      }else {
-        this.setState({flyObjData:filteredReturnFligths })
+        Alert.alert("Bilgilendirme", "Aradığınız kritere ait uçuş bulunamadı", [
+          { text: "Tamam", onPress: () => null },
+        ]);
+      } else {
+        this.setState({ flyObjData: filteredReturnFligths });
       }
     }
   }
 
   filertByPrice() {
-    const {originalFlights,flyObjData, price} = this.state;
+    const { originalFlights, flyObjData, price } = this.state;
     let filteredPrices = [];
-    filteredPrices = flyObjData.filter((element) => element.price.total == price)
+    filteredPrices = flyObjData.filter(
+      (element) => element.price.total == price
+    );
     console.log("PRICEEEEE");
     console.log(filteredPrices.length);
-    this.setState({flyObjData:filteredPrices})
+    this.setState({ flyObjData: filteredPrices });
   }
 
   componentDidMount() {
@@ -358,15 +524,14 @@ class SearchResultsScreen extends Component {
       this.props.infant,
       this.props.cabinClass
     );
-    console.log("SEARCH RESULT DID MOUNT");
   }
-  
+
   componentWillReceiveProps(nextProps) {
     if (
-      this.props.departureDate != nextProps.departureDate  ||
+      this.props.departureDate != nextProps.departureDate ||
       this.props.returnDate != nextProps.returnDate ||
       this.props.selectedWay != nextProps.selectedWay ||
-      this.props.sortValue != nextProps.sortValue 
+      this.props.sortValue != nextProps.sortValue
     )
     this.setState({ flyObjData: [] });
     this.recieveFlights(
@@ -381,8 +546,6 @@ class SearchResultsScreen extends Component {
     );
     console.log("NXT PROPS FOR SORT");
     console.log(nextProps);
-    //console.log(nextProps);
-    console.log("SEARCH RESULT WILL RECEIVE ");
   }
 
   recieveFlights(
@@ -410,25 +573,22 @@ class SearchResultsScreen extends Component {
 
     getFlights(query)
       .then((response) => {
-        if(response.data.data=== 0) {
+        if (response.data.data === 0) {
           Alert.alert(
             "Bilgilendirme",
             "Aradığınız kritere ait uçuş bulunamadı",
             [{ text: "Tamam", onPress: () => null }]
           );
-        }else {
-          // console.log(response.data.data);
+        } else {
           this.setState({ flyObj: response.data });
           this.setState({ originalFlights: response.data.data });
           this.setState({ flyObjData: response.data.data });
           this.setSengments(response.data.data);
-          //this.setClocks(response.data.data);
           this.setPrices(response.data.data);
           this.setAirlines(response.data.data);
           this.setAirways(response.data.data);
           this.setCabins(response.data.data);
         }
-        
       })
       .catch((err) => {
         console.log(err.response.request._response);
@@ -438,7 +598,7 @@ class SearchResultsScreen extends Component {
   setSengments(flights) {
     let allSegments = [];
     let allSegmentsReturn = [];
-    
+
     flights.forEach((element) => {
       allSegments.push(element.itineraries[0].segments.length - 1);
     });
@@ -452,14 +612,14 @@ class SearchResultsScreen extends Component {
     this.setState({ segments, segmentsCheckList });
     console.log("==========================>GİDİŞ");
     console.log("SEARCH RESULT SET SEGMENTS WORKING");
-    console.log("Gidiş: ",segments);
-    console.log("Gidiş: ",segmentsCheckList);
-    if(this.props.selectedWay == 1) {
+    console.log("Gidiş: ", segments);
+    console.log("Gidiş: ", segmentsCheckList);
+    if (this.props.selectedWay == 1) {
       flights.forEach((element) => {
         allSegmentsReturn.push(element.itineraries[1].segments.length - 1);
       });
       allSegmentsReturn.sort((a, b) => a - b);
-  
+
       let returnSegments = allSegmentsReturn.filter(this.onlyUnique);
       let returnSegmentsCheckList = [];
       returnSegments.forEach(() => {
@@ -468,11 +628,11 @@ class SearchResultsScreen extends Component {
       this.setState({ returnSegments, returnSegmentsCheckList });
       console.log("==========================>DÖNÜŞ");
       console.log("SEARCH RESULT SET SEGMENTS WORKING");
-      console.log("Dönüş: ",returnSegments);
-      console.log("Dönüş: ",returnSegmentsCheckList);
+      console.log("Dönüş: ", returnSegments);
+      console.log("Dönüş: ", returnSegmentsCheckList);
     }
   }
-/*
+  /*
   setClocks(clocks) {
     console.log("!!!!!!!!!!!!!!set clock çalıştı!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
     let allClockGoDep = [];
@@ -509,38 +669,42 @@ class SearchResultsScreen extends Component {
       allPriceArr.push(element.price.total);
     });
     allPriceArr.sort((a, b) => a - b);
-    this.setState({ allPriceArr});
+    this.setState({ allPriceArr });
     console.log(allPriceArr);
   }
 
   setAirlines(flightsAirline) {
     let allAirlines = [];
     let allAirlinesReturn = [];
-    
+
     flightsAirline.forEach((element) => {
       // allAirlines.push(element.itineraries[0].segments[element.itineraries[0].segments.length-1].arrival.at);
       allAirlines.push(element.itineraries[0].segments[0].departure.iataCode);
     });
-    allAirlines.sort((a, b) => a.toLowerCase() > b.toLowerCase() ? 1 : -1);
+    allAirlines.sort((a, b) => (a.toLowerCase() > b.toLowerCase() ? 1 : -1));
     let airlines = allAirlines.filter(this.onlyUnique);
     let airlinesCheckList = [];
     airlines.forEach(() => {
       airlinesCheckList.push(true);
     });
-    
+
     this.setState({ airlines, airlinesCheckList });
     console.log("==========================>GİDİŞ");
     console.log("SEARCH RESULT SET AIRLINE WORKING");
-    console.log("Gidiş: ",airlines);
-    console.log("Gidiş: ",airlinesCheckList);
-    
-    if(this.props.selectedWay == 1) {
+    console.log("Gidiş: ", airlines);
+    console.log("Gidiş: ", airlinesCheckList);
+
+    if (this.props.selectedWay == 1) {
       flightsAirline.forEach((element) => {
         // allAirlinesReturn.push(element.itineraries[1].segments[element.itineraries[1].segments.length-1].arrival.iataCode);
-        allAirlinesReturn.push(element.itineraries[1].segments[0].departure.iataCode);
+        allAirlinesReturn.push(
+          element.itineraries[1].segments[0].departure.iataCode
+        );
       });
-      allAirlinesReturn.sort((a, b) => a.toLowerCase() > b.toLowerCase() ? 1 : -1);
-  
+      allAirlinesReturn.sort((a, b) =>
+        a.toLowerCase() > b.toLowerCase() ? 1 : -1
+      );
+
       let returnAirlines = allAirlinesReturn.filter(this.onlyUnique);
       let returnAirlinesCheckList = [];
       returnAirlines.forEach(() => {
@@ -549,37 +713,39 @@ class SearchResultsScreen extends Component {
       this.setState({ returnAirlines, returnAirlinesCheckList });
       console.log("==========================>DÖNÜŞ");
       console.log("SEARCH RESULT SET AIRLINES WORKING");
-      console.log("Dönüş: ",returnAirlines);
-      console.log("Dönüş: ",returnAirlinesCheckList);
+      console.log("Dönüş: ", returnAirlines);
+      console.log("Dönüş: ", returnAirlinesCheckList);
     }
   }
 
-  setAirways(flightsAirline){
+  setAirways(flightsAirline) {
     let allAirways = [];
 
     flightsAirline.forEach((element) => {
-      allAirways.push(this.state.flyObj.dictionaries.carriers[element.validatingAirlineCodes]);
+      allAirways.push(
+        this.state.flyObj.dictionaries.carriers[element.validatingAirlineCodes]
+      );
     });
-    allAirways.sort((a, b) => a.toLowerCase() > b.toLowerCase() ? 1 : -1);
+    allAirways.sort((a, b) => (a.toLowerCase() > b.toLowerCase() ? 1 : -1));
     let airways = allAirways.filter(this.onlyUnique);
     let airwaysCheckList = [];
     airways.forEach(() => {
       airwaysCheckList.push(true);
     });
-    
+
     this.setState({ airways, airwaysCheckList });
     console.log("==========================>GİDİŞ");
     console.log("SEARCH RESULT SET AIRWAYS WORKING");
-    console.log("Gidiş: ",airways);
-    console.log("Gidiş: ",airwaysCheckList);
+    console.log("Gidiş: ", airways);
+    console.log("Gidiş: ", airwaysCheckList);
   }
 
-  setCabins(flightsAirline){
+  setCabins(flightsAirline) {
     let allCabins = [];
     flightsAirline.forEach((element) => {
       allCabins.push(element.travelerPricings[0].fareDetailsBySegment[0].cabin);
     });
-    allCabins.sort((a, b) => a.toLowerCase() > b.toLowerCase() ? 1 : -1);
+    allCabins.sort((a, b) => (a.toLowerCase() > b.toLowerCase() ? 1 : -1));
     let cabinClass = allCabins.filter(this.onlyUnique);
     let cabinClassCheckList = [];
     cabinClass.forEach(() => {
@@ -587,8 +753,8 @@ class SearchResultsScreen extends Component {
     });
     this.setState({ cabinClass, cabinClassCheckList });
     console.log("SEARCH RESULT SET CABINS WORKING");
-    console.log("Gidiş: ",cabinClass);
-    console.log("Gidiş: ",cabinClassCheckList);
+    console.log("Gidiş: ", cabinClass);
+    console.log("Gidiş: ", cabinClassCheckList);
   }
 
   onlyUnique(value, index, self) {
@@ -600,7 +766,7 @@ class SearchResultsScreen extends Component {
   };
 
   setFilterModalVisible = (visible) => {
-    this.setState({filterModalVisible: visible});
+    this.setState({ filterModalVisible: visible });
   };
 
   render() {
@@ -623,7 +789,7 @@ class SearchResultsScreen extends Component {
       price,
       airlines,
       airlinesCheckList,
-      returnAirlines, 
+      returnAirlines,
       returnAirlinesCheckList,
       airways,
       airwaysCheckList,
@@ -926,20 +1092,38 @@ class SearchResultsScreen extends Component {
                 <Text style={styles.sortText}>Paylaş</Text>
               </TouchableOpacity>
             </View>
-          <Modal
-          testID={"modal"}
-          isVisible={filterModalVisible}
-            //visible={filterModalVisible}
-            //animationType="slide"
-            style= {styles.modalSttyle}
-          >
-              <FilterModal 
-                segments={segments} 
-                segmentsCheckList={segmentsCheckList} 
+            <Modal
+              testID={"modal"}
+              isVisible={filterModalVisible}
+              //visible={filterModalVisible}
+              //animationType="slide"
+              style={styles.modalSttyle}
+            >
+              <FilterModal
+                segments={segments}
+                segmentsCheckList={segmentsCheckList}
                 returnSegments={returnSegments}
-                returnSegmentsCheckList= {returnSegmentsCheckList}
-                onPress={(array,array2,price,airline1, airline2,airway,cabin) => {this.setFilter(array, array2,price,airline1,airline2,airway,cabin)}} 
-                onClick={(value)=> this.setFilterModalVisible(value)}
+                returnSegmentsCheckList={returnSegmentsCheckList}
+                onPress={(
+                  array,
+                  array2,
+                  price,
+                  airline1,
+                  airline2,
+                  airway,
+                  cabin
+                ) => {
+                  this.setFilter(
+                    array,
+                    array2,
+                    price,
+                    airline1,
+                    airline2,
+                    airway,
+                    cabin
+                  );
+                }}
+                onClick={(value) => this.setFilterModalVisible(value)}
                 selectedWay={this.props.selectedWay}
                 // allClockGoDep={allClockGoDep}
                 // allClockGoArr={allClockGoArr}
@@ -955,13 +1139,10 @@ class SearchResultsScreen extends Component {
                 airwaysCheckList={airwaysCheckList}
                 cabinClass={cabinClass}
                 cabinClassCheckList={cabinClassCheckList}
-              />  
-          </Modal>
-
+              />
+            </Modal>
           </View>
         )}
-
-         
       </>
     );
   }
@@ -1099,9 +1280,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   modalSttyle: {
-    flex:1,
-    backgroundColor:'white',
-  }
+    flex: 1,
+    backgroundColor: "white",
+  },
 });
 
 const mapStateToProps = (state) => {

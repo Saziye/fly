@@ -30,13 +30,10 @@ class FlyItemList extends Component {
     keyExtractor = (item, index) => index.toString();
 
     flytItem = ({ item, second }) => (
-      <TouchableOpacity>
         <View>
           <FlyItem
-          
           />
         </View>
-      </TouchableOpacity>
     );
   
     render() {

@@ -7,6 +7,7 @@ import CabinRow from "./components/CabinRow";
 import SegmentedControlTab from "react-native-segmented-control-tab";
 import { Button } from "react-native-elements";
 import { Fontisto } from "@expo/vector-icons";
+// import { getAccessToken2 } from "../../services/amadeusService";
 
 //for redux
 import { connect } from "react-redux";
@@ -27,9 +28,9 @@ class SearchFlyScreen extends Component {
   }
 
   // componentDidMount() {
-  //   this.focusListener = this.props.navigation.addListener('didFocus',() => {
-  //     this.props.setSortValue(0);
-  //     console.log("sort value sıfırlandı");
+  //   getAccessToken2().then( (response) => {
+  //     console.log(response.data);
+  //     AsyncStorage.setItem("accessToken", response.data.access_token);
   //   });
   // }
   // componentWillUnmount() {

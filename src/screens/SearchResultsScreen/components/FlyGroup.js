@@ -3,6 +3,7 @@ import { View, StyleSheet, Text } from "react-native";
 import ListItem from "./ListItem";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native";
 
 const FlyGroup = ({
   dCarrierName,
@@ -68,6 +69,8 @@ const FlyGroup = ({
       <View style={styles.priceStyle}>
         <Text style={styles.textPrice}>{price} TL</Text>
       </View>
+
+      
     </View>
   );
 };
@@ -101,6 +104,10 @@ const styles = StyleSheet.create({
     // borderWidth:1,
     flex:1
   },
+  modalView:{
+    backgroundColor:'white',
+    //flex:1
+  }
 });
 
 export default FlyGroup;

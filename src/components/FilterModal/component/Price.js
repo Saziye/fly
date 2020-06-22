@@ -41,12 +41,21 @@ class Price extends Component {
             thumbTintColor={"#ffc501"}
             trackStyle={{ borderColor: "#3f3f3f" }}
             onValueChange={(price) => {
-              this.state.price = this.state.price
               this.setState({price})
-    
-              this.props.setPriceFunc(price);
+
+              clearTimeout(this.sliderTimeoutId)
+              this.sliderTimeoutId = setTimeout(() => {
+                this.state.price = this.state.price
+                this.props.setPriceFunc(price);
+                //console.log("DENE:", this.state.price)
+
+              }, 6000)
+              // this.state.price = this.state.price
+              // this.setState({price})
+              // this.props.setPriceFunc(price);
               // console.log("DENE:", this.state.price)
-              }}
+            }}
+            
           />
           <View style={{flexDirection: 'row'}}>
           <Text style={styles.labelText}> Fiyat:  </Text>

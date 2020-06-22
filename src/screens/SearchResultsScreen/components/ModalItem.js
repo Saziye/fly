@@ -42,8 +42,6 @@ class ModalItem extends Component {
       onPress={() => {
         this.state.setModalVisible(false)
         this.props.setSortValue(`${item.value}`);
-        console.log("SEÇİLEN SORT");
-        console.log(`${item.value}`)
       }}
     >
         <View style={styles.listItem}>

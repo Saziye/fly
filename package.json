@@ -26,6 +26,7 @@
     "react-native-modal-datetime-picker": "^8.7.0",
     "react-native-multi-slider": "^0.3.6",
     "react-native-picker-checkbox": "^2.0.2",
+    "react-native-popup-dialog": "^0.18.3",
     "react-native-range-slider": "^0.1.2",
     "react-native-reanimated": "~1.7.0",
     "react-native-safe-area-context": "0.7.3",
