@@ -53,7 +53,7 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   async (config) => {
-    const token = "xmzNL7VGFnYwNStPehyoAxzLyO9c";
+    const token = "1iJCiihi5UmiqIGPx6vs2W8GVp6D";
     // getAccessToken2().then( (response) => {
     //   console.log(response.data);
     //   const a = response.data.access_token;

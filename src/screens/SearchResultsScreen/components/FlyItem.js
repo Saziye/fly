@@ -31,6 +31,7 @@ const FlyItem = ({
         day={day}
         icon={icon}
       />
+      
       <View style={{ borderWidth: 1, borderColor: "#c1c1c1" }}></View>
       <View style={styles.priceStyle}>
         <Text style={styles.textPrice}>{price} TL</Text>

@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Alert,
   FlatList,
+  ScrollView
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -27,9 +28,10 @@ import { getFlights, queryBuilder } from "../../services/amadeusService";
 import FilterModal from "../../components/FilterModal/FilterModal";
 import Modal from "react-native-modal";
 import DetailItem from "./components/DetailItem";
-
+import { getAirports } from "../../services/airportService";
 
 class SearchResultsScreen extends Component {
+ 
   constructor(props) {
     super(props);
     this.state = {
@@ -58,7 +60,8 @@ class SearchResultsScreen extends Component {
       cabinClass: [],
       cabinClassCheckList: [],
       infoModalVisible: false,
-      infoModalItem: []
+      infoModalItem: {},
+      airports:[],
     };
   }
 
@@ -513,6 +516,9 @@ class SearchResultsScreen extends Component {
   }
 
   componentDidMount() {
+    getAirports().then((airportRes) => {
+      this.setState({ airports: airportRes.data });
+    });
     const origin = String(this.props.originAirport.CityName);
     const destination = String(this.props.destinationAirport.CityName);
     this.props.navigation.setParams({ Origin: origin });
@@ -577,11 +583,11 @@ class SearchResultsScreen extends Component {
 
     getFlights(query)
       .then((response) => {
-        if (response.data.data === 0) {
+        if (Object.keys(response.data.data).length == 0) {
           Alert.alert(
             "Bilgilendirme",
             "Aradığınız kritere ait uçuş bulunamadı",
-            [{ text: "Tamam", onPress: () => null }]
+            [{ text: "Tamam", onPress: () => {this.props.navigation.goBack(); null}}]
           );
         } else {
           this.setState({ flyObj: response.data });
@@ -776,9 +782,6 @@ class SearchResultsScreen extends Component {
 
   openInfoModal(item) {
     this.setState({infoModalVisible: true, infoModalItem: item})
-    console.log('ÇALIŞTI');
-    console.log(this.state.infoModalVisible);
-    
   }
 
   render() {
@@ -1105,16 +1108,28 @@ class SearchResultsScreen extends Component {
                 <Text style={styles.sortText}>Paylaş</Text>
               </TouchableOpacity>
             </View>
+            
             <Modal
               isVisible={this.state.infoModalVisible}
-            
+              animationIn={"slideInUp"}
+              animationOut={"slideOutDown"}
+              onSwipeComplete={() => this.setState({infoModalVisible: false})}
+              onBackdropPress={() => this.setState({infoModalVisible: false})}
+              style={{backgroundColor:'white'}}
             >
               {
-                this.state.infoModalItem.length>0 &&
-                <DetailItem item={this.state.infoModalItem} /> 
-
+                Object.keys(this.state.infoModalItem).length > 0 &&
+                
+                <DetailItem item={this.state.infoModalItem} selectedWay={this.props.selectedWay} flyObj={this.state.flyObj} airports={this.state.airports} originAirport={this.props.originAirport} destinationAirport={this.props.destinationAirport}/> 
               }
-              
+              <Button
+              buttonStyle={styles.buttonSearch}
+              title="Kapat"
+              titleStyle={styles.btnTitleStyle}
+              onPress={() => {
+                this.setState({infoModalVisible: false})
+            }}
+          />
             </Modal>
             <Modal
               testID={"modal"}
@@ -1306,6 +1321,18 @@ const styles = StyleSheet.create({
   modalSttyle: {
     flex: 1,
     backgroundColor: "white",
+  },
+  buttonSearch: {
+    backgroundColor: "#ffc501",
+    height: 40,
+    width: "100%",
+    alignSelf: "center",
+  },
+  btnTitleStyle: {
+    fontSize: 17,
+    fontWeight: "normal",
+    color: "#393939",
+    textAlign: "center",
   },
 });
 

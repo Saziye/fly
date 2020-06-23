@@ -15,13 +15,6 @@ const initialState = {
     senior: 0,
     student: 0,
   },
-  copyPassengers: {
-    adult: 1, //initil olarak 1 ver
-    child: 0,
-    infant: 0,
-    senior: 0,
-    student: 0,
-  },
   cabinClass: "", //initial olarak all class ekle
   gidisSelected: false,
   donusSelected: false,

@@ -41,8 +41,10 @@ const ListItem = ({
             <Text style={styles.cabinText}>Ekonomi</Text>
           ) : cabin == "BUSINESS" ? (
             <Text style={styles.cabinText}>Bussiness</Text>
-          ) : (
+          ) : cabin == "FIRST" ? (
             <Text style={styles.cabinText}>First</Text>
+          ): (
+            <Text style={styles.cabinText}>Premium Ekonomi</Text>
           )}
         </View>
       </View>
@@ -71,7 +73,7 @@ const ListItem = ({
             {segment == 0 ? (
               <Text style={styles.textSegment}>Direkt</Text>
             ) : (
-              <Text style={styles.textSegment}>{segment}</Text>
+              <Text style={styles.textSegment}>{segment + " Aktarma"}</Text>
             )}
           </View>
         </View>

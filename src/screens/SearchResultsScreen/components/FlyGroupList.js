@@ -15,7 +15,6 @@ import { connect } from "react-redux";
 import moment from "moment";
 import "moment/locale/tr";
 import FlyItem from "./FlyItem";
-import Dialog, { DialogContent } from "react-native-popup-dialog";
 
 class FlyGroupList extends Component {
   constructor(props) {
@@ -109,29 +108,24 @@ class FlyGroupList extends Component {
 
   openModal(data) {
     this.props.openModal(data)
-    // console.log("geldi mi");
-    // this.setState({infoModalItem: data})
-    // setTimeout(() => {
-    //   this.setState({ infoModalVisible: true });
-    //   console.log(this.state.infoModalItem[0].departure.at);
-    // }, 200);
   }
   
   flytItem = ({ item, second }) => (
     <TouchableOpacity
       onPress={() => {
-        this.openModal(item.itineraries[0].segments);
+        this.openModal(item);
       }}
     >
       {this.props.selectedWay == 1 ? (
-        <FlyGroup
-          dCarrierName={this.state.flyObj.dictionaries.carriers[
-            item.validatingAirlineCodes
+       
+        <FlyGroup  
+          dCarrierName={  this.state.flyObj.dictionaries.carriers[
+            item.validatingAirlineCodes[0]
           ]
             .toLowerCase()
             .split(" ")
             .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-            .join(" ")}
+            .join(" ") }
           dCarrierCode={
             item.itineraries[0].segments[0].carrierCode +
             item.itineraries[0].segments[0].number
@@ -153,29 +147,7 @@ class FlyGroupList extends Component {
           }
           dSegment={item.itineraries[0].segments.length - 1}
           dHour={
-            moment(
-              item.itineraries[0].segments[
-                item.itineraries[0].segments.length - 1
-              ].arrival.at
-            ).diff(
-              moment(item.itineraries[0].segments[0].departure.at),
-              "hour"
-            ) +
-            " sa " +
-            moment
-              .utc(
-                moment(
-                  item.itineraries[0].segments[
-                    item.itineraries[0].segments.length - 1
-                  ].arrival.at,
-                  "HH:mm:ss"
-                ).diff(
-                  moment(item.itineraries[0].segments[0].departure.at),
-                  "HH:mm:ss"
-                )
-              )
-              .format("mm") +
-            " dk"
+            moment.duration(item.itineraries[0].duration)._data.hours + " sa " +moment.duration(item.itineraries[0].duration)._data.minutes+" dk " 
           }
           rCarrierName={this.state.flyObj.dictionaries.carriers[
             item.validatingAirlineCodes
@@ -205,29 +177,7 @@ class FlyGroupList extends Component {
           }
           rSegment={item.itineraries[1].segments.length - 1}
           rHour={
-            moment(
-              item.itineraries[1].segments[
-                item.itineraries[1].segments.length - 1
-              ].arrival.at
-            ).diff(
-              moment(item.itineraries[1].segments[0].departure.at),
-              "hour"
-            ) +
-            " sa " +
-            moment
-              .utc(
-                moment(
-                  item.itineraries[1].segments[
-                    item.itineraries[1].segments.length - 1
-                  ].arrival.at,
-                  "HH:mm:ss"
-                ).diff(
-                  moment(item.itineraries[1].segments[0].departure.at),
-                  "HH:mm:ss"
-                )
-              )
-              .format("mm") +
-            " dk"
+            moment.duration(item.itineraries[1].duration)._data.hours + " sa " +moment.duration(item.itineraries[1].duration)._data.minutes+" dk " 
           }
           price={item.price.total}
           dday={
@@ -253,7 +203,7 @@ class FlyGroupList extends Component {
       ) : (
         <FlyItem
           carrierName={this.state.flyObj.dictionaries.carriers[
-            item.validatingAirlineCodes
+            item.validatingAirlineCodes[0]
           ]
             .toLowerCase()
             .split(" ")
@@ -280,29 +230,7 @@ class FlyGroupList extends Component {
           }
           segment={item.itineraries[0].segments.length - 1}
           hour={
-            moment(
-              item.itineraries[0].segments[
-                item.itineraries[0].segments.length - 1
-              ].arrival.at
-            ).diff(
-              moment(item.itineraries[0].segments[0].departure.at),
-              "hour"
-            ) +
-            " sa " +
-            moment
-              .utc(
-                moment(
-                  item.itineraries[0].segments[
-                    item.itineraries[0].segments.length - 1
-                  ].arrival.at,
-                  "HH:mm:ss"
-                ).diff(
-                  moment(item.itineraries[0].segments[0].departure.at),
-                  "HH:mm:ss"
-                )
-              )
-              .format("mm") +
-            " dk"
+            moment.duration(item.itineraries[0].duration)._data.hours + " sa " +moment.duration(item.itineraries[0].duration)._data.minutes+" dk " 
           }
           price={item.price.total}
           day={
@@ -329,7 +257,7 @@ class FlyGroupList extends Component {
           data={flyObjData}
           keyExtractor={this.keyExtractor}
           renderItem={this.flytItem}
-          extraData={flyObj.dictionaries}
+         
         />
       </ScrollView>
     );
