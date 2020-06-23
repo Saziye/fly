@@ -26,6 +26,8 @@ import LottieView from "lottie-react-native";
 import { getFlights, queryBuilder } from "../../services/amadeusService";
 import FilterModal from "../../components/FilterModal/FilterModal";
 import Modal from "react-native-modal";
+import DetailItem from "./components/DetailItem";
+
 
 class SearchResultsScreen extends Component {
   constructor(props) {
@@ -55,6 +57,8 @@ class SearchResultsScreen extends Component {
       airwaysCheckList: [],
       cabinClass: [],
       cabinClassCheckList: [],
+      infoModalVisible: false,
+      infoModalItem: []
     };
   }
 
@@ -769,6 +773,14 @@ class SearchResultsScreen extends Component {
     this.setState({ filterModalVisible: visible });
   };
 
+
+  openInfoModal(item) {
+    this.setState({infoModalVisible: true, infoModalItem: item})
+    console.log('ÇALIŞTI');
+    console.log(this.state.infoModalVisible);
+    
+  }
+
   render() {
     const {
       modalVisible,
@@ -1058,6 +1070,7 @@ class SearchResultsScreen extends Component {
               flyObjData={flyObjData}
               originalFlights={originalFlights}
               queryUrl={queryUrl}
+              openModal={(item) => this.openInfoModal(item)}
             />
 
             <View style={styles.filterContainer}>
@@ -1092,6 +1105,17 @@ class SearchResultsScreen extends Component {
                 <Text style={styles.sortText}>Paylaş</Text>
               </TouchableOpacity>
             </View>
+            <Modal
+              isVisible={this.state.infoModalVisible}
+            
+            >
+              {
+                this.state.infoModalItem.length>0 &&
+                <DetailItem item={this.state.infoModalItem} /> 
+
+              }
+              
+            </Modal>
             <Modal
               testID={"modal"}
               isVisible={filterModalVisible}

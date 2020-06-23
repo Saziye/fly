@@ -8,25 +8,12 @@ import "moment/locale/tr";
 import { AntDesign } from '@expo/vector-icons';
 
 const DetailItem = ({
-  carrierName,
-  carrierCode,
-  cabin,
-  departureTime,
-  originAirport,
-  originAirportName,
-  originCity,
-  originCountry,
-  arriveTime,
-  destinationAirport,
-  destinstionAirportCode,
-  destinationCity,
-  destinationCountry,
-  segment,
-  hour,
-  day,
-  icon,
-  selectedWay
+  data,
+  selectedWay,
+  visible
 }) => {
+  console.log("GELDİİİ");
+
   return (
       <>
       <View style={{backgroundColor:'#ffc501', flexDirection: 'row', marginTop:3}}>
@@ -132,7 +119,8 @@ const DetailItem = ({
             <Text style={{fontWeight:'bold', fontSize:13, alignSelf:'center'}}>18 sa 47 dk</Text> 
         </View>
    </View>
-   </>
+
+      </>
   );
 };
 

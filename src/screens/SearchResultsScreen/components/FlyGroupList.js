@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   FlatList,
   ScrollView,
+  Modal,
+  Button
 } from "react-native";
 import FlyGroup from "./FlyGroup";
 import { getFlights, queryBuilder } from "../../../services/amadeusService";
@@ -13,9 +15,7 @@ import { connect } from "react-redux";
 import moment from "moment";
 import "moment/locale/tr";
 import FlyItem from "./FlyItem";
-import Modal from "react-native-modal";
-import Dialog, { DialogContent } from 'react-native-popup-dialog';
-import DetailItem from '../components/DetailItem';
+import Dialog, { DialogContent } from "react-native-popup-dialog";
 
 class FlyGroupList extends Component {
   constructor(props) {
@@ -25,7 +25,8 @@ class FlyGroupList extends Component {
       flyObjData: this.props.flyObjData,
       originalFlights: this.props.originalFlights,
       queryUrl: this.props.queryUrl,
-      visible: false,
+      infoModalVisible: false,
+      infoModalItem: []
     };
   }
 
@@ -106,185 +107,149 @@ class FlyGroupList extends Component {
 
   keyExtractor = (item, index) => index.toString();
 
-  Cat(data,selectedWay) {
-    return (
-      <Dialog
-        visible={this.state.visible}
-        onTouchOutside={() => {
-          this.setState({ visible: false });
-        }}
-      >
-        <DialogContent>
-          
-            {data.map((element) => {
-              <Text>{element.departure.iataCode}</Text>
-              console.log("HADDİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİİ")
-              console.log(element.departure.iataCode);
-              // <DetailItem 
-              //   carrierName={}
-              //   carrierCode={}
-              //   cabin={}
-              //   departureTime={}
-              //   originAirport={}
-              //   originAirportName={}
-              //   originCity={}
-              //   originCountry={}
-              //   arriveTime={}
-              //   destinationAirport={}
-              //   destinstionAirportCode={}
-              //   destinationCity={}
-              //   destinationCountry={}
-              //   segment={}
-              //   hour={}
-              //   day={}
-              //   icon={}
-              //   selectedWay={}
-              // />
-            })}
-          
-        </DialogContent>
-      </Dialog>
-    );
+  openModal(data) {
+    this.props.openModal(data)
+    // console.log("geldi mi");
+    // this.setState({infoModalItem: data})
+    // setTimeout(() => {
+    //   this.setState({ infoModalVisible: true });
+    //   console.log(this.state.infoModalItem[0].departure.at);
+    // }, 200);
   }
-
+  
   flytItem = ({ item, second }) => (
     <TouchableOpacity
       onPress={() => {
-        this.setState({ visible: true });
-        setTimeout(()=> {
-          console.log("SET", this.state.visible);
-        this.Cat(item.itineraries[0].segments, this.props.selectedWay);
-
-        },1000) 
+        this.openModal(item.itineraries[0].segments);
       }}
     >
       {this.props.selectedWay == 1 ? (
-          <FlyGroup
-            dCarrierName={this.state.flyObj.dictionaries.carriers[
-              item.validatingAirlineCodes
-            ]
-              .toLowerCase()
-              .split(" ")
-              .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-              .join(" ")}
-            dCarrierCode={
-              item.itineraries[0].segments[0].carrierCode +
-              item.itineraries[0].segments[0].number
-            }
-            dCabin={item.travelerPricings[0].fareDetailsBySegment[0].cabin}
-            dDepartureTime={moment(
-              item.itineraries[0].segments[0].departure.at
-            ).format("LT")}
-            dOriginAirport={item.itineraries[0].segments[0].departure.iataCode}
-            dArriveTime={moment(
+        <FlyGroup
+          dCarrierName={this.state.flyObj.dictionaries.carriers[
+            item.validatingAirlineCodes
+          ]
+            .toLowerCase()
+            .split(" ")
+            .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+            .join(" ")}
+          dCarrierCode={
+            item.itineraries[0].segments[0].carrierCode +
+            item.itineraries[0].segments[0].number
+          }
+          dCabin={item.travelerPricings[0].fareDetailsBySegment[0].cabin}
+          dDepartureTime={moment(
+            item.itineraries[0].segments[0].departure.at
+          ).format("LT")}
+          dOriginAirport={item.itineraries[0].segments[0].departure.iataCode}
+          dArriveTime={moment(
+            item.itineraries[0].segments[
+              item.itineraries[0].segments.length - 1
+            ].arrival.at
+          ).format("LT")}
+          dDestinationAirport={
+            item.itineraries[0].segments[
+              item.itineraries[0].segments.length - 1
+            ].arrival.iataCode
+          }
+          dSegment={item.itineraries[0].segments.length - 1}
+          dHour={
+            moment(
               item.itineraries[0].segments[
                 item.itineraries[0].segments.length - 1
               ].arrival.at
-            ).format("LT")}
-            dDestinationAirport={
-              item.itineraries[0].segments[
-                item.itineraries[0].segments.length - 1
-              ].arrival.iataCode
-            }
-            dSegment={item.itineraries[0].segments.length - 1}
-            dHour={
-              moment(
-                item.itineraries[0].segments[
-                  item.itineraries[0].segments.length - 1
-                ].arrival.at
-              ).diff(
-                moment(item.itineraries[0].segments[0].departure.at),
-                "hour"
-              ) +
-              " sa " +
-              moment
-                .utc(
-                  moment(
-                    item.itineraries[0].segments[
-                      item.itineraries[0].segments.length - 1
-                    ].arrival.at,
-                    "HH:mm:ss"
-                  ).diff(
-                    moment(item.itineraries[0].segments[0].departure.at),
-                    "HH:mm:ss"
-                  )
+            ).diff(
+              moment(item.itineraries[0].segments[0].departure.at),
+              "hour"
+            ) +
+            " sa " +
+            moment
+              .utc(
+                moment(
+                  item.itineraries[0].segments[
+                    item.itineraries[0].segments.length - 1
+                  ].arrival.at,
+                  "HH:mm:ss"
+                ).diff(
+                  moment(item.itineraries[0].segments[0].departure.at),
+                  "HH:mm:ss"
                 )
-                .format("mm") +
-              " dk"
-            }
-            rCarrierName={this.state.flyObj.dictionaries.carriers[
-              item.validatingAirlineCodes
-            ]
-              .toLowerCase()
-              .split(" ")
-              .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-              .join(" ")}
-            rCarrierCode={
-              item.itineraries[1].segments[0].carrierCode +
-              item.itineraries[1].segments[0].number
-            }
-            rCabin={item.travelerPricings[0].fareDetailsBySegment[0].cabin}
-            rDepartureTime={moment(
-              item.itineraries[1].segments[0].departure.at
-            ).format("LT")}
-            rOriginAirport={item.itineraries[1].segments[0].departure.iataCode}
-            rArriveTime={moment(
+              )
+              .format("mm") +
+            " dk"
+          }
+          rCarrierName={this.state.flyObj.dictionaries.carriers[
+            item.validatingAirlineCodes
+          ]
+            .toLowerCase()
+            .split(" ")
+            .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+            .join(" ")}
+          rCarrierCode={
+            item.itineraries[1].segments[0].carrierCode +
+            item.itineraries[1].segments[0].number
+          }
+          rCabin={item.travelerPricings[0].fareDetailsBySegment[0].cabin}
+          rDepartureTime={moment(
+            item.itineraries[1].segments[0].departure.at
+          ).format("LT")}
+          rOriginAirport={item.itineraries[1].segments[0].departure.iataCode}
+          rArriveTime={moment(
+            item.itineraries[1].segments[
+              item.itineraries[1].segments.length - 1
+            ].arrival.at
+          ).format("LT")}
+          rDestinationAirport={
+            item.itineraries[1].segments[
+              item.itineraries[1].segments.length - 1
+            ].arrival.iataCode
+          }
+          rSegment={item.itineraries[1].segments.length - 1}
+          rHour={
+            moment(
               item.itineraries[1].segments[
                 item.itineraries[1].segments.length - 1
               ].arrival.at
-            ).format("LT")}
-            rDestinationAirport={
+            ).diff(
+              moment(item.itineraries[1].segments[0].departure.at),
+              "hour"
+            ) +
+            " sa " +
+            moment
+              .utc(
+                moment(
+                  item.itineraries[1].segments[
+                    item.itineraries[1].segments.length - 1
+                  ].arrival.at,
+                  "HH:mm:ss"
+                ).diff(
+                  moment(item.itineraries[1].segments[0].departure.at),
+                  "HH:mm:ss"
+                )
+              )
+              .format("mm") +
+            " dk"
+          }
+          price={item.price.total}
+          dday={
+            moment(
+              item.itineraries[0].segments[
+                item.itineraries[0].segments.length - 1
+              ].arrival.at
+            ).format("D") ==
+            moment(item.itineraries[0].segments[0].departure.at).format("D")
+          }
+          rday={
+            moment(
               item.itineraries[1].segments[
                 item.itineraries[1].segments.length - 1
-              ].arrival.iataCode
-            }
-            rSegment={item.itineraries[1].segments.length - 1}
-            rHour={
-              moment(
-                item.itineraries[1].segments[
-                  item.itineraries[1].segments.length - 1
-                ].arrival.at
-              ).diff(
-                moment(item.itineraries[1].segments[0].departure.at),
-                "hour"
-              ) +
-              " sa " +
-              moment
-                .utc(
-                  moment(
-                    item.itineraries[1].segments[
-                      item.itineraries[1].segments.length - 1
-                    ].arrival.at,
-                    "HH:mm:ss"
-                  ).diff(
-                    moment(item.itineraries[1].segments[0].departure.at),
-                    "HH:mm:ss"
-                  )
-                )
-                .format("mm") +
-              " dk"
-            }
-            price={item.price.total}
-            dday={
-              moment(
-                item.itineraries[0].segments[
-                  item.itineraries[0].segments.length - 1
-                ].arrival.at
-              ).format("D") ==
-              moment(item.itineraries[0].segments[0].departure.at).format("D")
-            }
-            rday={
-              moment(
-                item.itineraries[1].segments[
-                  item.itineraries[1].segments.length - 1
-                ].arrival.at
-              ).format("D") ==
-              moment(item.itineraries[1].segments[0].departure.at).format("D")
-            }
-            ricon={item.validatingAirlineCodes}
-            dicon={item.validatingAirlineCodes}
-            flyObjData={this.state.flyObjData}
-          />
+              ].arrival.at
+            ).format("D") ==
+            moment(item.itineraries[1].segments[0].departure.at).format("D")
+          }
+          ricon={item.validatingAirlineCodes}
+          dicon={item.validatingAirlineCodes}
+          flyObjData={this.state.flyObjData}
+        />
       ) : (
         <FlyItem
           carrierName={this.state.flyObj.dictionaries.carriers[
@@ -367,13 +332,11 @@ class FlyGroupList extends Component {
           extraData={flyObj.dictionaries}
         />
       </ScrollView>
-
     );
   }
 }
 
-const styles = StyleSheet.create({
-});
+const styles = StyleSheet.create({});
 
 const mapStateToProps = (state) => {
   return {
