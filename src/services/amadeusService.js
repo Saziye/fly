@@ -51,17 +51,44 @@ const instance = axios.create({
 //   );
 // };
 
+export function getAccessToken2() {
+  var axios = require("axios");
+  var qs = require("qs");
+  var data = qs.stringify({
+    grant_type: "client_credentials",
+    client_id: "WwXb8wNG32GhzGdYAnbuQlcqAGLdqPjG",
+    client_secret: "V0GOCMDQani9V5GJ",
+  });
+  var config = {
+    method: "post",
+    url: "https://test.api.amadeus.com/v1/security/oauth2/token",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    data: data,
+  };
+
+  axios(config)
+    .then(function (response) {
+      AsyncStorage.setItem("accessToken", response.data.access_token);
+      // console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
+
 instance.interceptors.request.use(
   async (config) => {
-    const token = "1iJCiihi5UmiqIGPx6vs2W8GVp6D";
+    // const token = "1iJCiihi5UmiqIGPx6vs2W8GVp6D";
     // getAccessToken2().then( (response) => {
     //   console.log(response.data);
     //   const a = response.data.access_token;
     // }).catch((error)=> {
     //   console.log(error);
     // });
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    if (await AsyncStorage.getItem('accessToken')) {
+      config.headers.Authorization = `Bearer ${ await AsyncStorage.getItem('accessToken')}`;
     }
     return config;
   },

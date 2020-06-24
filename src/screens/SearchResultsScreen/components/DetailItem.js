@@ -25,25 +25,25 @@ const dateConvert= (a,b)=> {
 }
 
   return (
-      <ScrollView>
-        <View style={{backgroundColor:'#ffc501', flexDirection: 'row'}}>
-        <View style={{justifyContent: 'center', flexDirection:'row'}}>
-            <Text style={{alignSelf: "center",textAlign: "center",color: "#474745", fontWeight:'bold', fontSize:15 }}>GİDİŞ</Text>
+      <ScrollView >
+        <View style={{backgroundColor:'#ffc501', flexDirection: 'column'}}>
+        <View style={{justifyContent: 'center', flexDirection:'row',borderBottomWidth:1, borderBottomColor:'#474745', padding:3}}>
+            <Text style={{textAlign: "center",color: "#474745", fontWeight:'bold', fontSize:15 }}>GİDİŞ</Text>
         </View>
         {/* <View style={{ borderWidth: 1, borderColor: "#c1c1c1", marginVertical:7, marginLeft:4}}></View> */}
-            <View style={{justifyContent:'center', alignItems:'flex-start'}}>
+            <View style={{justifyContent:'center', alignItems:'flex-start', padding:2}}>
                 <View style={{justifyContent:'center', alignSelf:'center', flexDirection:'row'}}>
-                <Text style={{fontWeight:'bold', fontSize:13, alignSelf:'center'}}>{originAirport.CityName}</Text>
+                <Text style={{fontWeight:'bold', fontSize:14, alignSelf:'center'}}>{originAirport.CityName}</Text>
                 <AntDesign name="arrowright" size={12} color="wite" style={{alignSelf:'center'}}/>
-                <Text style={{fontWeight:'bold', fontSize:13, alignSelf:'center'}}>{destinationAirport.CityName}</Text>
+                <Text style={{fontWeight:'bold', fontSize:14, alignSelf:'center'}}>{destinationAirport.CityName}</Text>
                 </View>
                 
                 <View style={{flexDirection:'row', marginLeft:10}}>
-                    <Text style={{width:'31%', textAlign:'center', alignSelf:'center'}}>{moment(item.itineraries[0].segments[0].departure.at).format(
+                    <Text style={{width:'33%', textAlign:'center', alignSelf:'center'}}>{moment(item.itineraries[0].segments[0].departure.at).format(
                     "DD MMMM YYYY dddd"
                   )}</Text>
-                    <Text style={{width:'31%', textAlign:'center',alignSelf:'center'}}>{item.itineraries[0].segments.length - 1== 0 ? "Direkt" : item.itineraries[0].segments.length - 1 + " Aktarma"}</Text>
-                    <Text style={{width:'31%', textAlign:'center',alignSelf:'center'}}>{"Toplam uçuş süresi " +moment.duration(item.itineraries[0].duration)._data.hours + " sa " +moment.duration(item.itineraries[0].duration)._data.minutes+" dk " }</Text>
+                    <Text style={{width:'32%', textAlign:'center',alignSelf:'center'}}>{item.itineraries[0].segments.length - 1== 0 ? "Direkt" : item.itineraries[0].segments.length - 1 + " Aktarma"}</Text>
+                    <Text style={{width:'33%', textAlign:'center',alignSelf:'center'}}>{"Toplam uçuş süresi " +moment.duration(item.itineraries[0].duration)._data.hours + " sa " +moment.duration(item.itineraries[0].duration)._data.minutes+" dk " }</Text>
                 </View>
             </View>
         </View>
@@ -153,15 +153,15 @@ const dateConvert= (a,b)=> {
           selectedWay == 1 && (
         <>
         <View style={{backgroundColor:'#ffc501', flexDirection: 'row', marginTop:3}}>
-        <View style={{justifyContent: 'center', flexDirection:'row'}}>
-            <Text style={{alignSelf: "center",textAlign: "center",color: "#474745", fontWeight:'bold', fontSize:15 }}>DÖNÜŞ</Text>
+        <View style={{justifyContent: 'center', flexDirection:'row',borderBottomWidth:1, borderBottomColor:'#474745', padding:3}}>
+            <Text style={{textAlign: "center",color: "#474745", fontWeight:'bold', fontSize:15 }}>DÖNÜŞ</Text>
         </View>
         {/* <View style={{ borderWidth: 1, borderColor: "#c1c1c1", marginVertical:7, marginLeft:4}}></View> */}
-            <View style={{justifyContent:'center', alignItems:'flex-start'}}>
+            <View style={{justifyContent:'center', alignItems:'flex-start', padding:2}}>
                 <View style={{justifyContent:'center', alignSelf:'center', flexDirection:'row'}}>
-                <Text style={{fontWeight:'bold', fontSize:13, alignSelf:'center'}}>{destinationAirport.CityName}</Text>
+                <Text style={{fontWeight:'bold', fontSize:14, alignSelf:'center'}}>{destinationAirport.CityName}</Text>
                 <AntDesign name="arrowright" size={12} color="wite" style={{alignSelf:'center'}}/>
-                <Text style={{fontWeight:'bold', fontSize:13, alignSelf:'center'}}>{originAirport.CityName}</Text>
+                <Text style={{fontWeight:'bold', fontSize:14, alignSelf:'center'}}>{originAirport.CityName}</Text>
                 </View>
                 
                 <View style={{flexDirection:'row', marginLeft:10}}>

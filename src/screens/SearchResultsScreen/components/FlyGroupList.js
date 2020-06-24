@@ -29,37 +29,51 @@ class FlyGroupList extends Component {
     };
   }
 
+  sortFly(value){
+    switch (value) {
+      case '0':
+        console.log("sortPrice");
+        this.sortPrice();
+        break;
+      case '1':
+        this.sortDepartureTime();
+        console.log("sortDeparture");
+        break;
+      case '2':
+        this.sortArriveTime();
+        console.log("sortArrive");
+        break;
+      case '3':
+        this.sortCarrierName();
+        console.log("sortCarrier");
+        break;
+      default: this.sortPrice();
+      
+    } 
+  }
+
+
   componentDidMount() {
-    if (this.props.sortValue == 1) {
-      this.sortDepartureTime();
-      console.log("sortDeparture");
-      console.log("FLY GROUP DEPARTURE GİRDİ");
-    } else if (this.props.sortValue == 2) {
-      this.sortArriveTime();
-      console.log("sortArrive");
-      console.log("FLY GROUP ARRIVE GİRDİ");
-    } else if (this.props.sortValue == 3) {
-      this.sortCarrierName();
-      console.log("sortCarrier");
-      console.log("FLY GROUP CARRIER GİRDİ");
-    } else {
-      this.sortPrice();
-      console.log("sortPrice");
-      console.log("FLY GROUP PRICE GİRDİ");
-      console.log(this.props.sortValue);
-    }
+    this.sortFly(this.props.sortValue);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ flyObjData: nextProps.flyObjData });
-    this.setState({ flyObj: nextProps.flyObj });
-    this.setState({ originAirport: nextProps.originAirport });
-    console.log("FLY GROUP WILL RECEIVE PROPS");
+    if(this.props.sortValue != nextProps.sortValue){
+      console.log("DENEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE===============================================");
+      console.log(nextProps.sortValue);
+      this.sortFly(nextProps.sortValue);
+      //this.setState({ flyObjData: nextProps.flyObjData });
+    }else {
+      this.setState({ flyObjData: nextProps.flyObjData });
+      this.setState({ flyObj: nextProps.flyObj });
+      this.setState({ originAirport: nextProps.originAirport });
+      console.log("FLY GROUP WILL RECEIVE PROPS");
+    }
   }
 
   sortPrice = () => {
     const myData = this.state.originalFlights.sort(function (a, b) {
-      return a.price.total > b.price.total ? 1 : -1;
+      return a.price.total < b.price.total ? 1 : -1;
     });
     this.setState({ flyObjData: myData });
     console.log("PRICE SIRALANDI");

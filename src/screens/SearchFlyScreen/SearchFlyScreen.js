@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, View, Text, ImageBackground } from "react-native";
+import { StyleSheet, View, Text, ImageBackground, AsyncStorage } from "react-native";
 import { SafeAreaView } from "react-navigation";
 import AirportRow from "./components/AirportRow";
 import DateRow from "./components/DateRow";
@@ -7,7 +7,7 @@ import CabinRow from "./components/CabinRow";
 import SegmentedControlTab from "react-native-segmented-control-tab";
 import { Button } from "react-native-elements";
 import { Fontisto } from "@expo/vector-icons";
-// import { getAccessToken2 } from "../../services/amadeusService";
+import  {getAccessToken2, getAccessToken}  from "../../services/amadeusService";
 
 //for redux
 import { connect } from "react-redux";
@@ -27,12 +27,16 @@ class SearchFlyScreen extends Component {
     };
   }
 
-  // componentDidMount() {
-  //   getAccessToken2().then( (response) => {
-  //     console.log(response.data);
-  //     AsyncStorage.setItem("accessToken", response.data.access_token);
-  //   });
-  // }
+  componentDidMount() {
+    console.log('========================>')
+    getAccessToken2()
+    // .then( (response) => {
+    //   console.log('===== RESPONSE ');
+      
+    //   console.log(response.data);
+    //   AsyncStorage.setItem("accessToken", response.data.access_token);
+    // });
+  }
   // componentWillUnmount() {
   //   this.focusListener.remove();
   // }

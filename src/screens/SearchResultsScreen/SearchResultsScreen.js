@@ -540,8 +540,8 @@ class SearchResultsScreen extends Component {
     if (
       this.props.departureDate != nextProps.departureDate ||
       this.props.returnDate != nextProps.returnDate ||
-      this.props.selectedWay != nextProps.selectedWay ||
-      this.props.sortValue != nextProps.sortValue
+      this.props.selectedWay != nextProps.selectedWay 
+      // this.props.sortValue != nextProps.sortValue
     )
     this.setState({ flyObjData: [] });
     this.recieveFlights(
@@ -598,6 +598,8 @@ class SearchResultsScreen extends Component {
           this.setAirlines(response.data.data);
           this.setAirways(response.data.data);
           this.setCabins(response.data.data);
+          this.props.setSortValue(0);
+
         }
       })
       .catch((err) => {
@@ -1348,7 +1350,7 @@ const mapStateToProps = (state) => {
     children: state.passenger.passengers.child,
     infant: state.passenger.passengers.infant,
     selectedWay: state.passenger.selectedWay,
-    sortValue: state.passenger.sortValue,
+    // sortValue: state.passenger.sortValue,
   };
 };
 
