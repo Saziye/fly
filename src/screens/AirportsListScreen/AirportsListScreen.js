@@ -70,6 +70,7 @@ class AirportsListScreen extends Component {
     console.log(navigation);
 
     this.setState({ type: navigation.state.params.type });
+    console.log("ÇAlıştın mı")
     getAirports().then((airportRes) => {
       this.setState({ airports: airportRes.data });
     });

@@ -7,7 +7,7 @@ import CabinRow from "./components/CabinRow";
 import SegmentedControlTab from "react-native-segmented-control-tab";
 import { Button } from "react-native-elements";
 import { Fontisto } from "@expo/vector-icons";
-import  {getAccessToken2, getAccessToken}  from "../../services/amadeusService";
+import  {getAccessToken2}  from "../../services/amadeusService";
 
 //for redux
 import { connect } from "react-redux";
@@ -17,7 +17,10 @@ import {
   setSelectedWay,
   setSortValue
 } from "../../actions/passengerAction";
+
 const BLUE = "#104e8b";
+
+
 
 class SearchFlyScreen extends Component {
   constructor(props) {
@@ -27,16 +30,10 @@ class SearchFlyScreen extends Component {
     };
   }
 
-  componentDidMount() {
-    console.log('========================>')
-    getAccessToken2()
-    // .then( (response) => {
-    //   console.log('===== RESPONSE ');
-      
-    //   console.log(response.data);
-    //   AsyncStorage.setItem("accessToken", response.data.access_token);
-    // });
+   componentDidMount()  {
+    getAccessToken2();
   }
+
   // componentWillUnmount() {
   //   this.focusListener.remove();
   // }
@@ -103,7 +100,6 @@ class SearchFlyScreen extends Component {
                 titleStyle={styles.btnTitleStyle}
                 onPress={() => {
                   this.navigateFunction("SearchResults");
-          
                 }}
               />
             </View>

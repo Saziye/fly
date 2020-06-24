@@ -6,8 +6,6 @@ import {
   Text,
   TouchableOpacity,
   Alert,
-  FlatList,
-  ScrollView
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
@@ -29,6 +27,7 @@ import FilterModal from "../../components/FilterModal/FilterModal";
 import Modal from "react-native-modal";
 import DetailItem from "./components/DetailItem";
 import { getAirports } from "../../services/airportService";
+import { Logs } from "expo";
 
 class SearchResultsScreen extends Component {
  
@@ -542,20 +541,22 @@ class SearchResultsScreen extends Component {
       this.props.returnDate != nextProps.returnDate ||
       this.props.selectedWay != nextProps.selectedWay 
       // this.props.sortValue != nextProps.sortValue
-    )
-    this.setState({ flyObjData: [] });
-    this.recieveFlights(
-      nextProps.originAirport.AirportCode,
-      nextProps.destinationAirport.AirportCode,
-      nextProps.departureDate,
-      nextProps.returnDate,
-      nextProps.adults,
-      nextProps.children,
-      nextProps.infant,
-      nextProps.cabinClass
-    );
-    console.log("NXT PROPS FOR SORT");
-    console.log(nextProps);
+    ) {
+      this.setState({ flyObjData: [] });
+      this.recieveFlights(
+        nextProps.originAirport.AirportCode,
+        nextProps.destinationAirport.AirportCode,
+        nextProps.departureDate,
+        nextProps.returnDate,
+        nextProps.adults,
+        nextProps.children,
+        nextProps.infant,
+        nextProps.cabinClass
+      );
+      // console.log("NXT PROPS FOR SORT");
+      // console.log(nextProps);
+    }
+    
   }
 
   recieveFlights(
@@ -732,12 +733,18 @@ class SearchResultsScreen extends Component {
 
   setAirways(flightsAirline) {
     let allAirways = [];
-
-    flightsAirline.forEach((element) => {
-      allAirways.push(
-        this.state.flyObj.dictionaries.carriers[element.validatingAirlineCodes]
-      );
-    });
+    let allAirways1 = [];
+    let allAirways2 = [];
+    flightsAirline.forEach((element)=> {
+     
+        this.state.flyObj.dictionaries.carriers.hasOwnProperty(element.validatingAirlineCodes) == true ? 
+        (allAirways.push(this.state.flyObj.dictionaries.carriers[element.validatingAirlineCodes])) : ( allAirways.push(element.validatingAirlineCodes))
+     
+    })
+    
+    // allAirways.push(
+    //   this.state.flyObj.dictionaries.carriers.hasOwnProperty(item.validatingAirlineCodes) == true ? (this.state.flyObj.dictionaries.carriers[element.validatingAirlineCodes]) : (item.validatingAirlineCodes)
+    // );
     allAirways.sort((a, b) => (a.toLowerCase() > b.toLowerCase() ? 1 : -1));
     let airways = allAirways.filter(this.onlyUnique);
     let airwaysCheckList = [];

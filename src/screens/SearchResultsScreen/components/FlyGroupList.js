@@ -32,42 +32,35 @@ class FlyGroupList extends Component {
   sortFly(value){
     switch (value) {
       case '0':
-        console.log("sortPrice");
         this.sortPrice();
         break;
       case '1':
         this.sortDepartureTime();
-        console.log("sortDeparture");
         break;
       case '2':
         this.sortArriveTime();
-        console.log("sortArrive");
         break;
       case '3':
         this.sortCarrierName();
-        console.log("sortCarrier");
         break;
-      default: this.sortPrice();
-      
     } 
   }
 
-
   componentDidMount() {
     this.sortFly(this.props.sortValue);
+    // console.log("İLK VERİ");
+    // console.log(this.state.flyObjData);
   }
 
   componentWillReceiveProps(nextProps) {
     if(this.props.sortValue != nextProps.sortValue){
-      console.log("DENEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE===============================================");
+      console.log("DENE=======================fddgdg========================");
       console.log(nextProps.sortValue);
       this.sortFly(nextProps.sortValue);
-      //this.setState({ flyObjData: nextProps.flyObjData });
-    }else {
-      this.setState({ flyObjData: nextProps.flyObjData });
-      this.setState({ flyObj: nextProps.flyObj });
-      this.setState({ originAirport: nextProps.originAirport });
-      console.log("FLY GROUP WILL RECEIVE PROPS");
+      // console.log("SIRALANMIŞ VERİ");
+      // console.log(this.state.flyObjData);
+      // this.setState({ flyObjData: nextProps.flyObjData });
+      // this.setState({flyObjData: this.state.flyObjData});
     }
   }
 
@@ -75,7 +68,10 @@ class FlyGroupList extends Component {
     const myData = this.state.originalFlights.sort(function (a, b) {
       return a.price.total < b.price.total ? 1 : -1;
     });
-    this.setState({ flyObjData: myData });
+    console.log(myData);
+    console.log(typeof this.state.originalFlights);
+    
+    this.setState({ flyObjData: [ ...myData] });
     console.log("PRICE SIRALANDI");
   };
 
@@ -86,7 +82,7 @@ class FlyGroupList extends Component {
         ? 1
         : -1;
     });
-    this.setState({ flyObjData: myData });
+    this.setState({ flyObjData: [ ...myData] });
     console.log("DEPARTURE SIRALANDI");
   };
 
@@ -103,7 +99,7 @@ class FlyGroupList extends Component {
         ? 1
         : -1;
     });
-    this.setState({ flyObjData: myData });
+    this.setState({ flyObjData: [ ...myData] });
     console.log("ARIIVE SIRALANDI");
   };
 
@@ -114,7 +110,7 @@ class FlyGroupList extends Component {
         ? 1
         : -1;
     });
-    this.setState({ flyObjData: myData });
+    this.setState({ flyObjData: [ ...myData] });
     console.log("CARRIER SIRALANDI");
   };
 
@@ -132,14 +128,14 @@ class FlyGroupList extends Component {
     >
       {this.props.selectedWay == 1 ? (
        
-        <FlyGroup  
-          dCarrierName={  this.state.flyObj.dictionaries.carriers[
-            item.validatingAirlineCodes[0]
+        <FlyGroup 
+          dCarrierName={ this.state.flyObj.dictionaries.carriers.hasOwnProperty(item.validatingAirlineCodes) == true ? this.state.flyObj.dictionaries.carriers[
+            item.validatingAirlineCodes
           ]
-            .toLowerCase()
-            .split(" ")
-            .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-            .join(" ") }
+          .toLowerCase()
+          .split(" ")
+          .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+          .join(" ") :  item.validatingAirlineCodes}
           dCarrierCode={
             item.itineraries[0].segments[0].carrierCode +
             item.itineraries[0].segments[0].number
@@ -163,13 +159,13 @@ class FlyGroupList extends Component {
           dHour={
             moment.duration(item.itineraries[0].duration)._data.hours + " sa " +moment.duration(item.itineraries[0].duration)._data.minutes+" dk " 
           }
-          rCarrierName={this.state.flyObj.dictionaries.carriers[
+          rCarrierName={ this.state.flyObj.dictionaries.carriers.hasOwnProperty(item.validatingAirlineCodes) == true ? this.state.flyObj.dictionaries.carriers[
             item.validatingAirlineCodes
           ]
             .toLowerCase()
             .split(" ")
             .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-            .join(" ")}
+            .join(" ") :  item.validatingAirlineCodes}
           rCarrierCode={
             item.itineraries[1].segments[0].carrierCode +
             item.itineraries[1].segments[0].number
@@ -216,13 +212,13 @@ class FlyGroupList extends Component {
         />
       ) : (
         <FlyItem
-          carrierName={this.state.flyObj.dictionaries.carriers[
-            item.validatingAirlineCodes[0]
-          ]
+        carrierName={ this.state.flyObj.dictionaries.carriers.hasOwnProperty(item.validatingAirlineCodes) == true ? this.state.flyObj.dictionaries.carriers[
+          item.validatingAirlineCodes
+        ]
             .toLowerCase()
             .split(" ")
             .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-            .join(" ")}
+            .join(" ") :  item.validatingAirlineCodes}
           carrierCode={
             item.itineraries[0].segments[0].carrierCode +
             item.itineraries[0].segments[0].number

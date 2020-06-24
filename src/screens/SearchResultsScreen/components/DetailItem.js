@@ -27,8 +27,8 @@ const dateConvert= (a,b)=> {
   return (
       <ScrollView >
         <View style={{backgroundColor:'#ffc501', flexDirection: 'column'}}>
-        <View style={{justifyContent: 'center', flexDirection:'row',borderBottomWidth:1, borderBottomColor:'#474745', padding:3}}>
-            <Text style={{textAlign: "center",color: "#474745", fontWeight:'bold', fontSize:15 }}>GİDİŞ</Text>
+        <View style={{justifyContent: 'center', flexDirection:'row', backgroundColor:'#104e8b', padding:3}}>
+            <Text style={{textAlign: "center",color: "white", fontWeight:'bold', fontSize:15 }}>GİDİŞ</Text>
         </View>
         {/* <View style={{ borderWidth: 1, borderColor: "#c1c1c1", marginVertical:7, marginLeft:4}}></View> */}
             <View style={{justifyContent:'center', alignItems:'flex-start', padding:2}}>
@@ -43,7 +43,16 @@ const dateConvert= (a,b)=> {
                     "DD MMMM YYYY dddd"
                   )}</Text>
                     <Text style={{width:'32%', textAlign:'center',alignSelf:'center'}}>{item.itineraries[0].segments.length - 1== 0 ? "Direkt" : item.itineraries[0].segments.length - 1 + " Aktarma"}</Text>
-                    <Text style={{width:'33%', textAlign:'center',alignSelf:'center'}}>{"Toplam uçuş süresi " +moment.duration(item.itineraries[0].duration)._data.hours + " sa " +moment.duration(item.itineraries[0].duration)._data.minutes+" dk " }</Text>
+                    {
+                      moment.duration(item.itineraries[0].duration)._data.days >0 ? (
+                        <Text style={{width:'33%', textAlign:'center',alignSelf:'center'}}>{"Toplam uçuş süresi " + moment.duration(item.itineraries[0].duration)._data.days + " gün " +moment.duration(item.itineraries[0].duration)._data.hours + " sa " +moment.duration(item.itineraries[0].duration)._data.minutes+" dk " }</Text>
+
+                      ) : (
+                        <Text style={{width:'33%', textAlign:'center',alignSelf:'center'}}>{"Toplam uçuş süresi " +moment.duration(item.itineraries[0].duration)._data.hours + " sa " +moment.duration(item.itineraries[0].duration)._data.minutes+" dk " }</Text>
+
+                      )
+                    }
+                    
                 </View>
             </View>
         </View>
@@ -66,7 +75,9 @@ const dateConvert= (a,b)=> {
                     </View>
                     <View>
                         <View style={styles.cNameStyle}>
-                            <Text style={styles.cNameText}>{flyObj.dictionaries.carriers[item.validatingAirlineCodes].toLowerCase().split(" ").map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(" ")}</Text>
+                            <Text style={styles.cNameText}>
+                            { flyObj.dictionaries.carriers.hasOwnProperty(item.validatingAirlineCodes) == true ? flyObj.dictionaries.carriers[item.validatingAirlineCodes].toLowerCase().split(" ").map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(" "): item.validatingAirlineCodes }
+                            </Text>
                         </View>
                         <View style={styles.cNameStyle}>
                       <Text style={styles.cCodeText}>{element.carrierCode + element.number}</Text>
@@ -114,7 +125,15 @@ const dateConvert= (a,b)=> {
                             <Text style={styles.textTime}>{element.arrival.iataCode}</Text>
                         </View>
                         <View>
-                            <Text style={styles.textAirport}>{moment(element.arrival.at).format('LT')}</Text>
+                            {
+                              moment(element.arrival.at).format("D") == moment(element.departure.at).format("D") ? (
+                                <Text style={styles.textAirport}>{moment(element.arrival.at).format('LT')}</Text>
+                              ) : (
+                                <Text style={styles.textTimeRed}>{moment(element.arrival.at).format('LT')}</Text>
+                                
+                              )
+                            }
+                            
                         </View>
                         <View>
                             <Text style={styles.textSub}>{airports.filter(i => i.AirportCode.toLowerCase() == element.arrival.iataCode.toLowerCase())[0].AirportName}</Text>
@@ -152,9 +171,11 @@ const dateConvert= (a,b)=> {
         {
           selectedWay == 1 && (
         <>
-        <View style={{backgroundColor:'#ffc501', flexDirection: 'row', marginTop:3}}>
-        <View style={{justifyContent: 'center', flexDirection:'row',borderBottomWidth:1, borderBottomColor:'#474745', padding:3}}>
-            <Text style={{textAlign: "center",color: "#474745", fontWeight:'bold', fontSize:15 }}>DÖNÜŞ</Text>
+
+
+        <View style={{backgroundColor:'#ffc501', flexDirection: 'column', marginTop:3}}>
+        <View style={{justifyContent: 'center', flexDirection:'row', backgroundColor:'#104e8b', padding:3}}>
+            <Text style={{textAlign: "center",color: "white", fontWeight:'bold', fontSize:15 }}>DÖNÜŞ</Text>
         </View>
         {/* <View style={{ borderWidth: 1, borderColor: "#c1c1c1", marginVertical:7, marginLeft:4}}></View> */}
             <View style={{justifyContent:'center', alignItems:'flex-start', padding:2}}>
@@ -169,7 +190,17 @@ const dateConvert= (a,b)=> {
                     "DD MMMM YYYY dddd"
                   )}</Text>
                     <Text style={{width:'31%', textAlign:'center',alignSelf:'center'}}>{ item.itineraries[1].segments.length - 1== 0 ? "Direkt" : item.itineraries[1].segments.length - 1 + " Aktarma"}</Text>
-                    <Text style={{width:'31%', textAlign:'center',alignSelf:'center'}}>{"Toplam " +moment.duration(item.itineraries[1].duration)._data.hours + " sa " +moment.duration(item.itineraries[1].duration)._data.minutes+" dk " }</Text>
+                    
+                    {
+                      moment.duration(item.itineraries[1].duration)._data.days >0 ? (
+                        <Text style={{width:'33%', textAlign:'center',alignSelf:'center'}}>{"Toplam uçuş süresi " + moment.duration(item.itineraries[1].duration)._data.days + " gün " +moment.duration(item.itineraries[1].duration)._data.hours + " sa " +moment.duration(item.itineraries[1].duration)._data.minutes+" dk " }</Text>
+
+                      ) : (
+                        <Text style={{width:'31%', textAlign:'center',alignSelf:'center'}}>{"Toplamuçuş süresi " +moment.duration(item.itineraries[1].duration)._data.hours + " sa " +moment.duration(item.itineraries[1].duration)._data.minutes+" dk " }</Text>
+                      )
+                    }
+                    
+                    
                 </View>
             </View>
         </View>
@@ -192,7 +223,9 @@ const dateConvert= (a,b)=> {
                     </View>
                     <View>
                         <View style={styles.cNameStyle}>
-                            <Text style={styles.cNameText}>{flyObj.dictionaries.carriers[item.validatingAirlineCodes].toLowerCase().split(" ").map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(" ")}</Text>
+                            <Text style={styles.cNameText}>
+                              { flyObj.dictionaries.carriers.hasOwnProperty(item.validatingAirlineCodes) == true ? flyObj.dictionaries.carriers[item.validatingAirlineCodes].toLowerCase().split(" ").map((s) => s.charAt(0).toUpperCase() + s.substring(1)).join(" "): item.validatingAirlineCodes }
+                            </Text>
                         </View>
                         <View style={styles.cNameStyle}>
                       <Text style={styles.cCodeText}>{element.carrierCode + element.number}</Text>
@@ -240,7 +273,15 @@ const dateConvert= (a,b)=> {
                             <Text style={styles.textTime}>{element.arrival.iataCode}</Text>
                         </View>
                         <View>
-                            <Text style={styles.textAirport}>{moment(element.arrival.at).format('LT')}</Text>
+                            {
+                              moment(element.arrival.at).format("D") == moment(element.departure.at).format("D") ? (
+                                <Text style={styles.textAirport}>{moment(element.arrival.at).format('LT')}</Text>
+                              ) : (
+                                <Text style={styles.textTimeRed}>{moment(element.arrival.at).format('LT')}</Text>
+                                
+                              )
+                            }
+                            {/* <Text style={styles.textAirport}>{moment(element.arrival.at).format('LT')}</Text> */}
                         </View>
                         <View>
                         <Text style={styles.textSub}>{airports.filter(i => i.AirportCode.toLowerCase() == element.arrival.iataCode.toLowerCase())[0].AirportName}</Text>
@@ -347,7 +388,6 @@ const styles = StyleSheet.create({
   textTimeRed: {
     color: "#d90910",
     fontSize: 18,
-    fontWeight: "bold",
     textAlign: "center",
     width:100
   },

@@ -51,7 +51,12 @@ const instance = axios.create({
 //   );
 // };
 
-export function getAccessToken2() {
+export async function getAccessToken2() {
+  var now = new Date();
+
+  if(await AsyncStorage.getItem('lasttime') == undefined || AsyncStorage.getItem('lasttime')<now ){
+  console.log("GİRDİ");
+    
   var axios = require("axios");
   var qs = require("qs");
   var data = qs.stringify({
@@ -67,15 +72,23 @@ export function getAccessToken2() {
     },
     data: data,
   };
-
   axios(config)
     .then(function (response) {
-      AsyncStorage.setItem("accessToken", response.data.access_token);
-      // console.log(JSON.stringify(response.data));
+       AsyncStorage.setItem("accessToken", response.data.access_token);
+       AsyncStorage.setItem("expiresIn", response.data.expires_in);
+       var a =new Date();
+       a.setSeconds(a.getSeconds()+response.data.expires_in);
+       AsyncStorage.setItem("lasttime",a);
+      //console.log(JSON.stringify(response.data.expires_in));
+      console.log("TOKEN");
+      
+      console.log(response.data);
+      
     })
     .catch(function (error) {
       console.log(error);
     });
+  }
 }
 
 instance.interceptors.request.use(
@@ -136,7 +149,7 @@ export function queryBuilder(
     param9 +
     "TRY" +
     param10 +
-    "25";
+    "50";
   if (returnDate != "") {
     x = x + param4 + `${returnDate}`;
   }
@@ -149,6 +162,7 @@ export function queryBuilder(
 
 export function getFlights(query) {
   // Date Format be like 2020-09-01
+  getAccessToken2();
   return instance({
     method: "GET",
     url: `${query}`,

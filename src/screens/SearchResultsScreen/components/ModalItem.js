@@ -63,6 +63,8 @@ class ModalItem extends Component {
         onSwipeComplete={() => this.props.onPress(false)}
         swipeDirection={["left", "right", "down"]}
         style={styles.modalView}
+        onBackdropPress={() => this.props.onPress(false)}
+
       >
         <View style={styles.containerOne}>
           <View style={styles.modalHeader}>
@@ -90,7 +92,7 @@ const styles = StyleSheet.create({
   },
   containerOne: {
     backgroundColor: "#fff",
-    height: "50%",
+    height: "40%",
     width: "100%",
     flexDirection: "column",
     // borderColor: "red",
@@ -98,7 +100,7 @@ const styles = StyleSheet.create({
   },
   modalHeader: {
     justifyContent: "flex-start",
-    height: "20%",
+    height: "15%",
     borderBottomWidth: 2,
     borderBottomColor: "#393939",
     justifyContent: "center",
